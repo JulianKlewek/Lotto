@@ -8,6 +8,6 @@ public class NumberReceiverFacadeImpl implements NumberReceiverFacade {
 
     @Override
     public NumberReceiverResultDto inputNumbers(List<Integer> integers) {
-        return new NumberReceiverResultDto("a", true);
+        return new NumberReceiverResultDto("a", false);
     }
 }
