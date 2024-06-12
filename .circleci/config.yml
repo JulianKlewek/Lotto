@@ -15,5 +15,9 @@ jobs:
           name: Print Java version
           command: |
             java --version
-      - run: mvn clean install
-      - run: mvn test
+      - run: 
+          name: Install dependencies
+          command: mvn clean install
+      - run: 
+          name: Run tests
+          command: mvn test
