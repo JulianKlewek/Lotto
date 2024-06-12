@@ -12,8 +12,8 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Print Java version
-        command: |
-          java --version
+          name: Print Java version
+          command: |
+            java --version
       - run: mvn clean install
       - run: mvn test
