@@ -11,6 +11,9 @@ jobs:
       - image: cimg/openjdk:21.0.2
     steps:
       - checkout
-      - run: java --version
+      - run:
+        name: Print Java version
+        command: |
+          java --version
       - run: mvn clean install
       - run: mvn test
