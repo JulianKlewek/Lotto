@@ -1,6 +1,6 @@
 db.createUser(
     {
-        user: "lotto-admin",
+        user: "admin",
         pwd: "admin",
         roles: [
             {

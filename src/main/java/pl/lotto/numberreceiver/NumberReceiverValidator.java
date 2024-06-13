@@ -12,9 +12,9 @@ class NumberReceiverValidator {
     public final int MINIMUM_NUMBER = 1;
     public final int MAXIMUM_NUMBER = 50;
 
-    List<String> errorsList = new LinkedList<>();
 
     public NumberValidationResult validate(Set<Integer> numbersFromUser) {
+        List<String> errorsList = new LinkedList<>();
         if (isUserProvidedMoreThanSixNumbers(numbersFromUser)) {
             errorsList.add(MORE_THAN_SIX_NUMBERS.errorMessage);
         }
