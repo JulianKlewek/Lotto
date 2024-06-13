@@ -2,9 +2,9 @@ package pl.lotto.numberreceiver;
 
 import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
 
-import java.util.List;
+import java.util.Set;
 
 public interface NumberReceiverFacade {
 
-    NumberReceiverResultDto inputNumbers(List<Integer> integers);
+    NumberReceiverResultDto inputNumbers(Set<Integer> integers);
 }
