@@ -6,6 +6,7 @@ import pl.lotto.drawdategenerator.dto.DrawDateDto;
 
 import java.time.*;
 
+import static java.time.Clock.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class DrawDateGeneratorFacadeTest implements DrawDateTestsConstants {
@@ -14,7 +15,7 @@ class DrawDateGeneratorFacadeTest implements DrawDateTestsConstants {
     @MethodSource("VALID_NEXT_DRAW_DATES")
     void should_return_friday_eight_pm(ZonedDateTime ticketCreatedAt, ZonedDateTime expectedDrawDate) {
         //given
-        Clock clock = Clock.fixed(ticketCreatedAt.toInstant(),ticketCreatedAt.getZone());
+        Clock clock = fixed(ticketCreatedAt.toInstant(),ticketCreatedAt.getZone());
         DrawDateGeneratorFacade drawDateGeneratorFacade = new DrawDateGeneratorConfig().drawDateGeneratorFacadeForTest(clock);
         //when
         DrawDateDto drawDateDto = drawDateGeneratorFacade.getNextDrawDate(ticketCreatedAt);

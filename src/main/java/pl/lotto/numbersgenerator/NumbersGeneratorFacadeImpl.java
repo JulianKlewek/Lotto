@@ -7,6 +7,8 @@ import java.time.Clock;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
+import static java.time.ZonedDateTime.*;
+import static pl.lotto.numbersgenerator.WinningNumbersDetails.*;
 import static pl.lotto.numbersgenerator.WinningNumbersMapper.*;
 
 @AllArgsConstructor
@@ -20,8 +22,8 @@ class NumbersGeneratorFacadeImpl implements NumbersGeneratorFacade {
     public WinningNumbersDto generateWinningNumbers() {
         Set<Integer> winningNumbers = winningNumbersGenerator.generateSixNumbersInGivenRange();
         Long drawNumber = winningNumbersGenerator.generateDrawNumber(numbersRepository);
-        ZonedDateTime createdAt = ZonedDateTime.now(clock);
-        WinningNumbersDetails winningNumberDetails = WinningNumbersDetails.builder()
+        ZonedDateTime createdAt = now(clock);
+        WinningNumbersDetails winningNumberDetails = builder()
                 .numbers(winningNumbers)
                 .lotteryNumber(drawNumber)
                 .generatedTime(createdAt)

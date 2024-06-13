@@ -1,9 +1,9 @@
 package pl.lotto.numberreceiver;
 
-import java.util.UUID;
+import static java.util.UUID.randomUUID;
 
 class HashGenerator {
     public String getHash() {
-        return UUID.randomUUID().toString();
+        return randomUUID().toString();
     }
 }

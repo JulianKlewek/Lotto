@@ -2,6 +2,8 @@ package pl.lotto.numbersgenerator;
 
 import pl.lotto.numbersgenerator.dto.WinningNumbersDto;
 
+import static pl.lotto.numbersgenerator.dto.WinningNumbersDto.*;
+
 class WinningNumbersMapper {
 
     private WinningNumbersMapper(){
@@ -9,7 +11,7 @@ class WinningNumbersMapper {
     }
 
     public static WinningNumbersDto toDto(WinningNumbersDetails winningNumbersDetails) {
-        return WinningNumbersDto.builder()
+        return builder()
                 .numbers(winningNumbersDetails.numbers)
                 .lotteryNumber(winningNumbersDetails.lotteryNumber)
                 .generatedTime(winningNumbersDetails.generatedTime)
