@@ -3,7 +3,6 @@ package pl.lotto.drawdategenerator;
 import lombok.AllArgsConstructor;
 import pl.lotto.drawdategenerator.dto.DrawDateDto;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @AllArgsConstructor
