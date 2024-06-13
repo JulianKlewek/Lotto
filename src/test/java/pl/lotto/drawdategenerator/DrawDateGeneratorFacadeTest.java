@@ -1,27 +1,20 @@
-package pl.lotto.numberreceiver.drawdategenerator;
+package pl.lotto.drawdategenerator;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import pl.lotto.drawdategenerator.DrawDateGeneratorConfig;
-import pl.lotto.drawdategenerator.DrawDateGeneratorFacade;
 import pl.lotto.drawdategenerator.dto.DrawDateDto;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
+import java.time.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class DrawDateGeneratorFacadeTest implements DrawDateTestsConstants {
 
-
     @ParameterizedTest
     @MethodSource("VALID_NEXT_DRAW_DATES")
-    public void should_return_friday_eight_pm(LocalDateTime ticketCreatedAt, LocalDateTime expectedDrawDate) {
+    void should_return_friday_eight_pm(ZonedDateTime ticketCreatedAt, ZonedDateTime expectedDrawDate) {
         //given
-        Clock clock = Clock.fixed(ticketCreatedAt.toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
+        Clock clock = Clock.fixed(ticketCreatedAt.toInstant(),ticketCreatedAt.getZone());
         DrawDateGeneratorFacade drawDateGeneratorFacade = new DrawDateGeneratorConfig().drawDateGeneratorFacadeForTest(clock);
         //when
         DrawDateDto drawDateDto = drawDateGeneratorFacade.getNextDrawDate(ticketCreatedAt);

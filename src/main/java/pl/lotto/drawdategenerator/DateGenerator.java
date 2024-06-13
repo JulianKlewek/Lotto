@@ -2,11 +2,9 @@ package pl.lotto.drawdategenerator;
 
 import lombok.AllArgsConstructor;
 
-import java.time.Clock;
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.time.temporal.TemporalAdjusters;
+import java.time.*;
 
+import static java.time.temporal.TemporalAdjusters.*;
 import static java.time.temporal.TemporalAdjusters.nextOrSame;
 
 @AllArgsConstructor
@@ -18,10 +16,13 @@ class DateGenerator {
 
     private final Clock clock;
 
-    public LocalDateTime generateDrawDate(LocalDateTime ticketCreatedAt) {
-        LocalDateTime now = LocalDateTime.now(clock);
-        if (isFriday(now) && isEightPm(now)) {
-            return now.with(TemporalAdjusters.next(DayOfWeek.FRIDAY))
+    public ZonedDateTime generateDrawDate(ZonedDateTime ticketCreatedAt) {
+//        Instant time = Instant.now(clock);
+//        LocalDateTime currentLocalTime = LocalDateTime.now(clock).atOffset(ZoneOffset.UTC).toLocalDateTime();
+        ZonedDateTime now = ZonedDateTime.now(clock);
+
+        if (isFriday(now) && isHourToDraw(now)) {
+            return now.with(next(DayOfWeek.FRIDAY))
                     .withHour(LOTTERY_HOUR)
                     .withMinute(LOTTERY_MINUTES);
         }
@@ -30,11 +31,11 @@ class DateGenerator {
                 .withMinute(LOTTERY_MINUTES);
     }
 
-    private boolean isEightPm(LocalDateTime ticketCreatedTime) {
-        return ticketCreatedTime.getHour() - HOUR_OFFSET == LOTTERY_HOUR;
+    private boolean isHourToDraw(ZonedDateTime ticketCreatedTime) {
+        return ticketCreatedTime.getHour() + HOUR_OFFSET == LOTTERY_HOUR;
     }
 
-    private boolean isFriday(LocalDateTime ticketCreatedTime) {
+    private boolean isFriday(ZonedDateTime ticketCreatedTime) {
         return ticketCreatedTime.getDayOfWeek().equals(DayOfWeek.FRIDAY);
     }
 

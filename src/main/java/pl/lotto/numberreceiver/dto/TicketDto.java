@@ -3,6 +3,7 @@ package pl.lotto.numberreceiver.dto;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -10,7 +11,7 @@ import java.util.Set;
 public record TicketDto(
         String hash,
         Set<Integer> numbers,
-        LocalDateTime drawDate,
+        ZonedDateTime drawDate,
         String message
         ) {
 }

@@ -8,6 +8,8 @@ import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,7 +21,8 @@ class NumberReceiverFacadeTest extends NumberReceiverTestConfig {
     void should_return_success_when_user_provided_six_numbers_in_correct_range() {
         //given
         DrawDateGeneratorFacade drawDateGeneratorFacade = Mockito.mock(DrawDateGeneratorFacade.class);
-        LocalDateTime drawDate = LocalDateTime.of(2024, Month.JUNE, 14, 20, 0);
+        LocalDateTime localDateTime = LocalDateTime.of(2024, Month.JUNE, 12, 20, 0);
+        ZonedDateTime drawDate = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
         Mockito.when(drawDateGeneratorFacade.getNextDrawDate(any())).thenReturn(DrawDateDto.builder().drawDate(drawDate).build());
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()
                 .createNumberReceiverFacadeForTests(ticketRepository, drawDateGeneratorFacade, clock);
@@ -35,7 +38,8 @@ class NumberReceiverFacadeTest extends NumberReceiverTestConfig {
     void should_return_failure_when_user_provided_less_than_six_numbers_in_correct_range() {
         //given
         DrawDateGeneratorFacade drawDateGeneratorFacade = Mockito.mock(DrawDateGeneratorFacade.class);
-        LocalDateTime drawDate = LocalDateTime.of(2024, Month.JUNE, 12, 20, 0);
+        LocalDateTime localDateTime = LocalDateTime.of(2024, Month.JUNE, 12, 20, 0);
+        ZonedDateTime drawDate = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
         Mockito.when(drawDateGeneratorFacade.getNextDrawDate(any())).thenReturn(DrawDateDto.builder().drawDate(drawDate).build());
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()
                 .createNumberReceiverFacadeForTests(ticketRepository, drawDateGeneratorFacade, clock);
@@ -51,7 +55,8 @@ class NumberReceiverFacadeTest extends NumberReceiverTestConfig {
     void should_return_failure_when_user_provided_more_than_six_numbers_in_correct_range() {
         //given
         DrawDateGeneratorFacade drawDateGeneratorFacade = Mockito.mock(DrawDateGeneratorFacade.class);
-        LocalDateTime drawDate = LocalDateTime.of(2024, Month.JUNE, 12, 20, 0);
+        LocalDateTime localDateTime = LocalDateTime.of(2024, Month.JUNE, 12, 20, 0);
+        ZonedDateTime drawDate = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
         Mockito.when(drawDateGeneratorFacade.getNextDrawDate(any())).thenReturn(DrawDateDto.builder().drawDate(drawDate).build());
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()
                 .createNumberReceiverFacadeForTests(ticketRepository, drawDateGeneratorFacade, clock);
@@ -67,7 +72,8 @@ class NumberReceiverFacadeTest extends NumberReceiverTestConfig {
     void should_return_failure_when_user_gave_at_least_one_number_out_of_range() {
         //given
         DrawDateGeneratorFacade drawDateGeneratorFacade = Mockito.mock(DrawDateGeneratorFacade.class);
-        LocalDateTime drawDate = LocalDateTime.of(2024, Month.JUNE, 12, 20, 0);
+        LocalDateTime localDateTime = LocalDateTime.of(2024, Month.JUNE, 12, 20, 0);
+        ZonedDateTime drawDate = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
         Mockito.when(drawDateGeneratorFacade.getNextDrawDate(any())).thenReturn(DrawDateDto.builder().drawDate(drawDate).build());
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()
                 .createNumberReceiverFacadeForTests(ticketRepository, drawDateGeneratorFacade, clock);

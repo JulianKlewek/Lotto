@@ -6,7 +6,7 @@ import pl.lotto.drawdategenerator.dto.DrawDateDto;
 import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Set;
 
 import static pl.lotto.numberreceiver.TicketMapper.toDto;
@@ -30,7 +30,7 @@ class NumberReceiverFacadeImpl implements NumberReceiverFacade {
                     null);
         }
         String hash = hashGenerator.getHash();
-        DrawDateDto drawDateDto = drawDateGenerator.getNextDrawDate(LocalDateTime.now(clock));
+        DrawDateDto drawDateDto = drawDateGenerator.getNextDrawDate(ZonedDateTime.now(clock));
         Ticket ticket = new Ticket(hash, numbersFromUser, drawDateDto.drawDate());
         ticketRepository.save(ticket);
         return new NumberReceiverResultDto(
