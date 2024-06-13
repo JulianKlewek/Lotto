@@ -1,6 +1,10 @@
 package pl.lotto.numberreceiver.dto;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 public record NumberReceiverResultDto(
-        String message,
-        Boolean error) {
+        String status,
+        List<String> errorsList,
+        TicketDto ticket) {
 }
