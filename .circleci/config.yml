@@ -12,12 +12,12 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Print Java version
-          command: |
-            java --version
+            name: Print Java version
+            command: |
+              java --version
       - run: 
-          name: Install dependencies
-          command: mvn clean install
+            name: Install dependencies
+            command: mvn clean install
       - run: 
-          name: Run tests
-          command: mvn test
+            name: Run tests
+            command: mvn test
