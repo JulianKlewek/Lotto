@@ -11,13 +11,12 @@ import static java.time.temporal.TemporalAdjusters.nextOrSame;
 class DateGenerator {
 
     private static final int LOTTERY_HOUR = 20;
-    private static final int HOUR_OFFSET = 1;
     private static final int LOTTERY_MINUTES = 0;
 
     private final Clock clock;
 
     public ZonedDateTime generateDrawDate(ZonedDateTime ticketCreatedAt) {
-        if (isFriday(ticketCreatedAt) && isHourToDraw(ticketCreatedAt)) {
+        if (isFriday(ticketCreatedAt) && isLessThanHourBeforeDraw(ticketCreatedAt)) {
             return ticketCreatedAt.with(next(DayOfWeek.FRIDAY))
                     .withHour(LOTTERY_HOUR)
                     .withMinute(LOTTERY_MINUTES);
@@ -27,8 +26,8 @@ class DateGenerator {
                 .withMinute(LOTTERY_MINUTES);
     }
 
-    private boolean isHourToDraw(ZonedDateTime ticketCreatedTime) {
-        return ticketCreatedTime.getHour() + HOUR_OFFSET == LOTTERY_HOUR;
+    private boolean isLessThanHourBeforeDraw(ZonedDateTime ticketCreatedTime) {
+        return LOTTERY_HOUR - ticketCreatedTime.getHour() == 1;
     }
 
     private boolean isFriday(ZonedDateTime ticketCreatedTime) {
