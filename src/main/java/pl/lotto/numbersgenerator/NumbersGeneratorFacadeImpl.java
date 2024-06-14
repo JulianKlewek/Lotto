@@ -4,12 +4,10 @@ import lombok.AllArgsConstructor;
 import pl.lotto.numbersgenerator.dto.WinningNumbersDto;
 
 import java.time.Clock;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.Set;
 
-import static java.time.ZonedDateTime.*;
-import static pl.lotto.numbersgenerator.WinningNumbersDetails.*;
-import static pl.lotto.numbersgenerator.WinningNumbersMapper.*;
+import static pl.lotto.numbersgenerator.WinningNumbersMapper.toDto;
 
 @AllArgsConstructor
 class NumbersGeneratorFacadeImpl implements NumbersGeneratorFacade {
@@ -22,13 +20,13 @@ class NumbersGeneratorFacadeImpl implements NumbersGeneratorFacade {
     public WinningNumbersDto generateWinningNumbers() {
         Set<Integer> winningNumbers = winningNumbersGenerator.generateSixNumbersInGivenRange();
         Long drawNumber = winningNumbersGenerator.generateDrawNumber(numbersRepository);
-        ZonedDateTime createdAt = now(clock);
-        WinningNumbersDetails winningNumberDetails = builder()
+        Instant createdAt = Instant.now(clock);
+        WinningNumbersDetails winningNumberDetails = WinningNumbersDetails.builder()
                 .numbers(winningNumbers)
                 .lotteryNumber(drawNumber)
                 .generatedTime(createdAt)
                 .build();
-        numbersRepository.save(winningNumberDetails);
-        return toDto(winningNumberDetails);
+        WinningNumbersDetails saved = numbersRepository.save(winningNumberDetails);
+        return toDto(saved);
     }
 }

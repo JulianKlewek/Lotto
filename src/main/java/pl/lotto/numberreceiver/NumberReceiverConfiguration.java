@@ -24,7 +24,7 @@ public class NumberReceiverConfiguration {
     }
 
     @Bean("numberReceiverFacadeProd")
-    public NumberReceiverFacade createNumberReceiverFacadeForProduction(TicketRepository ticketRepository,
+    public NumberReceiverFacade createNumberReceiverFacade(TicketRepository ticketRepository,
                                                                         DrawDateGeneratorFacade drawDateGenerator,
                                                                         @Qualifier("numberReceiverClock") Clock clock) {
         NumberReceiverValidator numberReceiverValidator = new NumberReceiverValidator();

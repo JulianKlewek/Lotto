@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -20,17 +20,17 @@ public class WinningNumbersRepositoryTestImpl implements WinningNumbersRepositor
 
     @Override
     public WinningNumbersDetails save(WinningNumbersDetails winningNumbersDetails) {
-        return  winningNumbersMap.put(winningNumbersDetails.lotteryNumber, winningNumbersDetails);
+        winningNumbersMap.put(winningNumbersDetails.lotteryNumber, winningNumbersDetails);
+        return winningNumbersMap.get(winningNumbersDetails.lotteryNumber);
     }
 
     @Override
     public Long findFirstByLotteryNumberOrderByLotteryNumberDesc() {
-        winningNumbersMap.put(100L, new WinningNumbersDetails(new HashSet<Integer>(), ZonedDateTime.now(), 100L));
+        winningNumbersMap.put(100L, new WinningNumbersDetails(new HashSet<Integer>(), Instant.now(), 100L));
         return winningNumbersMap.keySet().stream()
                 .sorted()
                 .findFirst()
                 .orElse(0L);
-//        return null;
     }
 
     @Override

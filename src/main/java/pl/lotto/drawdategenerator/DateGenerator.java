@@ -33,7 +33,6 @@ class DateGenerator {
                 .withSecond(LOTTERY_SECONDS)
                 .withNano(LOTTERY_NANO)
                 .toInstant();
-
     }
 
     private boolean isLessThanHourBeforeDraw(Instant ticketCreatedTime) {

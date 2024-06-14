@@ -23,7 +23,6 @@ class NumberReceiverFacadeTest extends NumberReceiverTestConfig {
         List<Integer> correctNumbersFromUser = List.of(1, 2, 3, 4, 5, 6);
         DrawDateGeneratorFacade drawDateGeneratorFacade = mock(DrawDateGeneratorFacade.class);
         LocalDateTime localDateTime = of(2024, Month.JUNE, 12, 20, 0);
-//        ZonedDateTime drawDate = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
         Instant instant = localDateTime.toInstant(ZoneOffset.UTC);
         when(drawDateGeneratorFacade.getNextDrawDate(any())).thenReturn(DrawDateDto.builder().drawDate(instant).build());
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()

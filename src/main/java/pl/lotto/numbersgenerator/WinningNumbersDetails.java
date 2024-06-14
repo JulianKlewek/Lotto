@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.Set;
 
 @Document("WinningNumbers")
@@ -12,6 +12,6 @@ import java.util.Set;
 @AllArgsConstructor
 class WinningNumbersDetails {
     Set<Integer> numbers;
-    ZonedDateTime generatedTime;
+    Instant generatedTime;
     Long lotteryNumber;
 }
