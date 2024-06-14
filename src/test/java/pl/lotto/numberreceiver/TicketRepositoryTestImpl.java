@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
-import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -29,7 +29,7 @@ public class TicketRepositoryTestImpl implements TicketRepository {
     }
 
     @Override
-    public List<Ticket> findAllByDrawDate(Instant drawDate) {
+    public List<Ticket> findAllByDrawDate(ZonedDateTime drawDate) {
         return database.values()
                 .stream()
                 .filter(e -> e.drawDate.equals(drawDate))

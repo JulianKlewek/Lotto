@@ -22,7 +22,6 @@ class NumberReceiverFacadeImpl implements NumberReceiverFacade {
     private final TicketRepository ticketRepository;
     private final DrawDateGeneratorFacade drawDateGenerator;
     private final Clock clock;
-    private final ZoneId ZONE_ID = ZoneId.of("Europe/Warsaw");
 
     @Override
     public NumberReceiverResultDto inputNumbers(List<Integer> numbersFromUser) {
@@ -35,7 +34,7 @@ class NumberReceiverFacadeImpl implements NumberReceiverFacade {
         }
         String hash = hashGenerator.getHash();
         DrawDateDto drawDateDto = drawDateGenerator.getNextDrawDate(ZonedDateTime.now(clock));
-        Ticket ticket = new Ticket(hash, new HashSet<>(numbersFromUser), drawDateDto.drawDate().toInstant());
+        Ticket ticket = new Ticket(hash, new HashSet<>(numbersFromUser), drawDateDto.drawDate());
         ticketRepository.save(ticket);
         log.info("Ticket {} registered", hash);
         return new NumberReceiverResultDto(
@@ -45,9 +44,8 @@ class NumberReceiverFacadeImpl implements NumberReceiverFacade {
     }
 
     @Override
-    public List<TicketDto> usersNumbers(LocalDateTime drawDate) {
-        Instant givenDrawDate = drawDate.atZone(ZONE_ID).toInstant();
-        List<Ticket> ticketsForDate = ticketRepository.findAllByDrawDate(givenDrawDate);
+    public List<TicketDto> usersNumbers(ZonedDateTime drawDate) {
+        List<Ticket> ticketsForDate = ticketRepository.findAllByDrawDate(drawDate);
         log.info("Returned {} tickets for date: {}", ticketsForDate.size(), drawDate);
         return toDtoList(ticketsForDate);
     }

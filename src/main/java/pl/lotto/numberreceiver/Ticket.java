@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -14,5 +14,5 @@ class Ticket {
 
     String hash;
     Set<Integer> userNumbers;
-    Instant drawDate;
+    ZonedDateTime drawDate;
 }

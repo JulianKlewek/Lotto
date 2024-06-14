@@ -100,7 +100,7 @@ class NumberReceiverFacadeTest extends NumberReceiverTestConfig {
         numberReceiverFacade.inputNumbers(List.of(1,2,3,4,5,6));
         numberReceiverFacade.inputNumbers(List.of(3,15,20,24,35,46));
         //when
-        List<TicketDto> ticketsForGivenDate = numberReceiverFacade.usersNumbers(localDateTime);
+        List<TicketDto> ticketsForGivenDate = numberReceiverFacade.usersNumbers(drawDate);
         //then
         assertThat(ticketsForGivenDate).hasSizeGreaterThan(0);
     }
@@ -115,7 +115,7 @@ class NumberReceiverFacadeTest extends NumberReceiverTestConfig {
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()
                 .createNumberReceiverFacadeForTests(ticketRepository, drawDateGeneratorFacade, clock);
         //when
-        List<TicketDto> ticketsForGivenDate = numberReceiverFacade.usersNumbers(localDateTime);
+        List<TicketDto> ticketsForGivenDate = numberReceiverFacade.usersNumbers(drawDate);
         //then
         assertThat(ticketsForGivenDate).isEmpty();
     }
