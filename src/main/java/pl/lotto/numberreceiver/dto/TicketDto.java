@@ -2,14 +2,14 @@ package pl.lotto.numberreceiver.dto;
 
 import lombok.Builder;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.Set;
 
 @Builder
 public record TicketDto(
         String hash,
         Set<Integer> numbers,
-        ZonedDateTime drawDate,
+        Instant drawDate,
         String message
 ) {
 }

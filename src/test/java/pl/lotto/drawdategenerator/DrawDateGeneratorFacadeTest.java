@@ -18,8 +18,8 @@ class DrawDateGeneratorFacadeTest implements DrawDateTestsConstants {
         Clock clock = fixed(ticketCreatedAt.toInstant(),ticketCreatedAt.getZone());
         DrawDateGeneratorFacade drawDateGeneratorFacade = new DrawDateGeneratorConfig().drawDateGeneratorFacadeForTest(clock);
         //when
-        DrawDateDto drawDateDto = drawDateGeneratorFacade.getNextDrawDate(ticketCreatedAt);
+        DrawDateDto drawDateDto = drawDateGeneratorFacade.getNextDrawDate(ticketCreatedAt.toInstant());
         //then
-        assertThat(drawDateDto.drawDate()).isEqualTo(expectedDrawDate);
+        assertThat(drawDateDto.drawDate()).isEqualTo(expectedDrawDate.toInstant());
     }
 }

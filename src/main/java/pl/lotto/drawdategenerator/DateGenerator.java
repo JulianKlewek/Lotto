@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import java.time.*;
 
 import static java.time.temporal.TemporalAdjusters.*;
-import static java.time.temporal.TemporalAdjusters.nextOrSame;
 
 @AllArgsConstructor
 class DateGenerator {
@@ -17,27 +16,37 @@ class DateGenerator {
 
     private final Clock clock;
 
-    public ZonedDateTime generateDrawDate(ZonedDateTime ticketCreatedAt) {
+    public Instant generateDrawDate(Instant ticketCreatedAt) {
         if (isFriday(ticketCreatedAt) && isLessThanHourBeforeDraw(ticketCreatedAt)) {
-            return ticketCreatedAt.with(next(DayOfWeek.FRIDAY))
+            return ticketCreatedAt.atZone(ZoneOffset.UTC)
+                    .with(next(DayOfWeek.FRIDAY))
                     .withHour(LOTTERY_HOUR)
                     .withMinute(LOTTERY_MINUTES)
                     .withSecond(LOTTERY_SECONDS)
-                    .withNano(LOTTERY_NANO);
+                    .withNano(LOTTERY_NANO)
+                    .toInstant();
         }
-        return ticketCreatedAt.with(nextOrSame(DayOfWeek.FRIDAY))
+        return ticketCreatedAt.atZone(ZoneOffset.UTC)
+                .with(nextOrSame(DayOfWeek.FRIDAY))
                 .withHour(LOTTERY_HOUR)
                 .withMinute(LOTTERY_MINUTES)
                 .withSecond(LOTTERY_SECONDS)
-                .withNano(LOTTERY_NANO);
+                .withNano(LOTTERY_NANO)
+                .toInstant();
+
     }
 
-    private boolean isLessThanHourBeforeDraw(ZonedDateTime ticketCreatedTime) {
-        return LOTTERY_HOUR - ticketCreatedTime.getHour() == 1;
+    private boolean isLessThanHourBeforeDraw(Instant ticketCreatedTime) {
+        return LOTTERY_HOUR - ticketCreatedTime
+                .atZone(ZoneOffset.UTC)
+                .getHour() == 1;
     }
 
-    private boolean isFriday(ZonedDateTime ticketCreatedTime) {
-        return ticketCreatedTime.getDayOfWeek().equals(DayOfWeek.FRIDAY);
+    private boolean isFriday(Instant ticketCreatedTime) {
+        return ticketCreatedTime
+                .atZone(ZoneOffset.UTC)
+                .getDayOfWeek()
+                .equals(DayOfWeek.FRIDAY);
     }
 
 }

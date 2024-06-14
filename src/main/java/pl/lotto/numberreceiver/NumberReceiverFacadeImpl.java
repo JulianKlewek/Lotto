@@ -33,7 +33,7 @@ class NumberReceiverFacadeImpl implements NumberReceiverFacade {
                     null);
         }
         String hash = hashGenerator.getHash();
-        DrawDateDto drawDateDto = drawDateGenerator.getNextDrawDate(ZonedDateTime.now(clock));
+        DrawDateDto drawDateDto = drawDateGenerator.getNextDrawDate(Instant.now(clock));
         Ticket ticket = new Ticket(hash, new HashSet<>(numbersFromUser), drawDateDto.drawDate());
         ticketRepository.save(ticket);
         log.info("Ticket {} registered", hash);
@@ -44,7 +44,7 @@ class NumberReceiverFacadeImpl implements NumberReceiverFacade {
     }
 
     @Override
-    public List<TicketDto> usersNumbers(ZonedDateTime drawDate) {
+    public List<TicketDto> usersNumbers(Instant drawDate) {
         List<Ticket> ticketsForDate = ticketRepository.findAllByDrawDate(drawDate);
         log.info("Returned {} tickets for date: {}", ticketsForDate.size(), drawDate);
         return toDtoList(ticketsForDate);

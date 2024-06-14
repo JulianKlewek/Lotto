@@ -4,6 +4,8 @@ spring:
       host: localhost
       port: 27017
       database: lotto
+      username: admin
+      password: admin
 #      uri: mongodb://admin:admin@localhost:27017/lotto
 #  jpa:
 #    properties:

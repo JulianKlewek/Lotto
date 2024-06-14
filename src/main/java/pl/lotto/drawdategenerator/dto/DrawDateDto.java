@@ -2,9 +2,8 @@ package pl.lotto.drawdategenerator.dto;
 
 import lombok.Builder;
 
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 @Builder
-public record DrawDateDto(ZonedDateTime drawDate) {
+public record DrawDateDto(Instant drawDate) {
 }
