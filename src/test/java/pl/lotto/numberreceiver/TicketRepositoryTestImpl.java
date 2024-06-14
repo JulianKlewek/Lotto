@@ -1,13 +1,13 @@
 package pl.lotto.numberreceiver;
 
+import org.junit.jupiter.api.AfterEach;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
-import pl.lotto.numberreceiver.Ticket;
-import pl.lotto.numberreceiver.TicketRepository;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -18,9 +18,30 @@ public class TicketRepositoryTestImpl implements TicketRepository {
 
     Map<String, Ticket> database = new ConcurrentHashMap<>();
 
+    @AfterEach
+    public void afterEach() {
+        database.clear();
+    }
+
     @Override
     public Ticket save(Ticket ticket) {
         return database.put(ticket.hash, ticket);
+    }
+
+    @Override
+    public List<Ticket> findAllByDrawDate(Instant drawDate) {
+        return database.values()
+                .stream()
+                .filter(e -> e.drawDate.equals(drawDate))
+                .toList();
+    }
+
+    @Override
+    public List<Ticket> findAll() {
+        return database.values()
+                .stream()
+                .toList();
+
     }
 
     @Override
@@ -81,11 +102,6 @@ public class TicketRepositoryTestImpl implements TicketRepository {
     @Override
     public boolean existsById(String string) {
         return false;
-    }
-
-    @Override
-    public List<Ticket> findAll() {
-        return null;
     }
 
     @Override

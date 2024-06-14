@@ -11,7 +11,6 @@ import pl.lotto.numberreceiver.dto.NumberReceiverRequestDto;
 import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
 
 import java.util.Objects;
-import java.util.Set;
 
 import static pl.lotto.numberreceiver.NumberValidationResult.SUCCESS_MESSAGE;
 
@@ -23,7 +22,7 @@ public class NumberReceiverRestController {
 
     @PostMapping("/inputNumbers")
     public ResponseEntity<NumberReceiverResultDto> inputNumbers(@RequestBody NumberReceiverRequestDto request) {
-        NumberReceiverResultDto result = numberReceiverFacade.inputNumbers(Set.copyOf(request.inputNumbers()));
+        NumberReceiverResultDto result = numberReceiverFacade.inputNumbers(request.inputNumbers());
         HttpStatus httpStatus = Objects.equals(result.status(), SUCCESS_MESSAGE)
                 ? HttpStatus.OK
                 : HttpStatus.BAD_REQUEST;

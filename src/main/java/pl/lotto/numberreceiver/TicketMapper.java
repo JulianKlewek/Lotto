@@ -2,6 +2,8 @@ package pl.lotto.numberreceiver;
 
 import pl.lotto.numberreceiver.dto.TicketDto;
 
+import java.util.List;
+
 import static pl.lotto.numberreceiver.dto.TicketDto.*;
 
 class TicketMapper {
@@ -16,5 +18,11 @@ class TicketMapper {
                 .numbers(ticket.userNumbers)
                 .drawDate(ticket.drawDate)
                 .build();
+    }
+
+    public static List<TicketDto> toDtoList(List<Ticket> tickets){
+        return tickets.stream()
+                .map(TicketMapper::toDto)
+                .toList();
     }
 }
