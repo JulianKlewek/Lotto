@@ -10,12 +10,15 @@ public class ResultCheckerFacadeConfiguration {
 
     @Bean
     public ResultCheckerFacadeImpl resultCheckerFacade(NumberReceiverFacade numberReceiverFacade,
-                                                       NumbersGeneratorFacade numbersGeneratorFacade) {
-        return new ResultCheckerFacadeImpl(numberReceiverFacade, numbersGeneratorFacade);
+                                                       NumbersGeneratorFacade numbersGeneratorFacade,
+                                                       WinningTicketRepository ticketRepository) {
+        NumberChecker numberChecker = new NumberChecker();
+        return new ResultCheckerFacadeImpl(numberReceiverFacade, numbersGeneratorFacade, numberChecker, ticketRepository);
     }
 
     public ResultCheckerFacadeImpl resultCheckerFacadeForTests(NumberReceiverFacade numberReceiverFacade,
-                                                               NumbersGeneratorFacade numbersGeneratorFacade) {
-        return new ResultCheckerFacadeImpl(numberReceiverFacade, numbersGeneratorFacade);
+                                                               NumbersGeneratorFacade numbersGeneratorFacade,
+                                                               WinningTicketRepository ticketRepository) {
+        return resultCheckerFacade(numberReceiverFacade, numbersGeneratorFacade, ticketRepository);
     }
 }
