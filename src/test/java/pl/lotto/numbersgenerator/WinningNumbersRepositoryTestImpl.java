@@ -7,33 +7,38 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-public class WinningNumbersRepositoryTestImpl implements WinningNumbersRepository{
+public class WinningNumbersRepositoryTestImpl implements WinningNumbersRepository {
 
-    Map<Long, WinningNumbersDetails> winningNumbersMap = new ConcurrentHashMap<>();
+    Map<Long, WinningNumbersDetails> database = new ConcurrentHashMap<>();
 
     @Override
     public WinningNumbersDetails save(WinningNumbersDetails winningNumbersDetails) {
-        winningNumbersMap.put(winningNumbersDetails.lotteryNumber, winningNumbersDetails);
-        return winningNumbersMap.get(winningNumbersDetails.lotteryNumber);
+        database.put(winningNumbersDetails.lotteryNumber, winningNumbersDetails);
+        return database.get(winningNumbersDetails.lotteryNumber);
     }
 
     @Override
     public Long findFirstByLotteryNumberOrderByLotteryNumberDesc() {
-        winningNumbersMap.put(100L, new WinningNumbersDetails(new HashSet<Integer>(), Instant.now(), 100L));
-        return winningNumbersMap.keySet().stream()
+        return database.keySet().stream()
                 .sorted()
                 .findFirst()
                 .orElse(0L);
     }
 
     @Override
+    public Optional<WinningNumbersDetails> findByGeneratedTime(Instant generatedTime) {
+        Optional<WinningNumbersDetails> winningNumbers = database.values().stream()
+                .filter(e -> e.drawDate.equals(generatedTime))
+                .findFirst();
+        return winningNumbers;
+    }
+
+    @Override
+
     public <S extends WinningNumbersDetails> S insert(S entity) {
         return null;
     }

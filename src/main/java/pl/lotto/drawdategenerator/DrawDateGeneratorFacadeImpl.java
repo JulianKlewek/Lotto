@@ -8,7 +8,7 @@ import java.time.Instant;
 @AllArgsConstructor
 class DrawDateGeneratorFacadeImpl implements DrawDateGeneratorFacade {
 
-    DateGenerator dateGenerator;
+    private final DateGenerator dateGenerator;
 
     @Override
     public DrawDateDto getNextDrawDate(Instant ticketCreatedAt) {

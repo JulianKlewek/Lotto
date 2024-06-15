@@ -6,7 +6,7 @@ import static pl.lotto.numbersgenerator.dto.WinningNumbersDto.*;
 
 class WinningNumbersMapper {
 
-    private WinningNumbersMapper(){
+    private WinningNumbersMapper() {
         throw new IllegalStateException("Utility class");
     }
 
@@ -14,7 +14,7 @@ class WinningNumbersMapper {
         return builder()
                 .numbers(winningNumbersDetails.numbers)
                 .lotteryNumber(winningNumbersDetails.lotteryNumber)
-                .generatedTime(winningNumbersDetails.generatedTime)
+                .generatedTime(winningNumbersDetails.drawDate)
                 .build();
     }
 

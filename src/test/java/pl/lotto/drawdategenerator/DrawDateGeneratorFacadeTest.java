@@ -4,22 +4,36 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import pl.lotto.drawdategenerator.dto.DrawDateDto;
 
-import java.time.*;
+import java.time.Instant;
+import java.time.ZonedDateTime;
 
-import static java.time.Clock.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class DrawDateGeneratorFacadeTest implements DrawDateTestsConstants {
+class DrawDateGeneratorFacadeTest extends DrawDateGeneratorFacadeConfig {
 
     @ParameterizedTest
-    @MethodSource("VALID_NEXT_DRAW_DATES")
-    void should_return_friday_eight_pm(ZonedDateTime ticketCreatedAt, ZonedDateTime expectedDrawDate) {
+    @MethodSource("VALID_THIS_WEEK_DRAW_DATES")
+    void should_return_this_week_friday_eight_pm_utc_time(ZonedDateTime ticketCreatedAt, ZonedDateTime expectedDrawDate) {
         //given
-        Clock clock = fixed(ticketCreatedAt.toInstant(),ticketCreatedAt.getZone());
-        DrawDateGeneratorFacade drawDateGeneratorFacade = new DrawDateGeneratorConfig().drawDateGeneratorFacadeForTest(clock);
+        DrawDateGeneratorFacade drawDateGeneratorFacade = new DrawDateGeneratorConfiguration().drawDateGeneratorFacadeForTest();
         //when
         DrawDateDto drawDateDto = drawDateGeneratorFacade.getNextDrawDate(ticketCreatedAt.toInstant());
         //then
-        assertThat(drawDateDto.drawDate()).isEqualTo(expectedDrawDate.toInstant());
+        Instant drawDate = drawDateDto.drawDate();
+        assertThat(drawDate)
+                .isEqualTo(expectedDrawDate.toInstant());
+    }
+
+    @ParameterizedTest
+    @MethodSource("VALID_NEXT_WEEK_DRAW_DATES")
+    void should_return_next_week_friday_eight_pm_utc_time(ZonedDateTime ticketCreatedAt, ZonedDateTime expectedDrawDate) {
+        //given
+        DrawDateGeneratorFacade drawDateGeneratorFacade = new DrawDateGeneratorConfiguration().drawDateGeneratorFacadeForTest();
+        //when
+        DrawDateDto drawDateDto = drawDateGeneratorFacade.getNextDrawDate(ticketCreatedAt.toInstant());
+        //then
+        Instant drawDate = drawDateDto.drawDate();
+        assertThat(drawDate)
+                .isEqualTo(expectedDrawDate.toInstant());
     }
 }

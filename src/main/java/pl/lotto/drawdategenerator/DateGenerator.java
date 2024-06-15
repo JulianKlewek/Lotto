@@ -14,8 +14,6 @@ class DateGenerator {
     private static final int LOTTERY_SECONDS = 0;
     private static final int LOTTERY_NANO = 0;
 
-    private final Clock clock;
-
     public Instant generateDrawDate(Instant ticketCreatedAt) {
         if (isFriday(ticketCreatedAt) && isLessThanHourBeforeDraw(ticketCreatedAt)) {
             return ticketCreatedAt.atZone(ZoneOffset.UTC)

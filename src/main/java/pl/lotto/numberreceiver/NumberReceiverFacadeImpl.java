@@ -6,6 +6,7 @@ import pl.lotto.drawdategenerator.DrawDateGeneratorFacade;
 import pl.lotto.drawdategenerator.dto.DrawDateDto;
 import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
 import pl.lotto.numberreceiver.dto.TicketDto;
+import pl.lotto.numberreceiver.dto.UserTicketsDto;
 
 import java.time.*;
 import java.util.*;
@@ -44,9 +45,12 @@ class NumberReceiverFacadeImpl implements NumberReceiverFacade {
     }
 
     @Override
-    public List<TicketDto> usersNumbers(Instant drawDate) {
+    public UserTicketsDto usersNumbers(Instant drawDate) {
         List<Ticket> ticketsForDate = ticketRepository.findAllByDrawDate(drawDate);
         log.info("Returned {} tickets for date: {}", ticketsForDate.size(), drawDate);
-        return toDtoList(ticketsForDate);
+        List<TicketDto> ticketsDto = toDtoList(ticketsForDate);
+        return UserTicketsDto.builder()
+                .tickets(ticketsDto)
+                .build();
     }
 }
