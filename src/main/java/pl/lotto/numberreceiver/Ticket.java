@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
-import java.util.Set;
+import java.util.List;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -13,6 +13,6 @@ import java.util.Set;
 class Ticket {
 
     String hash;
-    Set<Integer> userNumbers;
+    List<Integer> userNumbers;
     Instant drawDate;
 }

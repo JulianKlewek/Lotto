@@ -1,4 +1,4 @@
-package pl.lotto.numbersgenerator;
+package pl.lotto.resultchecker;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,12 +8,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.Instant;
 import java.util.List;
 
-@Document("WinningNumbers")
+@Document("WinningTicket")
 @Builder
 @AllArgsConstructor
 @ToString
-class WinningNumbersDetails {
+class WinningTicket {
+    String hash;
     List<Integer> numbers;
     Instant drawDate;
     Long lotteryNumber;
+    int amountOfCorrectNumbers;
+    boolean collectedReward;
 }

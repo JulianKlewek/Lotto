@@ -2,8 +2,8 @@ package pl.lotto.resultchecker;
 
 import pl.lotto.resultchecker.dto.WinningTicketsDto;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 public interface ResultCheckerFacade {
-    WinningTicketsDto getAllWinningTicketsForGivenDrawDate(ZonedDateTime drawDate);
+    WinningTicketsDto getAllWinningTicketsForGivenDrawDate(Instant drawDate);
 }

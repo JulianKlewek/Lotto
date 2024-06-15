@@ -5,11 +5,8 @@ import org.junit.jupiter.api.Test;
 import pl.lotto.numbersgenerator.dto.WinningNumbersDto;
 
 import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -25,7 +22,7 @@ class NumbersGeneratorFacadeTest extends NumbersGeneratorTestConfig {
         //when
         WinningNumbersDto winningNumbersDto = numbersGeneratorFacade.generateWinningNumbers();
         //then
-        Set<Integer> winningNumbersSet = winningNumbersDto.numbers();
+        List<Integer> winningNumbersSet = winningNumbersDto.numbers();
         Long lotteryNumber = winningNumbersDto.lotteryNumber();
         assertAll(
                 () -> assertThat(winningNumbersSet)
@@ -44,21 +41,19 @@ class NumbersGeneratorFacadeTest extends NumbersGeneratorTestConfig {
     void should_return_correct_winning_numbers_for_given_draw_date() {
         //given
         long expectedLotteryNumber = 100L;
-        HashSet<Integer> expectedWinningNumbers = new HashSet<>(Arrays.asList(1, 2, 3, 4, 5, 6));
+        List<Integer> expectedWinningNumbers = Arrays.asList(1, 2, 3, 4, 5, 6);
         NumbersGeneratorFacadeImpl numbersGeneratorFacade = new NumbersGeneratorConfiguration()
                 .createNumbersGeneratorFacadeForTests(numbersRepository, clock);
-        ZonedDateTime drawDate = ZonedDateTime.of(
-                2024, 6, 14, 20, 0, 0, 0, ZoneOffset.UTC);
-        Instant expectedDrawDate = drawDate.toInstant();
+        Instant drawDate = Instant.parse("2024-06-14T20:00:00.00Z");
         numbersGeneratorFacade.generateWinningNumbers();
         //when
         WinningNumbersDto winningNumbers = numbersGeneratorFacade.getWinningNumbersForDate(drawDate);
         //then
-        Instant actualDrawDate = winningNumbers.generatedTime();
+        Instant actualDrawDate = winningNumbers.drawDate();
         Long actualLotteryNumber = winningNumbers.lotteryNumber();
-        Set<Integer> actualWinningNumbers = winningNumbers.numbers();
+        List<Integer> actualWinningNumbers = winningNumbers.numbers();
         assertAll(
-                () -> assertThat(actualDrawDate).isEqualTo(expectedDrawDate),
+                () -> assertThat(actualDrawDate).isEqualTo(drawDate),
                 () -> assertThat(actualLotteryNumber).isEqualTo(expectedLotteryNumber),
                 () -> assertThat(actualWinningNumbers).isEqualTo(expectedWinningNumbers)
         );
@@ -69,9 +64,7 @@ class NumbersGeneratorFacadeTest extends NumbersGeneratorTestConfig {
         //given
         NumbersGeneratorFacadeImpl numbersGeneratorFacade = new NumbersGeneratorConfiguration()
                 .createNumbersGeneratorFacadeForTests(numbersRepository, clock);
-        ZonedDateTime drawDate = ZonedDateTime.of(
-                2024, 6, 15, 20, 0, 0, 0, ZoneOffset.UTC);
-
+        Instant drawDate = Instant.parse("2024-06-15T20:15:30.00Z");
         //when
         //then
         assertThatExceptionOfType(WinningNumbersNotFoundException.class)

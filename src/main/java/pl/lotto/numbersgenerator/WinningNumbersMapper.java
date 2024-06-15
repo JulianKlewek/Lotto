@@ -14,7 +14,7 @@ class WinningNumbersMapper {
         return builder()
                 .numbers(winningNumbersDetails.numbers)
                 .lotteryNumber(winningNumbersDetails.lotteryNumber)
-                .generatedTime(winningNumbersDetails.drawDate)
+                .drawDate(winningNumbersDetails.drawDate)
                 .build();
     }
 
