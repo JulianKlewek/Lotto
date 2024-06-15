@@ -6,14 +6,14 @@ import lombok.ToString;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
-import java.util.Set;
+import java.util.List;
 
 @Document("WinningNumbers")
 @Builder
 @AllArgsConstructor
 @ToString
 class WinningNumbersDetails {
-    Set<Integer> numbers;
+    List<Integer> numbers;
     Instant drawDate;
     Long lotteryNumber;
 }

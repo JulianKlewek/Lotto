@@ -35,7 +35,7 @@ class NumberReceiverFacadeImpl implements NumberReceiverFacade {
         }
         String hash = hashGenerator.getHash();
         DrawDateDto drawDateDto = drawDateGenerator.getNextDrawDate(Instant.now(clock));
-        Ticket ticket = new Ticket(hash, new HashSet<>(numbersFromUser), drawDateDto.drawDate());
+        Ticket ticket = new Ticket(hash, numbersFromUser, drawDateDto.drawDate());
         ticketRepository.save(ticket);
         log.info("Ticket {} registered", hash);
         return new NumberReceiverResultDto(

@@ -5,8 +5,8 @@ import pl.lotto.numbersgenerator.dto.WinningNumbersDto;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Set;
 
 import static pl.lotto.numbersgenerator.WinningNumbersMapper.toDto;
@@ -20,10 +20,11 @@ class NumbersGeneratorFacadeImpl implements NumbersGeneratorFacade {
 
     @Override
     public WinningNumbersDto generateWinningNumbers() {
-        Set<Integer> winningNumbers = winningNumbersGenerator.generateSixNumbersInGivenRange();
+        Set<Integer> winningNumbersSet = winningNumbersGenerator.generateSixNumbersInGivenRange();
         Long drawNumber = winningNumbersGenerator.generateDrawNumber();
         Instant createdAt = Instant.now(clock)
                 .truncatedTo(ChronoUnit.MINUTES);
+        List<Integer> winningNumbers = List.copyOf(winningNumbersSet);
         WinningNumbersDetails winningNumberDetails = WinningNumbersDetails.builder()
                 .numbers(winningNumbers)
                 .lotteryNumber(drawNumber)
@@ -34,9 +35,8 @@ class NumbersGeneratorFacadeImpl implements NumbersGeneratorFacade {
     }
 
     @Override
-    public WinningNumbersDto getWinningNumbersForDate(ZonedDateTime drawDate) {
-        Instant dateInstant = drawDate.toInstant();
-        WinningNumbersDetails winningNumbers = numbersRepository.findByGeneratedTime(dateInstant).orElseThrow(
+    public WinningNumbersDto getWinningNumbersForDate(Instant drawDate) {
+        WinningNumbersDetails winningNumbers = numbersRepository.findByGeneratedTime(drawDate).orElseThrow(
                 () -> new WinningNumbersNotFoundException("Winning numbers not found"));
         return toDto(winningNumbers);
     }
