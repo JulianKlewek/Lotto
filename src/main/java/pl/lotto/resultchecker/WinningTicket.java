@@ -14,7 +14,7 @@ import java.util.List;
 @ToString
 class WinningTicket {
     String hash;
-    List<Integer> numbers;
+    List<Integer> userNumbers;
     Instant drawDate;
     Long lotteryNumber;
     int amountOfCorrectNumbers;

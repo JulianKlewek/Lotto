@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -19,21 +18,11 @@ public class WinnerTicketRepositoryTestImpl implements WinningTicketRepository {
 
     @Override
     public List<WinningTicket> saveAll(List<WinningTicket> winningTickets) {
-        winningTickets.stream()
-                .forEach(ticket -> database.put(ticket.hash, ticket));
+        winningTickets.forEach(
+                ticket -> database.put(ticket.hash, ticket));
         return database.values()
                 .stream()
                 .toList();
-    }
-
-    @Override
-    public Optional<WinningTicket> findByNumbersAndDrawDate(List<Integer> numbers, Instant drawDate) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<WinningTicket> findByNumbersAndLotteryNumber(List<Integer> numbers, Long lotteryNumber) {
-        return Optional.empty();
     }
 
     @Override

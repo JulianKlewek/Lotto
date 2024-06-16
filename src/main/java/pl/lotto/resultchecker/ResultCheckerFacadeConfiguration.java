@@ -13,7 +13,9 @@ public class ResultCheckerFacadeConfiguration {
                                                        NumbersGeneratorFacade numbersGeneratorFacade,
                                                        WinningTicketRepository ticketRepository) {
         NumberChecker numberChecker = new NumberChecker();
-        return new ResultCheckerFacadeImpl(numberReceiverFacade, numbersGeneratorFacade, numberChecker, ticketRepository);
+        CheckerResponseGenerator checkerResponseGenerator = new CheckerResponseGenerator(numberChecker);
+        return new ResultCheckerFacadeImpl(numberReceiverFacade, numbersGeneratorFacade,
+                numberChecker, ticketRepository, checkerResponseGenerator);
     }
 
     public ResultCheckerFacadeImpl resultCheckerFacadeForTests(NumberReceiverFacade numberReceiverFacade,

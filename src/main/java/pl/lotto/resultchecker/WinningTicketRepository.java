@@ -10,7 +10,5 @@ public interface WinningTicketRepository extends MongoRepository<WinningTicket, 
 
     List<WinningTicket> saveAll(List<WinningTicket> winningTickets);
 
-    Optional<WinningTicket> findByNumbersAndDrawDate(List<Integer> numbers, Instant drawDate);
-    Optional<WinningTicket> findByNumbersAndLotteryNumber(List<Integer> numbers, Long lotteryNumber);
     Optional<WinningTicket> findByHash(String hash);
 }

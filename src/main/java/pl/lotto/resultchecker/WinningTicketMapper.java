@@ -13,7 +13,7 @@ public class WinningTicketMapper {
 
     public static WinningTicketDto toDto(WinningTicket winningTicket) {
         return WinningTicketDto.builder()
-                .numbers(winningTicket.numbers)
+                .userNumbers(winningTicket.userNumbers)
                 .hash(winningTicket.hash)
                 .lotteryNumber(winningTicket.lotteryNumber)
                 .amountOfCorrectNumbers(winningTicket.amountOfCorrectNumbers)

@@ -11,6 +11,8 @@ public interface WinningNumbersRepository extends MongoRepository<WinningNumbers
 
     Long findFirstByLotteryNumberOrderByLotteryNumberDesc();
 
-    Optional<WinningNumbersDetails> findByGeneratedTime(Instant generatedTime);
+    Optional<WinningNumbersDetails> findByDrawDate(Instant generatedTime);
+
+    Optional<WinningNumbersDetails> findByLotteryNumber(Long lotteryNumber);
 
 }

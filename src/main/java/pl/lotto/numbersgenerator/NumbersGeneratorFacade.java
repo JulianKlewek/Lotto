@@ -9,4 +9,6 @@ public interface NumbersGeneratorFacade {
     WinningNumbersDto generateWinningNumbers();
 
     WinningNumbersDto getWinningNumbersForDate(Instant drawDate);
+
+    WinningNumbersDto getWinningNumbersForLotteryNumber(Long lotteryNumber);
 }

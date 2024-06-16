@@ -6,6 +6,6 @@ import java.time.Instant;
 import java.util.List;
 
 @Builder
-public record WinningTicketDto(String hash, List<Integer> numbers, Instant drawDate,
+public record WinningTicketDto(String hash, List<Integer> userNumbers, Instant drawDate,
                                Long lotteryNumber, int amountOfCorrectNumbers) {
 }

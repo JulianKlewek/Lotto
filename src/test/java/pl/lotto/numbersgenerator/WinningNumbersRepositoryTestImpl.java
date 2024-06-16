@@ -30,9 +30,17 @@ public class WinningNumbersRepositoryTestImpl implements WinningNumbersRepositor
     }
 
     @Override
-    public Optional<WinningNumbersDetails> findByGeneratedTime(Instant generatedTime) {
+    public Optional<WinningNumbersDetails> findByDrawDate(Instant drawDate) {
         Optional<WinningNumbersDetails> winningNumbers = database.values().stream()
-                .filter(e -> e.drawDate.equals(generatedTime))
+                .filter(e -> e.drawDate.equals(drawDate))
+                .findFirst();
+        return winningNumbers;
+    }
+
+    @Override
+    public Optional<WinningNumbersDetails> findByLotteryNumber(Long lotteryNumber) {
+        Optional<WinningNumbersDetails> winningNumbers = database.values().stream()
+                .filter(e -> e.lotteryNumber.equals(lotteryNumber))
                 .findFirst();
         return winningNumbers;
     }

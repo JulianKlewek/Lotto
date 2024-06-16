@@ -36,7 +36,14 @@ class NumbersGeneratorFacadeImpl implements NumbersGeneratorFacade {
 
     @Override
     public WinningNumbersDto getWinningNumbersForDate(Instant drawDate) {
-        WinningNumbersDetails winningNumbers = numbersRepository.findByGeneratedTime(drawDate).orElseThrow(
+        WinningNumbersDetails winningNumbers = numbersRepository.findByDrawDate(drawDate).orElseThrow(
+                () -> new WinningNumbersNotFoundException("Winning numbers not found"));
+        return toDto(winningNumbers);
+    }
+
+    @Override
+    public WinningNumbersDto getWinningNumbersForLotteryNumber(Long lotteryId) {
+        WinningNumbersDetails winningNumbers = numbersRepository.findByLotteryNumber(lotteryId).orElseThrow(
                 () -> new WinningNumbersNotFoundException("Winning numbers not found"));
         return toDto(winningNumbers);
     }

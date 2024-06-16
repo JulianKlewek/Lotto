@@ -8,20 +8,23 @@ import java.util.LinkedList;
 import java.util.List;
 
 class NumberChecker {
+    //TODO
+    //    ResultsChecker(CheckerConfigurable winningPropertyConfig) {
+    //        this.winningPropertyConfig = winningPropertyConfig;
 
-    private static final int MINIMAL_AMOUNT_OF_WINNING_NUMBERS = 4;
+    private static final int MINIMAL_AMOUNT_OF_MATCHING_NUMBERS = 4;
     private static final boolean DEFAULT_COLLECTED_REWARD_VALUE = false;
 
     List<WinningTicket> checkTicketsNumbers(List<TicketDto> userTickets, WinningNumbersDto winningNumbers) {
         List<WinningTicket> winningTickets = new LinkedList<>();
         for (TicketDto ticket : userTickets) {
             if (isTicketContainsWinningNumbers(ticket.numbers(), winningNumbers.numbers())) {
-                int amountOfSameNumbers = checkAmountOfWinningNumbers(ticket.numbers(), winningNumbers.numbers());
-                if (amountOfSameNumbers >= MINIMAL_AMOUNT_OF_WINNING_NUMBERS) {
+                int amountOfSameNumbers = checkAmountOfMatchedNumbers(ticket.numbers(), winningNumbers.numbers());
+                if (amountOfSameNumbers >= MINIMAL_AMOUNT_OF_MATCHING_NUMBERS) {
                     WinningTicket winningTicket = WinningTicket.builder()
                             .amountOfCorrectNumbers(amountOfSameNumbers)
                             .lotteryNumber(winningNumbers.lotteryNumber())
-                            .numbers(ticket.numbers())
+                            .userNumbers(ticket.numbers())
                             .hash(ticket.hash())
                             .drawDate(ticket.drawDate())
                             .collectedReward(DEFAULT_COLLECTED_REWARD_VALUE)
@@ -37,7 +40,7 @@ class NumberChecker {
         return !Collections.disjoint(ticket, winningNumbers);
     }
 
-    private int checkAmountOfWinningNumbers(List<Integer> ticket, List<Integer> winningNumbers) {
+    private int checkAmountOfMatchedNumbers(List<Integer> ticket, List<Integer> winningNumbers) {
         int amountOfSameNumbers = 0;
         for (int number : ticket) {
             for (int winningNumber : winningNumbers) {
@@ -48,15 +51,19 @@ class NumberChecker {
         }
         return amountOfSameNumbers;
     }
+
+    public int checkTicketNumbers(List<Integer> userNumbers, List<Integer> winningNumbers) {
+        return findAmountMatchingNumbers(userNumbers, winningNumbers);
+    }
+
+    private int findAmountMatchingNumbers(List<Integer> userTypedNumbers, List<Integer> winningNumbers) {
+        return userTypedNumbers.stream()
+                .filter(winningNumbers::contains)
+                .toList()
+                .size();
+    }
+
+    public boolean isEnoughMatchingNumbersAmountToWin(int amountOfCorrectNumbers) {
+        return amountOfCorrectNumbers >= MINIMAL_AMOUNT_OF_MATCHING_NUMBERS;
+    }
 }
-//    ResultsChecker(CheckerConfigurable winningPropertyConfig) {
-//        this.winningPropertyConfig = winningPropertyConfig;
-//    }
-//
-//    List<Integer> findMatchedNumbers(List<Integer> userTypedNumbers, List<Integer> winningNumbers) {
-//        return userTypedNumbers.stream().filter(winningNumbers::contains).toList();
-//    }
-//
-//    boolean checkIfIsWinner(List<Integer> matchedNumbers) {
-//        return matchedNumbers.size() >= winningPropertyConfig.getMatchedNumbersToWin();
-//    }
