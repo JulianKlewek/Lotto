@@ -14,7 +14,7 @@ public interface DrawDateTestsConstants {
     ZonedDateTime ticketCreatedLessThanHourBeforeDraw = ZonedDateTime.of(2024, 6, 14, 19, 1, 0, 0, ZoneOffset.UTC);
     ZonedDateTime ticketCreatedHourBeforeDraw = ZonedDateTime.of(2024, 6, 14, 19, 0, 0, 0, ZoneOffset.UTC);
 
-    static Stream<Arguments> VALID_THIS_WEEK_DRAW_DATES() {
+    static Stream<Arguments> VALID_CURRENT_WEEK_DRAW_DATES() {
         return Stream.of(
                 Arguments.of(ticketCreatedMoreThanHourBeforeDrawDate1,
                         ZonedDateTime.of(thisWeekDrawDate, ZoneOffset.UTC)),

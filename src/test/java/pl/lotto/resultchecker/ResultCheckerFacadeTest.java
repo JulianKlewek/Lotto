@@ -7,6 +7,7 @@ import pl.lotto.numberreceiver.dto.TicketDto;
 import pl.lotto.numberreceiver.dto.UserTicketsDto;
 import pl.lotto.numbersgenerator.NumbersGeneratorFacade;
 import pl.lotto.numbersgenerator.dto.WinningNumbersDto;
+import pl.lotto.resultchecker.dto.TicketResultResponseDto;
 import pl.lotto.resultchecker.dto.WinningTicketDto;
 import pl.lotto.resultchecker.dto.WinningTicketsDto;
 
@@ -45,7 +46,7 @@ class ResultCheckerFacadeTest extends ResultCheckerFacadeTestConfig {
                 ))
         );
         //when
-        WinningTicketsDto winningTickets = resultCheckerFacade.getAllWinningTicketsForGivenDrawDate(drawDate);
+        WinningTicketsDto winningTickets = resultCheckerFacade.checkAllWinningTicketsForGivenDrawDate(drawDate);
         //then
         List<WinningTicketDto> winnersWithSixCorrectNumbers = winningTickets.winningTickets().stream()
                 .filter(e -> e.amountOfCorrectNumbers() == 6)
@@ -89,7 +90,7 @@ class ResultCheckerFacadeTest extends ResultCheckerFacadeTestConfig {
                 ))
         );
         //when
-        WinningTicketsDto winningTickets = resultCheckerFacade.getAllWinningTicketsForGivenDrawDate(drawDate);
+        WinningTicketsDto winningTickets = resultCheckerFacade.checkAllWinningTicketsForGivenDrawDate(drawDate);
         //then
         List<WinningTicketDto> winnersWithSixCorrectNumbers = winningTickets.winningTickets().stream()
                 .filter(e -> e.amountOfCorrectNumbers() == 6)
@@ -98,6 +99,19 @@ class ResultCheckerFacadeTest extends ResultCheckerFacadeTestConfig {
                 .hasSize(2)
                 .extracting(WinningTicketDto::numbers)
                 .containsOnly(winningNumbersList);
+    }
+
+    @Test
+    void should_return_not_found_status_when_winning_ticket_with_given_hash_does_not_exists_in_db(){
+        NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
+        NumbersGeneratorFacade numbersGeneratorFacade = mock(NumbersGeneratorFacade.class);
+        ResultCheckerFacadeImpl resultCheckerFacade = new ResultCheckerFacadeConfiguration().resultCheckerFacadeForTests(
+                numberReceiverFacade, numbersGeneratorFacade, ticketRepository);
+        String hash = "hash1";
+        //when
+        TicketResultResponseDto ticketWon = resultCheckerFacade.isTicketWon(hash);
+        //then
+        assertThat(ticketWon.status()).isEqualTo(ResultStatus.NOT_FOUND);
     }
 
 }

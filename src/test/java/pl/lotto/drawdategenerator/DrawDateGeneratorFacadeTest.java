@@ -12,8 +12,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DrawDateGeneratorFacadeTest extends DrawDateGeneratorFacadeConfig {
 
     @ParameterizedTest
-    @MethodSource("VALID_THIS_WEEK_DRAW_DATES")
-    void should_return_this_week_friday_eight_pm_utc_time(ZonedDateTime ticketCreatedAt, ZonedDateTime expectedDrawDate) {
+    @MethodSource("VALID_CURRENT_WEEK_DRAW_DATES")
+    void should_return_current_week_friday_eight_pm_utc_time(ZonedDateTime ticketCreatedAt, ZonedDateTime expectedDrawDate) {
         //given
         DrawDateGeneratorFacade drawDateGeneratorFacade = new DrawDateGeneratorConfiguration().drawDateGeneratorFacadeForTest();
         //when

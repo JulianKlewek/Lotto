@@ -6,15 +6,8 @@ spring:
       database: lotto
       username: admin
       password: admin
-#      uri: mongodb://admin:admin@localhost:27017/lotto
-#  jpa:
-#    properties:
-#      hibernate:
-#        show_sql: true
-#        use_sql_comments: true
-#        format_sql: true
-#logging:
-#  level:
-#    org:
-#      hibernate:
-#        type: trace
+
+lotto:
+  result-announcer:
+    win-message: "Congratulations you have won!"
+    lose-message: "Unfortunately you didn't won."
