@@ -9,5 +9,6 @@ spring:
 
 lotto:
   result-announcer:
-    win-message: "Congratulations you have won!"
+    win-message-received: "Congratulations you have won!"
+    win-message-not-received: "Congratulations you have won, but already received reward."
     lose-message: "Unfortunately you didn't won."

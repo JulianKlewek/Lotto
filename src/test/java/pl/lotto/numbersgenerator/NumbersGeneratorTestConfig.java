@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class NumbersGeneratorTestConfig implements NumbersGeneratorTestConstants {
+class NumbersGeneratorTestConfig implements NumbersGeneratorTestConstants {
 
     WinningNumbersRepositoryTestImpl numbersRepository = new WinningNumbersRepositoryTestImpl();
     Clock clock = Clock.systemUTC();

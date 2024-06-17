@@ -5,7 +5,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import java.time.*;
 import java.util.stream.Stream;
 
-public interface DrawDateTestsConstants {
+interface DrawDateTestsConstants {
 
     LocalDateTime thisWeekDrawDate = LocalDateTime.of(2024, Month.JUNE, 14, 20, 0);
     ZonedDateTime ticketCreatedMoreThanHourBeforeDrawDate1 = ZonedDateTime.of(2024, 6, 13, 20, 0, 0, 0, ZoneOffset.UTC);

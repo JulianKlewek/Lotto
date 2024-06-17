@@ -1,16 +1,15 @@
-package pl.lotto.infrastructure.propertyconfig.resultannouncer;
+package pl.lotto.resultannouncer;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import pl.lotto.resultannouncer.ResultAnnouncerConfigurable;
-
-@Configuration
-@ConfigurationProperties(prefix = "lotto.result-announcer")
-class ResultAnnouncerPropertyConfig implements ResultAnnouncerConfigurable {
-
+class ResultAnnouncerPropertyConfigTest implements ResultAnnouncerConfigurable {
     private String winMessageReceived;
     private String winMessageNotReceived;
     private String loseMessage;
+
+    public ResultAnnouncerPropertyConfigTest(String winMessageReceived, String winMessageNotReceived, String loseMessage) {
+        this.winMessageReceived = winMessageReceived;
+        this.winMessageNotReceived = winMessageNotReceived;
+        this.loseMessage = loseMessage;
+    }
 
     @Override
     public String getWinMessageReceived() {

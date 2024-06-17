@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-public class WinningNumbersRepositoryTestImpl implements WinningNumbersRepository {
+class WinningNumbersRepositoryTestImpl implements WinningNumbersRepository {
 
     Map<Long, WinningNumbersDetails> database = new ConcurrentHashMap<>();
 

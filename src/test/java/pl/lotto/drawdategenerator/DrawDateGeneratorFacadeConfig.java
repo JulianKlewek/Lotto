@@ -1,5 +1,5 @@
 package pl.lotto.drawdategenerator;
 
-public class DrawDateGeneratorFacadeConfig implements DrawDateTestsConstants {
+class DrawDateGeneratorFacadeConfig implements DrawDateTestsConstants {
 
 }
