@@ -18,7 +18,7 @@ class UsersPlayLottoIntegrationTest extends BaseIntegrationTest {
     void should_user_play_and_win_in_next_draw_date() throws Exception {
         //step 1: user types six number
         //given
-        List<Integer> typedNumbers = List.of(1,2,3,4,5,6);
+        List<Integer> typedNumbers = List.of(1, 2, 3, 4, 5, 6);
         String expectedDrawDate = "2024-06-14T20:00:00Z";
         //when
         ResultActions perform = mockMvc.perform(post("/inputNumbers")
@@ -45,4 +45,5 @@ class UsersPlayLottoIntegrationTest extends BaseIntegrationTest {
         //when
         //then
     }
+
 }

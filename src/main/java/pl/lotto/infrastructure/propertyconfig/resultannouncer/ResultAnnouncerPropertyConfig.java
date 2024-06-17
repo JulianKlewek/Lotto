@@ -28,7 +28,7 @@ class ResultAnnouncerPropertyConfig implements ResultAnnouncerConfigurable {
     }
 
     @Override
-    public void getWinMessageNotReceived(String winMessageNotReceived) {
+    public void setWinMessageNotReceived(String winMessageNotReceived) {
         this.winMessageNotReceived = winMessageNotReceived;
     }
 

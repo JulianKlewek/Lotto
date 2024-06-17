@@ -22,7 +22,7 @@ class ResultAnnouncerFacadeTest extends ResultAnnouncerFacadeTestConfig {
         ResultCheckerFacade resultCheckerFacade = mock(ResultCheckerFacadeImpl.class);
         ResultAnnouncerConfigurable resultAnnouncerConfigurable = new ResultAnnouncerPropertyConfigTest(
                 winReceivedMsg, winNotReceivedMsg, loseMsg);
-        ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerConfiguration().resultAnnouncerFacadeForTests(
+        ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerConfiguration().createResultAnnouncerFacadeForTests(
                 resultCheckerFacade, resultAnnouncerConfigurable);
         when(resultCheckerFacade.isSpecificTicketWon(any())).thenReturn(new TicketResultResponseDto(
                 winningTicket, ResultStatus.PRIZE_NOT_RECEIVED));
@@ -41,7 +41,7 @@ class ResultAnnouncerFacadeTest extends ResultAnnouncerFacadeTestConfig {
         ResultCheckerFacade resultCheckerFacade = mock(ResultCheckerFacadeImpl.class);
         ResultAnnouncerConfigurable resultAnnouncerConfigurable = new ResultAnnouncerPropertyConfigTest(
                 winReceivedMsg, winNotReceivedMsg, loseMsg);
-        ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerConfiguration().resultAnnouncerFacadeForTests(
+        ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerConfiguration().createResultAnnouncerFacadeForTests(
                 resultCheckerFacade, resultAnnouncerConfigurable);
         when(resultCheckerFacade.isSpecificTicketWon(any())).thenReturn(
                 new TicketResultResponseDto(winningTicket, ResultStatus.PRIZE_RECEIVED));
@@ -60,7 +60,7 @@ class ResultAnnouncerFacadeTest extends ResultAnnouncerFacadeTestConfig {
         ResultCheckerFacade resultCheckerFacade = mock(ResultCheckerFacadeImpl.class);
         ResultAnnouncerConfigurable resultAnnouncerConfigurable = new ResultAnnouncerPropertyConfigTest(
                 winReceivedMsg, winNotReceivedMsg, loseMsg);
-        ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerConfiguration().resultAnnouncerFacadeForTests(
+        ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerConfiguration().createResultAnnouncerFacadeForTests(
                 resultCheckerFacade, resultAnnouncerConfigurable);
         when(resultCheckerFacade.isSpecificTicketWon(any())).thenReturn(
                 new TicketResultResponseDto(losingTicket, ResultStatus.NOT_FOUND));

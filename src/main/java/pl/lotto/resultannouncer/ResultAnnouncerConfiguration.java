@@ -8,14 +8,14 @@ import pl.lotto.resultchecker.ResultCheckerFacade;
 public class ResultAnnouncerConfiguration {
 
     @Bean
-    public ResultAnnouncerFacade resultAnnouncerFacade(ResultCheckerFacade resultCheckerFacade,
-                                                       ResultAnnouncerConfigurable announcerConfigurable) {
+    public ResultAnnouncerFacade createResultAnnouncerFacade(ResultCheckerFacade resultCheckerFacade,
+                                                             ResultAnnouncerConfigurable announcerConfigurable) {
         ResultMessageGenerator messageGenerator = new ResultMessageGenerator(announcerConfigurable);
         return new ResultAnnouncerFacadeImpl(resultCheckerFacade, messageGenerator);
     }
 
-    public ResultAnnouncerFacade resultAnnouncerFacadeForTests(ResultCheckerFacade resultCheckerFacade,
-                                                               ResultAnnouncerConfigurable announcerConfigurable) {
-        return resultAnnouncerFacade(resultCheckerFacade, announcerConfigurable);
+    public ResultAnnouncerFacade createResultAnnouncerFacadeForTests(ResultCheckerFacade resultCheckerFacade,
+                                                                     ResultAnnouncerConfigurable announcerConfigurable) {
+        return createResultAnnouncerFacade(resultCheckerFacade, announcerConfigurable);
     }
 }

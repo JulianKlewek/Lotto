@@ -16,11 +16,12 @@ class WinnerTicketRepositoryTestImpl implements WinningTicketRepository {
 
     Map<String, WinningTicket> database = new ConcurrentHashMap<>();
 
+
     @Override
-    public List<WinningTicket> saveAll(List<WinningTicket> winningTickets) {
+    public <S extends WinningTicket> List<S> saveAll(Iterable<S> winningTickets) {
         winningTickets.forEach(
                 ticket -> database.put(ticket.hash, ticket));
-        return database.values()
+        return (List<S>) database.values()
                 .stream()
                 .toList();
     }
@@ -82,7 +83,6 @@ class WinnerTicketRepositoryTestImpl implements WinningTicketRepository {
         return null;
     }
 
-
     @Override
     public Optional<WinningTicket> findById(Long aLong) {
         return Optional.empty();
@@ -91,11 +91,6 @@ class WinnerTicketRepositoryTestImpl implements WinningTicketRepository {
     @Override
     public boolean existsById(Long aLong) {
         return false;
-    }
-
-    @Override
-    public <S extends WinningTicket> List<S> saveAll(Iterable<S> entities) {
-        return null;
     }
 
     @Override

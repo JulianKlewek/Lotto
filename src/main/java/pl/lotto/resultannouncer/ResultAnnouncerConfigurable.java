@@ -8,7 +8,7 @@ public interface ResultAnnouncerConfigurable {
 
     String getWinMessageNotReceived();
 
-    void getWinMessageNotReceived(String message);
+    void setWinMessageNotReceived(String message);
 
     String getLoseMessage();
 
