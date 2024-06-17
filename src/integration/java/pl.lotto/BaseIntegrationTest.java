@@ -3,7 +3,6 @@ package pl.lotto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -15,9 +14,9 @@ import org.testcontainers.utility.DockerImageName;
 import java.util.regex.Pattern;
 
 @AutoConfigureMockMvc
-@SpringBootTest(classes = LottoEngine.class)
+@SpringBootTest(classes = {LottoEngine.class, pl.lotto.IntegrationConfiguration.class})
 @Testcontainers
-@ActiveProfiles("integration")
+//@ActiveProfiles("integration")
 public class BaseIntegrationTest {
 
     @Autowired
