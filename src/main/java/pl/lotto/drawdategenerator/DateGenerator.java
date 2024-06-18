@@ -15,7 +15,7 @@ class DateGenerator {
     private static final int LOTTERY_NANO = 0;
 
     public Instant generateDrawDate(Instant ticketCreatedAt) {
-        if (isFriday(ticketCreatedAt) && isLessThanHourBeforeDraw(ticketCreatedAt)) {
+        if (isFriday(ticketCreatedAt) && !isHourLessThanHourClosingReceivingTickets(ticketCreatedAt)) {
             return ticketCreatedAt.atZone(ZoneOffset.UTC)
                     .with(next(DayOfWeek.FRIDAY))
                     .withHour(LOTTERY_HOUR)
@@ -33,10 +33,10 @@ class DateGenerator {
                 .toInstant();
     }
 
-    private boolean isLessThanHourBeforeDraw(Instant ticketCreatedTime) {
-        return LOTTERY_HOUR - ticketCreatedTime
+    private boolean isHourLessThanHourClosingReceivingTickets(Instant ticketCreatedTime) {
+        return ticketCreatedTime
                 .atZone(ZoneOffset.UTC)
-                .getHour() == 1;
+                .getHour() < LOTTERY_HOUR;
     }
 
     private boolean isFriday(Instant ticketCreatedTime) {

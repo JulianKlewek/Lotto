@@ -10,7 +10,17 @@ spring:
     allow-bean-definition-overriding: true
 
 lotto:
+  time:
+    drawDayOfWeek: 5
+    drawHour: 20
+    drawMinute: 0
+    drawSecond: 0
+    drawTime: "${lotto.time.drawHour}:${lotto.time.drawMinute}:${lotto.time.drawSecond}}"
   result-announcer:
     win-message-received: "Congratulations you have won!"
     win-message-not-received: "Congratulations you have won, but already received reward."
     lose-message: "Unfortunately you didn't won."
+  number-generator:
+    scheduler-cron: "${lotto.time.drawSecond} ${lotto.time.drawMinute} ${lotto.time.drawHour} * * ${lotto.time.drawDayOfWeek}"
+  result-checker:
+    scheduler-cron: "${lotto.time.drawSecond} ${lotto.time.drawMinute + 1} ${lotto.time.drawHour} * * ${lotto.time.drawDayOfWeek}"

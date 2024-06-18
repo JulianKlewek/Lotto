@@ -22,11 +22,9 @@ class WinningNumbersRepositoryTestImpl implements WinningNumbersRepository {
     }
 
     @Override
-    public Long findFirstByLotteryNumberOrderByLotteryNumberDesc() {
-        return database.keySet().stream()
-                .sorted()
-                .findFirst()
-                .orElse(0L);
+    public Optional<WinningNumbersDetails> findTopByOrderByLotteryNumberDesc() {
+        return database.values().stream()
+                .max(Comparator.comparing(o -> o.lotteryNumber));
     }
 
     @Override

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -31,6 +32,15 @@ class WinnerTicketRepositoryTestImpl implements WinningTicketRepository {
         return database.values().stream()
                 .filter(winningTicket -> winningTicket.hash.equals(hash))
                 .findFirst();
+    }
+
+    @Override
+    public boolean existsByDrawDate(Instant drawDate) {
+        long resultsForDate = database.values()
+                .stream()
+                .filter(ticket -> ticket.drawDate.equals(drawDate))
+                .count();
+        return resultsForDate == 0;
     }
 
     @Override

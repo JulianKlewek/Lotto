@@ -25,7 +25,8 @@ class WinningNumbersGenerator {
     }
 
     public Long generateDrawNumber() {
-        Long highestDrawNumber = numbersRepository.findFirstByLotteryNumberOrderByLotteryNumberDesc();
-        return highestDrawNumber + 1;
+        WinningNumbersDetails winningNumbersDetails = numbersRepository.findTopByOrderByLotteryNumberDesc()
+                .orElse(new WinningNumbersDetails(null, null, 0L));
+        return winningNumbersDetails.lotteryNumber + 1;
     }
 }

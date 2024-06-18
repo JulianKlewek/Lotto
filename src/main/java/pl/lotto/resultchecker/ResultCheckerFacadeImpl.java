@@ -59,4 +59,9 @@ public class ResultCheckerFacadeImpl implements ResultCheckerFacade {
         return checkerResponseGenerator.prepareTicketResultResponse(winningTicket);
     }
 
+    @Override
+    public boolean isSystemGeneratedResults(Instant drawDate) {
+        return ticketRepository.existsByDrawDate(drawDate);
+    }
+
 }

@@ -1,5 +1,6 @@
 package pl.lotto;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,17 +11,24 @@ import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
+import pl.lotto.numbersgenerator.NumbersGeneratorFacade;
+import pl.lotto.resultchecker.ResultCheckerFacade;
 
 import java.util.regex.Pattern;
 
 @AutoConfigureMockMvc
-@SpringBootTest(classes = {LottoEngine.class, pl.lotto.IntegrationConfiguration.class})
+@SpringBootTest(classes = {LottoEngine.class, IntegrationConfiguration.class})
 @Testcontainers
-//@ActiveProfiles("integration")
 public class BaseIntegrationTest {
 
     @Autowired
     protected MockMvc mockMvc;
+    @Autowired
+    protected NumbersGeneratorFacade numbersGeneratorFacade;
+    @Autowired
+    protected ResultCheckerFacade resultCheckerFacade;
+    @Autowired
+    protected ObjectMapper objectMapper;
     @Container
     private static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
 

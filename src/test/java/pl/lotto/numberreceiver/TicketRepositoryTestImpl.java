@@ -25,7 +25,8 @@ class TicketRepositoryTestImpl implements TicketRepository {
 
     @Override
     public Ticket save(Ticket ticket) {
-        return database.put(ticket.hash, ticket);
+        database.put(ticket.hash, ticket);
+        return database.get(ticket.hash);
     }
 
     @Override
