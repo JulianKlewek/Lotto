@@ -44,7 +44,6 @@ class LotteryGameIsSuccessfulIT extends BaseIntegrationTest {
                         jsonPath("$.ticket.drawDate", equalTo(expectedDrawDate)),
                         jsonPath("$.ticket.message", equalTo((null))))
                 .andReturn();
-
         NumberReceiverResultDto receiverResult = objectMapper.readValue(
                 mvcInputNumbersResult.getResponse().getContentAsString(), NumberReceiverResultDto.class);
 
@@ -74,7 +73,7 @@ class LotteryGameIsSuccessfulIT extends BaseIntegrationTest {
                 });
 
         // step 3: user check results and receives data that he won
-        //given
+        //given & when
         String ticketId = receiverResult.ticket().hash();
         String wonNotReceived = "Congratulations you have won, you can receive reward.";
         ResultActions performResults = mockMvc.perform(get("/getResult/" + ticketId)
