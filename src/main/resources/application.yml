@@ -15,6 +15,7 @@ lotto:
     drawDayOfWeek: 5
     drawHour: 20
     drawMinute: 0
+    resultsMinute: 1
     drawSecond: 0
     drawTime: "${lotto.time.drawHour}:${lotto.time.drawMinute}:${lotto.time.drawSecond}}"
   result-announcer:
@@ -24,4 +25,4 @@ lotto:
   number-generator:
     scheduler-cron: "${lotto.time.drawSecond} ${lotto.time.drawMinute} ${lotto.time.drawHour} * * ${lotto.time.drawDayOfWeek}"
   result-checker:
-    scheduler-cron: "${lotto.time.drawSecond} ${lotto.time.drawMinute + 1} ${lotto.time.drawHour} * * ${lotto.time.drawDayOfWeek}"
+    scheduler-cron: "${lotto.time.drawSecond} ${lotto.time.resultsMinute} ${lotto.time.drawHour} * * ${lotto.time.drawDayOfWeek}"
