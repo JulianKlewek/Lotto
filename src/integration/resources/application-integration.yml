@@ -1,0 +1,5 @@
+lotto:
+  number-generator:
+    scheduler-cron: "*/2 * * * * *"
+  result-checker:
+    scheduler-cron: "*/4 * * * * *"

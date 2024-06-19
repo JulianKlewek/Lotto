@@ -1,6 +1,7 @@
 package pl.lotto.resultchecker;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.dto.UserTicketsDto;
 import pl.lotto.numbersgenerator.NumbersGeneratorFacade;
@@ -16,6 +17,7 @@ import java.util.List;
 import static pl.lotto.resultchecker.WinningTicketMapper.toDtoList;
 
 @AllArgsConstructor
+@Log4j2
 public class ResultCheckerFacadeImpl implements ResultCheckerFacade {
 
     private final NumberReceiverFacade numberReceiverFacade;
@@ -23,13 +25,20 @@ public class ResultCheckerFacadeImpl implements ResultCheckerFacade {
     private final NumberChecker numberChecker;
     private final WinningTicketRepository ticketRepository;
     private final CheckerResponseGenerator checkerResponseGenerator;
+    private final NobodyWonTicketGenerator generateDataNobodyWon;
 
     @Override
     public WinningTicketsDto checkAllWinningTicketsForGivenDrawDate(Instant drawDate) {
         UserTicketsDto userTicketsDto = numberReceiverFacade.usersNumbers(drawDate);
         WinningNumbersDto winningNumbers = numbersGeneratorFacade.getWinningNumbersForDate(drawDate);
         List<WinningTicket> winningTickets = numberChecker.checkTicketsNumbers(userTicketsDto.tickets(), winningNumbers);
+        if (winningTickets.isEmpty()) {
+            WinningTicket ticketNobodyWon = generateDataNobodyWon.generateDataNobodyWon(winningNumbers);
+            winningTickets.add(ticketNobodyWon);
+            log.info("No one won. Adding empty ticket");
+        }
         List<WinningTicket> savedWinningTickets = ticketRepository.saveAll(winningTickets);
+        log.info("Saved {} winning tickets", savedWinningTickets.size());
         List<WinningTicketDto> winningTicketsDto = toDtoList(savedWinningTickets);
         return WinningTicketsDto.builder()
                 .winningTickets(winningTicketsDto)
@@ -57,6 +66,11 @@ public class ResultCheckerFacadeImpl implements ResultCheckerFacade {
                         .hash(ticketHash)
                         .build());
         return checkerResponseGenerator.prepareTicketResultResponse(winningTicket);
+    }
+
+    @Override
+    public boolean isSystemGeneratedResults(Instant drawDate) {
+        return ticketRepository.existsByDrawDate(drawDate);
     }
 
 }

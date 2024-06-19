@@ -1,6 +1,6 @@
 package pl.lotto.numbersgenerator;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInstance;
 
 import java.time.Clock;
@@ -14,10 +14,13 @@ import java.util.List;
 class NumbersGeneratorTestConfig implements NumbersGeneratorTestConstants {
 
     WinningNumbersRepositoryTestImpl numbersRepository = new WinningNumbersRepositoryTestImpl();
+
+    WinningNumbersGenerable winningNumbersGenerable = new WinningNumbersGenerator();
     Clock clock = Clock.systemUTC();
 
-    @BeforeAll
+    @BeforeEach
     public void fillDatabase() {
+        numbersRepository.database.clear();
         ZonedDateTime drawDate = ZonedDateTime.of(
                 2024, 6, 14, 20, 00, 0, 0, ZoneOffset.UTC);
         Instant dateInstant = drawDate.toInstant();

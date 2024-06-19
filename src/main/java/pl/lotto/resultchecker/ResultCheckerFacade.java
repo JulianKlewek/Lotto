@@ -11,6 +11,10 @@ public interface ResultCheckerFacade {
     WinningTicketsDto checkAllWinningTicketsForGivenDrawDate(Instant drawDate);
 
     BasicTicketInfoResponseDto checkGivenNumbersForLottery(List<Integer> numbers, Instant drawDate);
+
     BasicTicketInfoResponseDto checkGivenNumbersForLottery(List<Integer> numbers, Long lotteryId);
+
     TicketResultResponseDto isSpecificTicketWon(String ticketHash);
+
+    boolean isSystemGeneratedResults(Instant drawDate);
 }

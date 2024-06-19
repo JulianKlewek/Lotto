@@ -36,12 +36,12 @@ class NumberReceiverFacadeImpl implements NumberReceiverFacade {
         String hash = hashGenerator.getHash();
         DrawDateDto drawDateDto = drawDateGenerator.getNextDrawDate(Instant.now(clock));
         Ticket ticket = new Ticket(hash, numbersFromUser, drawDateDto.drawDate());
-        ticketRepository.save(ticket);
+        Ticket saved = ticketRepository.save(ticket);
         log.info("Ticket {} registered", hash);
         return new NumberReceiverResultDto(
                 validationResult.validationStatus(),
                 validationResult.errorsList(),
-                toDto(ticket));
+                toDto(saved));
     }
 
     @Override
