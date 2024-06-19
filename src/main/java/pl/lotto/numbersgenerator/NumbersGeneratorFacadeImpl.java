@@ -14,16 +14,21 @@ import static pl.lotto.numbersgenerator.WinningNumbersMapper.toDto;
 @AllArgsConstructor
 class NumbersGeneratorFacadeImpl implements NumbersGeneratorFacade {
 
-    private final WinningNumbersGenerator winningNumbersGenerator;
+    private final WinningNumbersGenerable winningNumbersGenerator;
     private final WinningNumbersRepository numbersRepository;
+    private final DrawNumberGenerator drawNumberGenerator;
     private final Clock clock;
 
     @Override
     public WinningNumbersDto generateWinningNumbers() {
+        Instant createdAt = Instant.now(clock).truncatedTo(ChronoUnit.MINUTES);
+        if (numbersRepository.existsByDrawDate(createdAt)) {
+            WinningNumbersDetails fetchedWinningNumbers = numbersRepository.findByDrawDate(createdAt).orElseThrow(
+                    () -> new WinningNumbersNotFoundException("Could not fetch winning numbers for given date"));
+            return toDto(fetchedWinningNumbers);
+        }
         Set<Integer> winningNumbersSet = winningNumbersGenerator.generateSixNumbersInGivenRange();
-        Long drawNumber = winningNumbersGenerator.generateDrawNumber();
-        Instant createdAt = Instant.now(clock)
-                .truncatedTo(ChronoUnit.MINUTES);
+        Long drawNumber = drawNumberGenerator.generateDrawNumber();
         List<Integer> winningNumbers = List.copyOf(winningNumbersSet);
         WinningNumbersDetails winningNumberDetails = WinningNumbersDetails.builder()
                 .numbers(winningNumbers)
@@ -46,5 +51,13 @@ class NumbersGeneratorFacadeImpl implements NumbersGeneratorFacade {
         WinningNumbersDetails winningNumbers = numbersRepository.findByLotteryNumber(lotteryId).orElseThrow(
                 () -> new WinningNumbersNotFoundException("Winning numbers not found"));
         return toDto(winningNumbers);
+    }
+
+    @Override
+    public Instant getLatestDrawDateWithGeneratedNumbers() {
+        WinningNumbersDetails latestNumbers = numbersRepository.findFirstByOrderByDrawDate().orElseThrow(
+                () -> new WinningNumbersNotFoundException("Not found any winning numbers"));
+        Instant latestDrawDate = latestNumbers.drawDate;
+        return latestDrawDate;
     }
 }

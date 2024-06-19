@@ -9,11 +9,13 @@ import java.util.Optional;
 @Repository
 public interface WinningNumbersRepository extends MongoRepository<WinningNumbersDetails, Long> {
 
-//    Optional<Long> findFirstOrderByLotteryNumberDesc();
     Optional<WinningNumbersDetails> findTopByOrderByLotteryNumberDesc();
 
     Optional<WinningNumbersDetails> findByDrawDate(Instant generatedTime);
 
     Optional<WinningNumbersDetails> findByLotteryNumber(Long lotteryNumber);
 
+    Optional<WinningNumbersDetails> findFirstByOrderByDrawDate();
+
+    boolean existsByDrawDate(Instant drawDate);
 }

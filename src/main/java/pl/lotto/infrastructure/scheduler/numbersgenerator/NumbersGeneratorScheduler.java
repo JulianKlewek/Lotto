@@ -11,8 +11,8 @@ public class NumbersGeneratorScheduler {
 
     private final NumbersGeneratorFacade numbersGeneratorFacade;
 
-    @Scheduled(cron = "*/2 * * * * *")
-    public void generateWinningNumbers(){
+    @Scheduled(cron = "${lotto.number-generator.scheduler-cron}")
+    public void generateWinningNumbers() {
         numbersGeneratorFacade.generateWinningNumbers();
     }
 }

@@ -14,6 +14,8 @@ import java.util.List;
 class NumbersGeneratorTestConfig implements NumbersGeneratorTestConstants {
 
     WinningNumbersRepositoryTestImpl numbersRepository = new WinningNumbersRepositoryTestImpl();
+
+    WinningNumbersGenerable winningNumbersGenerable = new WinningNumbersGenerator();
     Clock clock = Clock.systemUTC();
 
     @BeforeEach

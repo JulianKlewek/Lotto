@@ -9,6 +9,7 @@ import pl.lotto.BaseIntegrationTest;
 import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
 import pl.lotto.numbersgenerator.WinningNumbersNotFoundException;
 import pl.lotto.numbersgenerator.dto.WinningNumbersDto;
+import pl.lotto.resultchecker.dto.WinningTicketsDto;
 
 import java.time.Instant;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -23,7 +25,7 @@ class LotteryGameIsSuccessfulIT extends BaseIntegrationTest {
 
     @Test
     @DisplayName("should user win when he inputs 6 winning numbers and retrieves results after the draw date")
-    void happyPath_shouldUserInputNumbers_andWin() throws Exception {
+    void happyPath_shouldUserInputNumbers_andWinSixNumberRewardNotReceived() throws Exception {
         //step 1: user types six number
         //given
         List<Integer> typedNumbers = List.of(1, 2, 3, 4, 5, 6);
@@ -33,7 +35,7 @@ class LotteryGameIsSuccessfulIT extends BaseIntegrationTest {
                 .content("{\"inputNumbers\":" + typedNumbers + "}")
                 .contentType(MediaType.APPLICATION_JSON_VALUE));
         //then
-        MvcResult mvcResult = perform.andExpectAll(
+        MvcResult mvcInputNumbersResult = perform.andExpectAll(
                         status().isOk(),
                         jsonPath("$.status").value("success"),
                         jsonPath("$.errorsList", hasSize(0)),
@@ -44,39 +46,47 @@ class LotteryGameIsSuccessfulIT extends BaseIntegrationTest {
                 .andReturn();
 
         NumberReceiverResultDto receiverResult = objectMapper.readValue(
-                mvcResult.getResponse().getContentAsString(), NumberReceiverResultDto.class);
+                mvcInputNumbersResult.getResponse().getContentAsString(), NumberReceiverResultDto.class);
 
         //step 2: system generates winning numbers
         //given
         Instant drawDate = receiverResult.ticket().drawDate();
-        //when
+        //when & then
         await().atMost(20, TimeUnit.SECONDS)
                 .pollInterval(1, TimeUnit.SECONDS)
-                .until(() ->{
+                .until(() -> {
                     try {
                         WinningNumbersDto winningNumbersDto = numbersGeneratorFacade.getWinningNumbersForDate(drawDate);
                         return winningNumbersDto.numbers().size() == 6;
-                    }catch (WinningNumbersNotFoundException exception){
-                    return false;
+                    } catch (WinningNumbersNotFoundException exception) {
+                        return false;
                     }
                 });
-        //then
 
-
-        //step 3: system is checking results
-        //given
-        //when
+        //step 3: system checks results
+        //given & when & then
         await().atMost(20, TimeUnit.SECONDS)
                 .pollInterval(1, TimeUnit.SECONDS)
                 .until(() ->
-                        resultCheckerFacade.isSystemGeneratedResults(drawDate)
-                );
-        //then
+                {
+                    WinningTicketsDto winningTicketsDto = resultCheckerFacade.checkAllWinningTicketsForGivenDrawDate(drawDate);
+                    return !winningTicketsDto.winningTickets().isEmpty();
+                });
 
         // step 3: user check results and receives data that he won
         //given
-        //when
+        String ticketId = receiverResult.ticket().hash();
+        String wonNotReceived = "Congratulations you have won, you can receive reward.";
+        ResultActions performResults = mockMvc.perform(get("/getResult/" + ticketId)
+                .contentType(MediaType.APPLICATION_JSON_VALUE));
         //then
+        performResults.andExpectAll(
+                        status().isOk(),
+                        jsonPath("$.message").value(wonNotReceived),
+                        jsonPath("$.ticket.amountOfCorrectNumbers", equalTo(6)),
+                        jsonPath("$.ticket.hash", equalTo(ticketId)),
+                        jsonPath("$.ticket.drawDate", equalTo(expectedDrawDate)))
+                .andReturn();
     }
 
 }

@@ -18,7 +18,7 @@ class NumbersGeneratorFacadeTest extends NumbersGeneratorTestConfig {
     void should_return_six_random_numbers_in_range_1_to_50() {
         //given
         NumbersGeneratorFacadeImpl numbersGeneratorFacade = new NumbersGeneratorConfiguration()
-                .createNumbersGeneratorFacadeForTests(numbersRepository, clock);
+                .createNumbersGeneratorFacadeForTests(numbersRepository, winningNumbersGenerable, clock);
         //when
         WinningNumbersDto winningNumbersDto = numbersGeneratorFacade.generateWinningNumbers();
         //then
@@ -29,8 +29,7 @@ class NumbersGeneratorFacadeTest extends NumbersGeneratorTestConfig {
                         .hasSize(EXPECTED_AMOUNT_OF_GENERATED_NUMBERS)
                         .allMatch(this::isInRange),
                 () -> assertThat(lotteryNumber)
-                        .isEqualTo(101L)
-        );
+                        .isEqualTo(101L));
     }
 
     private boolean isInRange(Integer number) {
@@ -43,7 +42,7 @@ class NumbersGeneratorFacadeTest extends NumbersGeneratorTestConfig {
         long expectedLotteryNumber = 100L;
         List<Integer> expectedWinningNumbers = Arrays.asList(1, 2, 3, 4, 5, 6);
         NumbersGeneratorFacadeImpl numbersGeneratorFacade = new NumbersGeneratorConfiguration()
-                .createNumbersGeneratorFacadeForTests(numbersRepository, clock);
+                .createNumbersGeneratorFacadeForTests(numbersRepository, winningNumbersGenerable, clock);
         Instant drawDate = Instant.parse("2024-06-14T20:00:00.00Z");
         numbersGeneratorFacade.generateWinningNumbers();
         //when
@@ -55,15 +54,14 @@ class NumbersGeneratorFacadeTest extends NumbersGeneratorTestConfig {
         assertAll(
                 () -> assertThat(actualDrawDate).isEqualTo(drawDate),
                 () -> assertThat(actualLotteryNumber).isEqualTo(expectedLotteryNumber),
-                () -> assertThat(actualWinningNumbers).isEqualTo(expectedWinningNumbers)
-        );
+                () -> assertThat(actualWinningNumbers).isEqualTo(expectedWinningNumbers));
     }
 
     @Test
     void should_throw_winning_numbers_not_found_exception_for_given_draw_date() {
         //given
         NumbersGeneratorFacadeImpl numbersGeneratorFacade = new NumbersGeneratorConfiguration()
-                .createNumbersGeneratorFacadeForTests(numbersRepository, clock);
+                .createNumbersGeneratorFacadeForTests(numbersRepository, winningNumbersGenerable, clock);
         Instant drawDate = Instant.parse("2024-06-15T20:15:30.00Z");
         //when
         //then

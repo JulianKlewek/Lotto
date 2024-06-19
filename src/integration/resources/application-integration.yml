@@ -2,4 +2,4 @@ lotto:
   number-generator:
     scheduler-cron: "*/2 * * * * *"
   result-checker:
-    scheduler-cron: "*/2 * * * * *"
+    scheduler-cron: "*/4 * * * * *"

@@ -44,6 +44,20 @@ class WinningNumbersRepositoryTestImpl implements WinningNumbersRepository {
     }
 
     @Override
+    public Optional<WinningNumbersDetails> findFirstByOrderByDrawDate() {
+        return database.values().stream()
+                .sorted(Comparator.comparing(o -> o.drawDate))
+                .findFirst();
+    }
+
+    @Override
+    public boolean existsByDrawDate(Instant drawDate) {
+        return database.values().stream()
+                .filter(ticket -> ticket.drawDate.equals(drawDate))
+                .count() == 1;
+    }
+
+    @Override
 
     public <S extends WinningNumbersDetails> S insert(S entity) {
         return null;
