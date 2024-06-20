@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: lotto-engine
   data:
     mongodb:
       host: localhost
@@ -9,6 +11,11 @@ spring:
       auto-index-creation: true
   main:
     allow-bean-definition-overriding: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
 
 lotto:
   time:

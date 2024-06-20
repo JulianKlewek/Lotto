@@ -22,6 +22,7 @@
         <awaitility.version>4.2.0</awaitility.version>
         <mockito-core.version>5.11.0</mockito-core.version>
         <lombok.version>1.18.30</lombok.version>
+        <spring-cloud-starter-netflix-eureka-client.version>4.1.2</spring-cloud-starter-netflix-eureka-client.version>
     </properties>
 
     <dependencies>
@@ -44,6 +45,12 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-mongodb</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <version>${spring-cloud-starter-netflix-eureka-client.version}</version>
+        </dependency>
+
         <!-- TESTING COMPONENTS -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

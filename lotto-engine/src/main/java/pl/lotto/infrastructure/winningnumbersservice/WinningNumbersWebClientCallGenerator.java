@@ -11,10 +11,12 @@ import java.time.Instant;
 @Component
 public class WinningNumbersWebClientCallGenerator {
 
-    private final WebClient webClient;
+    private final WebClient.Builder webClient;
 
     public WinningNumbersResponseDto callForWinningNumbersWithDrawDate(Instant drawDate) {
-        return webClient.get()
+        return webClient
+                .baseUrl("http://numbers-generator/").build()
+                .get()
                 .uri("winning-numbers/{drawDate}", drawDate)
                 .retrieve()
                 .bodyToMono(WinningNumbersResponseDto.class)
