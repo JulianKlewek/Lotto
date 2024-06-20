@@ -1,3 +1,6 @@
+server:
+  port: 0
+
 spring:
   application:
     name: lotto-engine
@@ -29,7 +32,5 @@ lotto:
     win-message-received: "Congratulations you have won, but already received reward."
     win-message-not-received: "Congratulations you have won, you can receive reward."
     lose-message: "Unfortunately you didn't won."
-  number-generator:
-    scheduler-cron: "${lotto.time.drawSecond} ${lotto.time.drawMinute} ${lotto.time.drawHour} * * ${lotto.time.drawDayOfWeek}"
   result-checker:
     scheduler-cron: "${lotto.time.drawSecond} ${lotto.time.resultsMinute} ${lotto.time.drawHour} * * ${lotto.time.drawDayOfWeek}"

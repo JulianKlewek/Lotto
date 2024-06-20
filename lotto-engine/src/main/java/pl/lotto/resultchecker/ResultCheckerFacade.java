@@ -2,6 +2,7 @@ package pl.lotto.resultchecker;
 
 import pl.lotto.resultchecker.dto.BasicTicketInfoResponseDto;
 import pl.lotto.resultchecker.dto.TicketResultResponseDto;
+import pl.lotto.resultchecker.dto.WinningNumbersResultsDto;
 import pl.lotto.resultchecker.dto.WinningTicketsDto;
 
 import java.time.Instant;
@@ -17,4 +18,6 @@ public interface ResultCheckerFacade {
     TicketResultResponseDto isSpecificTicketWon(String ticketHash);
 
     boolean isSystemGeneratedResults(Instant drawDate);
+
+    WinningNumbersResultsDto findWinningNumbersForLottery(Instant drawDate);
 }

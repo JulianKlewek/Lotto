@@ -1,9 +1,9 @@
 server:
-  port: 8090
+  port: 0
 
 spring:
   application:
-    name: number-generator
+    name: numbersgeneratorservice
   data:
     mongodb:
       host: localhost

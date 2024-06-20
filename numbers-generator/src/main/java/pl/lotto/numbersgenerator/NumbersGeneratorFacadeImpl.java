@@ -57,7 +57,6 @@ class NumbersGeneratorFacadeImpl implements NumbersGeneratorFacade {
     public Instant getLatestDrawDateWithGeneratedNumbers() {
         WinningNumbersDetails latestNumbers = numbersRepository.findFirstByOrderByDrawDate().orElseThrow(
                 () -> new WinningNumbersNotFoundException("Not found any winning numbers"));
-        Instant latestDrawDate = latestNumbers.drawDate;
-        return latestDrawDate;
+        return latestNumbers.drawDate;
     }
 }

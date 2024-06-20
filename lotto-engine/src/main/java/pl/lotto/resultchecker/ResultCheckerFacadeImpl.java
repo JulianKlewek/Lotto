@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.dto.UserTicketsDto;
-import pl.lotto.resultchecker.dto.BasicTicketInfoResponseDto;
-import pl.lotto.resultchecker.dto.TicketResultResponseDto;
-import pl.lotto.resultchecker.dto.WinningTicketDto;
-import pl.lotto.resultchecker.dto.WinningTicketsDto;
+import pl.lotto.resultchecker.dto.*;
 import pl.lotto.infrastructure.winningnumbersservice.dto.WinningNumbersResponseDto;
 
 import java.time.Instant;
@@ -70,6 +67,12 @@ public class ResultCheckerFacadeImpl implements ResultCheckerFacade {
     @Override
     public boolean isSystemGeneratedResults(Instant drawDate) {
         return ticketRepository.existsByDrawDate(drawDate);
+    }
+
+    @Override
+    public WinningNumbersResultsDto findWinningNumbersForLottery(Instant drawDate) {
+        WinningNumbersResponseDto response = winningNumbersPort.getWinningNumbersForDate(drawDate);
+        return WinningNumbersResultMapper.responseToDto(response);
     }
 
 }

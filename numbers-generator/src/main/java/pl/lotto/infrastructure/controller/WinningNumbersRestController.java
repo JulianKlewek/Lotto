@@ -12,7 +12,7 @@ import java.time.Instant;
 
 @AllArgsConstructor
 @RestController
-public class WinningNumbersRestController {
+class WinningNumbersRestController {
 
     private final NumbersGeneratorFacade numbersGeneratorFacade;
 
