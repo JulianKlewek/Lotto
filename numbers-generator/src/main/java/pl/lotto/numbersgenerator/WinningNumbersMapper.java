@@ -1,8 +1,8 @@
 package pl.lotto.numbersgenerator;
 
-import pl.lotto.numbersgenerator.dto.WinningNumbersDto;
+import pl.lotto.numbersgenerator.dto.WinningNumbersResponseDto;
 
-import static pl.lotto.numbersgenerator.dto.WinningNumbersDto.*;
+import static pl.lotto.numbersgenerator.dto.WinningNumbersResponseDto.*;
 
 class WinningNumbersMapper {
 
@@ -10,7 +10,7 @@ class WinningNumbersMapper {
         throw new IllegalStateException("Utility class");
     }
 
-    public static WinningNumbersDto toDto(WinningNumbersDetails winningNumbersDetails) {
+    public static WinningNumbersResponseDto toDto(WinningNumbersDetails winningNumbersDetails) {
         return builder()
                 .numbers(winningNumbersDetails.numbers)
                 .lotteryNumber(winningNumbersDetails.lotteryNumber)

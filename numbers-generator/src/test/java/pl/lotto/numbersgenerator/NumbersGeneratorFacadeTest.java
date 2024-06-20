@@ -2,7 +2,7 @@ package pl.lotto.numbersgenerator;
 
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
-import pl.lotto.numbersgenerator.dto.WinningNumbersDto;
+import pl.lotto.numbersgenerator.dto.WinningNumbersResponseDto;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -12,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+
 class NumbersGeneratorFacadeTest extends NumbersGeneratorTestConfig {
 
     @RepeatedTest(10)
@@ -20,10 +21,11 @@ class NumbersGeneratorFacadeTest extends NumbersGeneratorTestConfig {
         NumbersGeneratorFacadeImpl numbersGeneratorFacade = new NumbersGeneratorConfiguration()
                 .createNumbersGeneratorFacadeForTests(numbersRepository, winningNumbersGenerable, clock);
         //when
-        WinningNumbersDto winningNumbersDto = numbersGeneratorFacade.generateWinningNumbers();
+        WinningNumbersResponseDto winningNumbersDto = numbersGeneratorFacade.generateWinningNumbers();
         //then
         List<Integer> winningNumbersSet = winningNumbersDto.numbers();
         Long lotteryNumber = winningNumbersDto.lotteryNumber();
+
         assertAll(
                 () -> assertThat(winningNumbersSet)
                         .hasSize(EXPECTED_AMOUNT_OF_GENERATED_NUMBERS)
@@ -46,7 +48,7 @@ class NumbersGeneratorFacadeTest extends NumbersGeneratorTestConfig {
         Instant drawDate = Instant.parse("2024-06-14T20:00:00.00Z");
         numbersGeneratorFacade.generateWinningNumbers();
         //when
-        WinningNumbersDto winningNumbers = numbersGeneratorFacade.getWinningNumbersForDate(drawDate);
+        WinningNumbersResponseDto winningNumbers = numbersGeneratorFacade.getWinningNumbersForDate(drawDate);
         //then
         Instant actualDrawDate = winningNumbers.drawDate();
         Long actualLotteryNumber = winningNumbers.lotteryNumber();
@@ -65,6 +67,7 @@ class NumbersGeneratorFacadeTest extends NumbersGeneratorTestConfig {
         Instant drawDate = Instant.parse("2024-06-15T20:15:30.00Z");
         //when
         //then
+
         assertThatExceptionOfType(WinningNumbersNotFoundException.class)
                 .isThrownBy(() -> numbersGeneratorFacade.getWinningNumbersForDate(drawDate))
                 .withMessage("Winning numbers not found");

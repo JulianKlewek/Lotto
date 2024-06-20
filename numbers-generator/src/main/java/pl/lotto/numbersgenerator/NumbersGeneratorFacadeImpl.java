@@ -1,7 +1,7 @@
 package pl.lotto.numbersgenerator;
 
 import lombok.AllArgsConstructor;
-import pl.lotto.numbersgenerator.dto.WinningNumbersDto;
+import pl.lotto.numbersgenerator.dto.WinningNumbersResponseDto;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -20,7 +20,7 @@ class NumbersGeneratorFacadeImpl implements NumbersGeneratorFacade {
     private final Clock clock;
 
     @Override
-    public WinningNumbersDto generateWinningNumbers() {
+    public WinningNumbersResponseDto generateWinningNumbers() {
         Instant createdAt = Instant.now(clock).truncatedTo(ChronoUnit.MINUTES);
         if (numbersRepository.existsByDrawDate(createdAt)) {
             WinningNumbersDetails fetchedWinningNumbers = numbersRepository.findByDrawDate(createdAt).orElseThrow(
@@ -40,14 +40,14 @@ class NumbersGeneratorFacadeImpl implements NumbersGeneratorFacade {
     }
 
     @Override
-    public WinningNumbersDto getWinningNumbersForDate(Instant drawDate) {
+    public WinningNumbersResponseDto getWinningNumbersForDate(Instant drawDate) {
         WinningNumbersDetails winningNumbers = numbersRepository.findByDrawDate(drawDate).orElseThrow(
                 () -> new WinningNumbersNotFoundException("Winning numbers not found"));
         return toDto(winningNumbers);
     }
 
     @Override
-    public WinningNumbersDto getWinningNumbersForLotteryNumber(Long lotteryId) {
+    public WinningNumbersResponseDto getWinningNumbersForLotteryNumber(Long lotteryId) {
         WinningNumbersDetails winningNumbers = numbersRepository.findByLotteryNumber(lotteryId).orElseThrow(
                 () -> new WinningNumbersNotFoundException("Winning numbers not found"));
         return toDto(winningNumbers);
