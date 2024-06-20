@@ -8,7 +8,7 @@ public interface NumbersGeneratorFacade {
 
     WinningNumbersResponseDto generateWinningNumbers();
 
-    WinningNumbersResponseDto getWinningNumbersForDate(Instant drawDate);
+    WinningNumbersResponseDto getWinningNumbersForDate(Instant request);
 
     WinningNumbersResponseDto getWinningNumbersForLotteryNumber(Long lotteryNumber);
 
