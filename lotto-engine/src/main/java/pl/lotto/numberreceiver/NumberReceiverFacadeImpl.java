@@ -1,20 +1,22 @@
 package pl.lotto.numberreceiver;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import pl.lotto.drawdategenerator.DrawDateGeneratorFacade;
 import pl.lotto.drawdategenerator.dto.DrawDateDto;
 import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
 import pl.lotto.numberreceiver.dto.TicketDto;
 import pl.lotto.numberreceiver.dto.UserTicketsDto;
 
-import java.time.*;
-import java.util.*;
+import java.time.Clock;
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.List;
 
-import static pl.lotto.numberreceiver.TicketMapper.*;
 import static pl.lotto.numberreceiver.TicketMapper.toDto;
+import static pl.lotto.numberreceiver.TicketMapper.toDtoList;
 
-@Slf4j
+@Log4j2
 @AllArgsConstructor
 class NumberReceiverFacadeImpl implements NumberReceiverFacade {
 
