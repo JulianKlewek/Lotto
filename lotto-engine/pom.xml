@@ -23,6 +23,7 @@
         <mockito-core.version>5.11.0</mockito-core.version>
         <lombok.version>1.18.30</lombok.version>
         <spring-cloud-starter-netflix-eureka-client.version>4.1.2</spring-cloud-starter-netflix-eureka-client.version>
+        <wiremock.version>3.6.0</wiremock.version>
     </properties>
 
     <dependencies>
@@ -97,6 +98,12 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>${mockito-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.wiremock</groupId>
+            <artifactId>wiremock</artifactId>
+            <version>${wiremock.version}</version>
             <scope>test</scope>
         </dependency>
         <!--LOMBOK        -->
