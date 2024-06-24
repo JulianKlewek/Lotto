@@ -1,24 +1,32 @@
 package pl.lotto.feature;
 
+import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.matching.ContainsPattern;
+import com.github.tomakehurst.wiremock.matching.StringValuePattern;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import pl.lotto.BaseIntegrationTest;
+import pl.lotto.infrastructure.controller.error.WinningNumbersGeneratorException;
+import pl.lotto.infrastructure.winningnumbersservice.dto.WinningNumbersResponseDto;
 import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
+import pl.lotto.resultchecker.dto.WinningTicketDto;
 import pl.lotto.resultchecker.dto.WinningTicketsDto;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static org.awaitility.Awaitility.await;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathTemplate;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
 
 class LotteryGameIsSuccessfulIT extends BaseIntegrationTest {
 
@@ -49,37 +57,49 @@ class LotteryGameIsSuccessfulIT extends BaseIntegrationTest {
         //step 2: system generates winning numbers and returns winning numbers for given date
         //given
         Instant drawDate = receiverResult.ticket().drawDate();
+        String hash = receiverResult.ticket().hash();
+        WinningTicketDto winningTicket = WinningTicketDto.builder()
+                .hash(hash)
+                .userNumbers(List.of(1, 2, 3, 4, 5, 6))
+                .lotteryNumber(1L)
+                .amountOfCorrectNumbers(6)
+                .drawDate(drawDate)
+                .build();
+        WinningTicketsDto winningTicketsResponse = WinningTicketsDto.builder()
+                .winningTickets(List.of(winningTicket))
+                .build();
         //when & then
-//        await().atMost(20, TimeUnit.SECONDS)
-//                .pollInterval(1, TimeUnit.SECONDS)
-//                .until(() -> {
-//                    try {
-//                        WinningNumbersResponseDto winningNumbersResponseDto = winningNumbersPort.getWinningNumbersForDate(drawDate);
-//                        return winningNumbersResponseDto.numbers().size() == 6;
-//                    } catch (WinningNumbersNotFoundException exception) {
-//                        return false;
-//                    }
-//                });
-        http://numbersgeneratorservice/
-//        wireMockServer.stubFor(get(urlPathMatching("winning-numbers/"))
-//                        .with()
-//                .withQueryParam("skuCodes", equalTo("iphone_14_blue"))
-//                .willReturn(aResponse()
-//                        .withStatus(200)
-//                        .withHeader("Content-Type", "*/*")
-//                        .withBody(responseBody)
-//                )
-//        );
+        StringValuePattern requestBodyPattern = new ContainsPattern(".*");
 
-        //step 3: system checks results
-        //given & when & then
+        WinningNumbersResponseDto a = WinningNumbersResponseDto.builder()
+                .numbers(List.of(1,2,3,4,5,6))
+                .lotteryNumber(1L)
+                .drawDate(drawDate)
+                .build();
+        String responseBody = objectMapper.writeValueAsString(a);
+
+//        wireMockServer.stubFor(WireMock.get(urlPathEqualTo("/winning-numbers/2024-06-14T20:00:00Z"))
+        wireMockServer.stubFor(WireMock.get(urlPathTemplate("/winning-numbers/{drawDate}"))
+//                        .withPathParam("drawDate", WireMock.equalTo("2024-06-14T20:00:00Z"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "*/*")
+                        .withBody(responseBody)));
+
+
         await().atMost(20, TimeUnit.SECONDS)
                 .pollInterval(1, TimeUnit.SECONDS)
-                .until(() ->
-                {
-                    WinningTicketsDto winningTicketsDto = resultCheckerFacade.checkAllWinningTicketsForGivenDrawDate(drawDate);
-                    return !winningTicketsDto.winningTickets().isEmpty();
+                .until(() -> {
+                    try {
+                        WinningNumbersResponseDto numbersForDate = winningNumbersPort.getWinningNumbersForDate(drawDate);
+                        return numbersForDate.numbers().size() == 6;
+                    } catch (WinningNumbersGeneratorException exception) {
+                        return false;
+                    }
                 });
+
+        WireMock.verify(WireMock.getRequestedFor(WireMock.urlEqualTo("http://numbersgeneratorservice/winning-numbers/2024-06-14T20:00:00Z"))
+                .withHeader("Content-Type", WireMock.equalTo("*/*")));
 
         // step 3: user check results and receives data that he won
         //given & when

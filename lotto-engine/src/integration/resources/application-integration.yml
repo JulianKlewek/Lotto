@@ -1,5 +1,16 @@
 lotto:
   number-generator:
-    scheduler-cron: "*/2 * * * * *"
+    service:
+      url: "http://localhost"
   result-checker:
     scheduler-cron: "*/4 * * * * *"
+
+eureka:
+  client:
+    enabled: false
+
+spring:
+  cloud:
+    loadbalancer:
+      enabled: false
+

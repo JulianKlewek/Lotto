@@ -44,7 +44,7 @@ public class BaseIntegrationTest {
     @DynamicPropertySource
     private static void propertyOverride(DynamicPropertyRegistry registry) {
         registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
-        registry.add("numbersgenerator.service.url", () -> WIREMOCK_SERVER_HOST + ":" + wireMockServer.getPort());
+        registry.add("lotto.number-generator.service.url", () -> WIREMOCK_SERVER_HOST + ":" + wireMockServer.getPort());
         registry.add("spring.cloud.loadbalancer.enabled", () -> true);
     }
 

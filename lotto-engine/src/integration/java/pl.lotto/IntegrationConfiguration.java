@@ -18,6 +18,7 @@ public class IntegrationConfiguration {
         LocalDateTime today = LocalDateTime.of(2024, Month.JUNE, 14, 18, 0, 0);
         return Clock.fixed(today.toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
     }
+
     @AfterEach
     void afterEach() {
         log.info("Resetting wireMock");

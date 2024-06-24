@@ -21,6 +21,9 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
 
 lotto:
+  number-generator:
+    service:
+      url: "http://numbersgeneratorservice"
   time:
     drawDayOfWeek: 5
     drawHour: 20
