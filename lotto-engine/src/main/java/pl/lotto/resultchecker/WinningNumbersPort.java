@@ -10,5 +10,4 @@ public interface WinningNumbersPort {
 
     WinningNumbersResponseDto getWinningNumbersForLotteryNumber(Long lotteryId);
 
-    Instant getLatestDrawDateWithGeneratedNumbers();
 }

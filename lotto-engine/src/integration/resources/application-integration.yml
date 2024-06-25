@@ -1,9 +1,9 @@
 lotto:
   number-generator:
     service:
-      url: "http://localhost"
+      url:
   result-checker:
-    scheduler-cron: "*/4 * * * * *"
+    scheduler-cron: "*/2 * * * * *"
 
 eureka:
   client:
@@ -13,4 +13,5 @@ spring:
   cloud:
     loadbalancer:
       enabled: false
+
 

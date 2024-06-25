@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -14,6 +15,7 @@ import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
+import pl.lotto.infrastructure.scheduler.resultchecker.ResultCheckerScheduler;
 import pl.lotto.resultchecker.ResultCheckerFacade;
 import pl.lotto.resultchecker.WinningNumbersPort;
 
@@ -38,6 +40,8 @@ public class BaseIntegrationTest {
     protected ResultCheckerFacade resultCheckerFacade;
     @Autowired
     protected ObjectMapper objectMapper;
+    @SpyBean
+    protected ResultCheckerScheduler resultCheckerScheduler;
     @Container
     private static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
 
@@ -45,7 +49,7 @@ public class BaseIntegrationTest {
     private static void propertyOverride(DynamicPropertyRegistry registry) {
         registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
         registry.add("lotto.number-generator.service.url", () -> WIREMOCK_SERVER_HOST + ":" + wireMockServer.getPort());
-        registry.add("spring.cloud.loadbalancer.enabled", () -> true);
+        registry.add("spring.cloud.loadbalancer.enabled", () -> false);
     }
 
     @RegisterExtension
@@ -55,4 +59,5 @@ public class BaseIntegrationTest {
 
     protected static final Pattern UUID_REGEX =
             Pattern.compile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
+
 }

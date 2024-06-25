@@ -12,6 +12,7 @@ import java.time.Instant;
 public class WinningNumbersGeneratorPortHttpService implements WinningNumbersPort {
 
     private final WinningNumbersWebClientCallGenerator winningNumbersWebClientCallGenerator;
+
     @Override
     public WinningNumbersResponseDto getWinningNumbersForDate(Instant drawDate) {
         return winningNumbersWebClientCallGenerator.callForWinningNumbersWithDrawDate(drawDate);
@@ -22,8 +23,4 @@ public class WinningNumbersGeneratorPortHttpService implements WinningNumbersPor
         return null;
     }
 
-    @Override
-    public Instant getLatestDrawDateWithGeneratedNumbers() {
-        return null;
-    }
 }
