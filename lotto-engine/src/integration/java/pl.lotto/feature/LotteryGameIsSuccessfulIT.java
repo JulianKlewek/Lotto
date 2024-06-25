@@ -37,7 +37,7 @@ class LotteryGameIsSuccessfulIT extends BaseIntegrationTest {
         List<Integer> typedNumbers = List.of(1, 2, 3, 4, 5, 6);
         String expectedDrawDate = "2024-06-14T20:00:00Z";
         //when
-        ResultActions perform = mockMvc.perform(post("/inputNumbers")
+        ResultActions perform = mockMvc.perform(post("/input-numbers")
                 .content("{\"inputNumbers\":" + typedNumbers + "}")
                 .contentType(MediaType.APPLICATION_JSON_VALUE));
         //then

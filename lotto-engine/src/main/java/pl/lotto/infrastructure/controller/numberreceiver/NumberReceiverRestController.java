@@ -21,7 +21,7 @@ public class NumberReceiverRestController {
 
     private final NumberReceiverFacade numberReceiverFacade;
 
-    @PostMapping("/inputNumbers")
+    @PostMapping("/input-numbers")
     public ResponseEntity<NumberReceiverResultDto> inputNumbers(@RequestBody NumberReceiverRequestDto request) {
         List<Integer> numbersList = request.inputNumbers();
         NumberReceiverResultDto result = numberReceiverFacade.inputNumbers(numbersList);
