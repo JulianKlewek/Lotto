@@ -5,3 +5,11 @@
 /target/generated-test-sources/
 /target/test-classes/
 /Lotto.iml
+/out/
+/lotto-engine/target/
+/lotto-engine/out/
+/numbers-generator/target/
+/numbers-generator/out/
+/numbers-generator/numbers-generator.iml
+/lotto-engine.iml
+/discovery-server-service.iml

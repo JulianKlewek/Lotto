@@ -1,0 +1,17 @@
+lotto:
+  number-generator:
+    service:
+      url:
+  result-checker:
+    scheduler-cron: "*/2 * * * * *"
+
+eureka:
+  client:
+    enabled: false
+
+spring:
+  cloud:
+    loadbalancer:
+      enabled: false
+
+

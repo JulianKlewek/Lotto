@@ -1,0 +1,29 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: numbersgeneratorservice
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: lotto
+      username: admin
+      password: admin
+      auto-index-creation: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+lotto:
+  time:
+    drawDayOfWeek: 5
+    drawHour: 20
+    drawMinute: 0
+    drawSecond: 0
+    drawTime: "${lotto.time.drawHour}:${lotto.time.drawMinute}:${lotto.time.drawSecond}}"
+  number-generator:
+    scheduler-cron: "${lotto.time.drawSecond} ${lotto.time.drawMinute} ${lotto.time.drawHour} * * ${lotto.time.drawDayOfWeek}"
