@@ -4,8 +4,6 @@ This project is a web application created in Spring Boot which allows users to p
 
 This project uses modular monolithic application architecture with elements of hexagonal and microservice architecture. The numbers-generator has been separated as an independent microservice.
 
-
-
 ## Tech
 
 Order System is developed using following technologies: <br>
@@ -23,11 +21,15 @@ Testing:<br>
 Other:<br>
 ![image](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white) &nbsp;
 
+Continuous integration: <br>
+[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/DmCGbhvsat4gP2YLSDSfx4/JtzsURR2NSU8SyxJrkdYBo/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/DmCGbhvsat4gP2YLSDSfx4/JtzsURR2NSU8SyxJrkdYBo/tree/master)
+
 ## Specification
 
 - Spring Boot, web application
 - Modular monolith hexagonal architecture with one module extracted as microservice
-- Developed using CircleCi - Continous Integration tool
+- All modules are containerized using Docker
+- Developed using CircleCi - Continuous Integration tool
 - Facade design pattern
 - NoSQL Database (MongoDB)
 - Good coverage with unit tests, including "happy path" integration test
