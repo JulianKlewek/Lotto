@@ -15,8 +15,8 @@ public class NumbersGeneratorConfiguration {
     }
 
     @Bean
-    WinningNumbersGenerable winningNumbersGenerable() {
-        return new WinningNumbersGenerator();
+    WinningNumbersGenerable winningNumbersGenerable(WinningNumbersPropertyConfigurable propertyConfigurable) {
+        return new WinningNumbersGenerator(propertyConfigurable);
     }
 
     @Bean

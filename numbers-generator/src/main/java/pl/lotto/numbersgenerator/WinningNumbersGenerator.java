@@ -1,23 +1,24 @@
 package pl.lotto.numbersgenerator;
 
+import lombok.RequiredArgsConstructor;
+
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
+@RequiredArgsConstructor
 class WinningNumbersGenerator implements WinningNumbersGenerable {
 
-    public static final int MINIMUM_NUMBER = 1;
-    public static final int MAXIMUM_NUMBER = 50;
+    private final WinningNumbersPropertyConfigurable winningNumbersProperty;
     private static final Random RANDOM = new Random();
 
     @Override
     public Set<Integer> generateSixNumbersInGivenRange() {
         return RANDOM
-                .ints(MINIMUM_NUMBER, MAXIMUM_NUMBER)
+                .ints(winningNumbersProperty.getMinimumNumber(), winningNumbersProperty.getMaximumNumber())
                 .distinct()
                 .boxed()
-                .limit(6)
+                .limit(winningNumbersProperty.getAmountOfNumbers())
                 .collect(Collectors.toSet());
     }
 

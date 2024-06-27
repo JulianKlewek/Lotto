@@ -21,6 +21,10 @@ eureka:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 
 lotto:
+  numbers:
+    minimumNumber: 1
+    maximumNumber: 50
+    amountOfNumbers: 6
   time:
     drawDayOfWeek: 5
     drawHour: 20

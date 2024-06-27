@@ -16,8 +16,8 @@ import static org.junit.jupiter.api.TestInstance.*;
 class NumbersGeneratorTestConfig implements NumbersGeneratorTestConstants {
 
     WinningNumbersRepositoryTestImpl numbersRepository = new WinningNumbersRepositoryTestImpl();
-
-    WinningNumbersGenerable winningNumbersGenerable = new WinningNumbersGenerator();
+    WinningNumbersPropertyConfigurable propertyConfigurable = new WinningNumbersPropertyTestConfig(1, 50, 6);
+    WinningNumbersGenerable winningNumbersGenerable = new WinningNumbersGenerator(propertyConfigurable);
     Clock clock = Clock.systemUTC();
 
     @BeforeEach
