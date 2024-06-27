@@ -9,7 +9,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
-@Document(collection = "tickets")
+@Document(collection = "UserTicket")
 class Ticket {
 
     String hash;
