@@ -14,7 +14,7 @@ class DateGenerator {
 
     public Instant generateDrawDate(Instant ticketCreatedAt) {
         DayOfWeek drawDay = DayOfWeek.of(propertyConfigurable.getDrawDayOfWeek());
-        if (isDrawDay(ticketCreatedAt) && !isHourLessThanHourClosingReceivingTickets(ticketCreatedAt)) {
+        if (isDrawDay(ticketCreatedAt, drawDay) && !isHourLessThanHourClosingReceivingTickets(ticketCreatedAt)) {
             return ticketCreatedAt.atZone(ZoneOffset.UTC)
                     .with(next(drawDay))
                     .withHour(propertyConfigurable.getDrawHour())
@@ -38,8 +38,7 @@ class DateGenerator {
                 .getHour() < propertyConfigurable.getDrawHour();
     }
 
-    private boolean isDrawDay(Instant ticketCreatedTime) {
-        DayOfWeek drawDay = DayOfWeek.of(propertyConfigurable.getDrawDayOfWeek());
+    private boolean isDrawDay(Instant ticketCreatedTime, DayOfWeek drawDay) {
         return ticketCreatedTime
                 .atZone(ZoneOffset.UTC)
                 .getDayOfWeek()
