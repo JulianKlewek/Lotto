@@ -7,12 +7,12 @@ import org.springframework.context.annotation.Configuration;
 public class DrawDateGeneratorConfiguration {
 
     @Bean
-    public DrawDateGeneratorFacadeImpl drawDateGeneratorFacade() {
-        DateGenerator dateGenerator = new DateGenerator();
+    public DrawDateGeneratorFacadeImpl drawDateGeneratorFacade(DrawDatePropertyConfigurable propertyConfigurable) {
+        DateGenerator dateGenerator = new DateGenerator(propertyConfigurable);
         return new DrawDateGeneratorFacadeImpl(dateGenerator);
     }
 
-    public DrawDateGeneratorFacadeImpl drawDateGeneratorFacadeForTest() {
-        return drawDateGeneratorFacade();
+    public DrawDateGeneratorFacadeImpl drawDateGeneratorFacadeForTest(DrawDatePropertyConfigurable propertyConfigurable) {
+        return drawDateGeneratorFacade(propertyConfigurable);
     }
 }

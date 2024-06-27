@@ -15,7 +15,8 @@ class DrawDateGeneratorFacadeTest extends DrawDateGeneratorFacadeConfig {
     @MethodSource("VALID_CURRENT_WEEK_DRAW_DATES")
     void should_return_current_week_friday_eight_pm_utc_time(ZonedDateTime ticketCreatedAt, ZonedDateTime expectedDrawDate) {
         //given
-        DrawDateGeneratorFacade drawDateGeneratorFacade = new DrawDateGeneratorConfiguration().drawDateGeneratorFacadeForTest();
+        DrawDateGeneratorFacade drawDateGeneratorFacade = new DrawDateGeneratorConfiguration()
+                .drawDateGeneratorFacadeForTest(propertyConfigurable);
         //when
         DrawDateDto drawDateDto = drawDateGeneratorFacade.getNextDrawDate(ticketCreatedAt.toInstant());
         //then
@@ -28,7 +29,8 @@ class DrawDateGeneratorFacadeTest extends DrawDateGeneratorFacadeConfig {
     @MethodSource("VALID_NEXT_WEEK_DRAW_DATES")
     void should_return_next_week_friday_eight_pm_utc_time(ZonedDateTime ticketCreatedAt, ZonedDateTime expectedDrawDate) {
         //given
-        DrawDateGeneratorFacade drawDateGeneratorFacade = new DrawDateGeneratorConfiguration().drawDateGeneratorFacadeForTest();
+        DrawDateGeneratorFacade drawDateGeneratorFacade = new DrawDateGeneratorConfiguration()
+                .drawDateGeneratorFacadeForTest(propertyConfigurable);
         //when
         DrawDateDto drawDateDto = drawDateGeneratorFacade.getNextDrawDate(ticketCreatedAt.toInstant());
         //then
