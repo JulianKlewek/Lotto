@@ -30,6 +30,21 @@
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
             <version>${spring-cloud-starter-netflix-eureka-client.version}</version>
         </dependency>
-
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>pl.lotto.GatewayRunner</mainClass>
+                    <layout>JAR</layout>
+                    <layers>
+                        <enabled>true</enabled>
+                    </layers>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
