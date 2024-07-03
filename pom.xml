@@ -13,6 +13,7 @@
         <module>lotto-engine</module>
         <module>numbers-generator</module>
         <module>discovery-server-service</module>
+        <module>gateway-service</module>
     </modules>
 
     <modelVersion>4.0.0</modelVersion>

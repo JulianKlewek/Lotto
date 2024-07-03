@@ -16,3 +16,5 @@
 /discovery-server-service/target/
 /discovery-server-service/discovery-server-service.iml
 /lotto-engine/lotto-engine.iml
+/gateway-service.iml
+/gateway-service/target/

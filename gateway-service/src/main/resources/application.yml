@@ -1,0 +1,32 @@
+server:
+  port: 8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+logging:
+  level:
+    root: info
+    org:
+      springframework:
+        cloud:
+          gateway: TRACE
+
+
+spring:
+  application:
+    name: api-gateway
+  main:
+    web-application-type: reactive
+  cloud:
+    gateway:
+      routes:
+        - id: lottoengine
+          uri: lb://lotto-engine
+          predicates:
+            - Path=/lottery/**,/result/**
+#            - Path=/result/**
+          filters:
+            - StripPrefix=1
