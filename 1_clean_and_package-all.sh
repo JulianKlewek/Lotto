@@ -3,5 +3,6 @@
 
 sh mvnw clean
 sh mvnw package -pl discovery-server-service -am
+sh mvnw package -pl gateway-service -am
 sh mvnw package -pl lotto-engine -am
 sh mvnw package -pl numbers-generator -am
