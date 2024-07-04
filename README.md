@@ -35,12 +35,13 @@ Continuous integration: <br>
 - Good coverage with unit tests, including "happy path" integration test
 - Scheduled winning numbers generation and results processing
 - Netflix-Eureka server used as discovery service
+- API Gateway
 
 
 ## Rest-API Endpoints
 
-|       ENDPOINT        | METHOD  |         REQUEST          |       RESPONSE       |                    FUNCTION                     |
-|:---------------------:|:-------:|:------------------------:|:--------------------:|:-----------------------------------------------:|
-|   /input-numbers      |  POST   | JSON BODY (user numbers) |    JSON (ticket)     |     creates new ticket for given numbers        |
-| /get-result/{ticketId}|  GET    | PATH VARIABLE(ticketId)  |    JSON (ticket)     |    returns lottery result for given ticketId    |
-|/get-results/{drawDate}|  GET    | PATH VARIABLE(drawDate)  |    JSON (results)    |    returns all lottery results for given date   |
+|              ENDPOINT              | METHOD  |         REQUEST          |       RESPONSE       |                    FUNCTION                     |
+|:----------------------------------:|:-------:|:------------------------:|:--------------------:|:-----------------------------------------------:|
+|       /lottery/input-numbers       |  POST   | JSON BODY (user numbers) |    JSON (ticket)     |     creates new ticket for given numbers        |
+|   /result/get-result/{ticketId}    |  GET    | PATH VARIABLE(ticketId)  |    JSON (ticket)     |    returns lottery result for given ticketId    |
+|   /result/get-results/{drawDate}   |  GET    | PATH VARIABLE(drawDate)  |    JSON (results)    |    returns all lottery results for given date   |

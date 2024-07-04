@@ -16,7 +16,7 @@ import java.util.Objects;
 import static pl.lotto.numberreceiver.NumberValidationResult.SUCCESS_MESSAGE;
 
 @RequiredArgsConstructor
-@RestController
+@RestController("lottery")
 public class NumberReceiverRestController {
 
     private final NumberReceiverFacade numberReceiverFacade;

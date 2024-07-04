@@ -3,7 +3,7 @@ lotto:
     service:
       url:
   result-checker:
-    scheduler-cron: "*/2 * * * * *"
+    scheduler-cron: "*/8 * * * * *"
 
 eureka:
   client:

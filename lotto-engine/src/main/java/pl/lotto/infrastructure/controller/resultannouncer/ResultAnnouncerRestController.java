@@ -11,7 +11,7 @@ import pl.lotto.resultannouncer.dto.AnnouncerWinningResultsResponseDto;
 
 import java.time.Instant;
 
-@RestController
+@RestController("result")
 @AllArgsConstructor
 public class ResultAnnouncerRestController {
 

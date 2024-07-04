@@ -2,10 +2,10 @@ package pl.lotto.resultchecker;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import pl.lotto.infrastructure.winningnumbersservice.dto.WinningNumbersResponseDto;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.dto.UserTicketsDto;
 import pl.lotto.resultchecker.dto.*;
-import pl.lotto.infrastructure.winningnumbersservice.dto.WinningNumbersResponseDto;
 
 import java.time.Instant;
 import java.util.List;
@@ -33,12 +33,24 @@ public class ResultCheckerFacadeImpl implements ResultCheckerFacade {
             winningTickets.add(ticketNobodyWon);
             log.info("No one won. Adding empty ticket");
         }
-        List<WinningTicket> savedWinningTickets = ticketRepository.saveAll(winningTickets);
-        log.info("Saved {} winning tickets", savedWinningTickets.size());
+        List<WinningTicket> savedWinningTickets = saveWinningTickets(winningTickets, drawDate);
         List<WinningTicketDto> winningTicketsDto = toDtoList(savedWinningTickets);
         return WinningTicketsDto.builder()
                 .winningTickets(winningTicketsDto)
                 .build();
+    }
+
+    private List<WinningTicket> saveWinningTickets(List<WinningTicket> winningTickets, Instant drawDate) {
+        boolean ticketsExists = ticketRepository.existsByDrawDate(drawDate);
+        List<WinningTicket> savedWinningTickets;
+        if (ticketsExists) {
+            savedWinningTickets = ticketRepository.findAllByDrawDate(drawDate);
+            log.info("Returned {} winning tickets", savedWinningTickets.size());
+            return savedWinningTickets;
+        }
+        savedWinningTickets = ticketRepository.saveAll(winningTickets);
+        log.info("Saved {} winning tickets", savedWinningTickets.size());
+        return savedWinningTickets;
     }
 
     @Override
