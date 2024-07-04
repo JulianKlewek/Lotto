@@ -14,7 +14,7 @@ import java.time.Instant;
 @CrossOrigin(origins = "http://localhost:8080")
 @AllArgsConstructor
 @RestController
-class WinningNumbersRestController {
+class WinningNumbersRestController implements WinningNumbersSwagger {
 
     private final NumbersGeneratorFacade numbersGeneratorFacade;
 
