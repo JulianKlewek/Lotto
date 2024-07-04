@@ -3,7 +3,7 @@ services:
 
   mongo:
     image: mongo
-    restart: always
+    restart: unless-stopped
     ports:
       - "27017:27017"
     environment:
@@ -17,7 +17,7 @@ services:
 
   mongo-express:
     image: mongo-express
-    restart: always
+    restart: unless-stopped
     ports:
       - "8088:8081"
     environment:
@@ -34,7 +34,7 @@ services:
     build: discovery-server-service
     image: julekkl/lottery/discovery-server:latest
     container_name: discovery-server
-    restart: always
+    restart: unless-stopped
     ports:
       - "8761:8761"
     networks:
@@ -44,7 +44,7 @@ services:
     build: gateway-service
     image: julekkl/lottery/gateway-service:latest
     container_name: gateway-service
-    restart: always
+    restart: unless-stopped
     ports:
       - "8080:8080"
     depends_on:
@@ -58,7 +58,7 @@ services:
     build: numbers-generator
     image: julekkl/lottery/numbers-generator
     container_name: numbers-generator
-    restart: always
+    restart: unless-stopped
     depends_on:
       - mongo
       - discovery-server
@@ -73,7 +73,7 @@ services:
     build: lotto-engine
     image: julekkl/lottery/lotto-engine
     container_name: lotto-engine
-    restart: always
+    restart: unless-stopped
     depends_on:
       - mongo
       - discovery-server

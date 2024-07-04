@@ -40,7 +40,15 @@ class WinnerTicketRepositoryTestImpl implements WinningTicketRepository {
                 .stream()
                 .filter(ticket -> ticket.drawDate.equals(drawDate))
                 .count();
-        return resultsForDate == 0;
+        return resultsForDate != 0;
+    }
+
+    @Override
+    public List<WinningTicket> findAllByDrawDate(Instant drawDate) {
+        return database.values()
+                .stream()
+                .filter(ticket -> ticket.drawDate.equals(drawDate))
+                .toList();
     }
 
     @Override

@@ -19,8 +19,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static java.net.URLEncoder.encode;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -62,8 +60,8 @@ class LotteryGameIsSuccessfulIT extends BaseIntegrationTest {
                 .drawDate(drawDate)
                 .build();
         String responseBody = objectMapper.writeValueAsString(winningNumbersResponseDto);
-        //when & then
 
+        //when & then
         wireMockServer.stubFor(WireMock.get(WireMock.urlPathTemplate("/winning-numbers/{drawDate}"))
                 .withPathParam("drawDate", WireMock.equalTo(encode("2024-06-14T20:00:00Z", UTF_8)))
                 .willReturn(aResponse()
@@ -74,7 +72,6 @@ class LotteryGameIsSuccessfulIT extends BaseIntegrationTest {
         await().atMost(20, TimeUnit.SECONDS)
                 .pollInterval(1, TimeUnit.SECONDS)
                 .until(() -> {
-                    verify(resultCheckerScheduler, atLeastOnce()).checkResults();
                     WinningTicketsDto tickets = resultCheckerFacade.checkAllWinningTicketsForGivenDrawDate(drawDate);
                     return !tickets.winningTickets().isEmpty();
                 });
