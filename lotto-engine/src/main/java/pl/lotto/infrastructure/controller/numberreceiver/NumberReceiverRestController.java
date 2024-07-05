@@ -19,7 +19,7 @@ import static pl.lotto.numberreceiver.NumberValidationResult.SUCCESS_MESSAGE;
 @CrossOrigin(origins = "http://localhost:8080")
 @RequiredArgsConstructor
 @RestController("lottery")
-public class NumberReceiverRestController {
+public class NumberReceiverRestController implements NumberReceiverSwagger {
 
     private final NumberReceiverFacade numberReceiverFacade;
 
@@ -28,7 +28,7 @@ public class NumberReceiverRestController {
         List<Integer> numbersList = request.inputNumbers();
         NumberReceiverResultDto result = numberReceiverFacade.inputNumbers(numbersList);
         HttpStatus httpStatus = Objects.equals(result.status(), SUCCESS_MESSAGE)
-                ? HttpStatus.OK
+                ? HttpStatus.CREATED
                 : HttpStatus.BAD_REQUEST;
         return new ResponseEntity<>(result, httpStatus);
     }

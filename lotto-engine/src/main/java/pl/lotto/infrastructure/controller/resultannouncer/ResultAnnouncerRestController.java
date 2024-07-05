@@ -15,7 +15,7 @@ import java.time.Instant;
 @CrossOrigin(origins = "http://localhost:8080")
 @AllArgsConstructor
 @RestController("result")
-public class ResultAnnouncerRestController {
+public class ResultAnnouncerRestController implements ResultAnnouncerSwagger {
 
     private final ResultAnnouncerFacade resultAnnouncerFacade;
 

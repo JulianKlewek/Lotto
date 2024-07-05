@@ -14,7 +14,7 @@ import pl.lotto.numbersgenerator.dto.WinningNumbersResponseDto;
 
 import java.time.Instant;
 
-@Tag(name = "Winning Numbers RestController", description = "RestController responsible for winning numbers")
+@Tag(name = "Winning Numbers RestController", description = "Microservice responsible for winning numbers")
 interface WinningNumbersSwagger {
 
     @Operation(summary = "Get numbers for date", description = "Returns a winning numbers details for given drawDate")
