@@ -23,10 +23,34 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: lottoengine
+        - id: LOTTO-ENGINE
           uri: lb://lotto-engine
           predicates:
             - Path=/lottery/**,/result/**
-#            - Path=/result/**
           filters:
             - StripPrefix=1
+        - id: LOTTO-ENGINE-swagger
+          uri: lb://lotto-engine
+          predicates:
+            - Path=/lotto-engine/v3/api-docs
+            - Method=GET
+        - id: NUMBERS-GENERATOR-swagger
+          uri: lb://numbers-generator
+          predicates:
+            - Path=/numbers-generator/v3/api-docs
+            - Method=GET
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+#      - url: /v3/api-docs
+#        name: API Gateway Service
+      - url: /lotto-engine/v3/api-docs
+        name: Lotto Engine
+      - url: /numbers-generator/v3/api-docs
+        name: Numbers Generator
