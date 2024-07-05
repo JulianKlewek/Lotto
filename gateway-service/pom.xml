@@ -16,6 +16,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-cloud-dependencies.version>2023.0.2</spring-cloud-dependencies.version>
+        <springdoc-openapi-starter-webflux-ui.version>2.6.0</springdoc-openapi-starter-webflux-ui.version>
     </properties>
 
     <dependencies>
@@ -26,6 +27,12 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+<!--        SWAGGER http://localhost:8080/webjars/swagger-ui/index.html -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
+            <version>${springdoc-openapi-starter-webflux-ui.version}</version>
         </dependency>
     </dependencies>
 

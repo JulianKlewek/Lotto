@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: numbersgeneratorservice
+    name: numbers-generator
   data:
     mongodb:
       host: localhost
@@ -33,3 +33,14 @@ lotto:
     drawTime: "${lotto.time.drawHour}:${lotto.time.drawMinute}:${lotto.time.drawSecond}}"
   number-generator:
     scheduler-cron: "${lotto.time.drawSecond} ${lotto.time.drawMinute} ${lotto.time.drawHour} * * ${lotto.time.drawDayOfWeek}"
+
+openapi:
+  service:
+    title: numbers-generator doc
+    version: 1.0.0
+    url: http://localhost:8080 #api gateway url
+springdoc:
+  swagger-ui:
+    path: /numbers-generator/swagger-ui.html
+  api-docs:
+    path: /numbers-generator/v3/api-docs

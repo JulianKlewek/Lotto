@@ -1,8 +1,12 @@
 # Lotto Game
 
-This project is a web application created in Spring Boot which allows users to play well-known lottery game. User provides 6 distinct numbers in range from 1 to 50 for which system generates coupon with unique id. Winning numbers are generated once a week, at specified time. To win user must hit at least 4 matching numbers. Users can check if they won by using ticket unique id.
+This project is a web application created in Spring Boot which allows users to play well-known lottery game. User
+provides 6 distinct numbers in range from 1 to 50 for which system generates coupon with unique id. Winning numbers are
+generated once a week, at specified time. To win user must hit at least 4 matching numbers. Users can check if they won
+by using ticket unique id.
 
-This project uses modular monolithic application architecture with elements of hexagonal and microservice architecture. The numbers-generator has been separated as an independent microservice.
+This project uses modular monolithic application architecture with elements of hexagonal and microservice architecture.
+The numbers-generator has been separated as an independent microservice.
 
 ## Tech
 
@@ -20,6 +24,7 @@ Testing:<br>
 
 Other:<br>
 ![image](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white) &nbsp;
+![image](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white) &nbsp;
 
 Continuous integration: <br>
 [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/DmCGbhvsat4gP2YLSDSfx4/JtzsURR2NSU8SyxJrkdYBo/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/DmCGbhvsat4gP2YLSDSfx4/JtzsURR2NSU8SyxJrkdYBo/tree/master)
@@ -36,12 +41,12 @@ Continuous integration: <br>
 - Scheduled winning numbers generation and results processing
 - Netflix-Eureka server used as discovery service
 - API Gateway
-
+- Endpoints documented using Swagger
 
 ## Rest-API Endpoints
 
-|              ENDPOINT              | METHOD  |         REQUEST          |       RESPONSE       |                    FUNCTION                     |
-|:----------------------------------:|:-------:|:------------------------:|:--------------------:|:-----------------------------------------------:|
-|       /lottery/input-numbers       |  POST   | JSON BODY (user numbers) |    JSON (ticket)     |     creates new ticket for given numbers        |
-|   /result/get-result/{ticketId}    |  GET    | PATH VARIABLE(ticketId)  |    JSON (ticket)     |    returns lottery result for given ticketId    |
-|   /result/get-results/{drawDate}   |  GET    | PATH VARIABLE(drawDate)  |    JSON (results)    |    returns all lottery results for given date   |
+|            ENDPOINT            | METHOD |         REQUEST          |    RESPONSE    |                  FUNCTION                  |
+|:------------------------------:|:------:|:------------------------:|:--------------:|:------------------------------------------:|
+|     /lottery/input-numbers     |  POST  | JSON BODY (user numbers) | JSON (ticket)  |    creates new ticket for given numbers    |
+| /result/get-result/{ticketId}  |  GET   | PATH VARIABLE(ticketId)  | JSON (ticket)  | returns lottery result for given ticketId  |
+| /result/get-results/{drawDate} |  GET   | PATH VARIABLE(drawDate)  | JSON (results) | returns all lottery results for given date |
