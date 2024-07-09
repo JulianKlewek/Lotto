@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import pl.lotto.jwtgenerator.dto.JwtResponse;
 
 @AllArgsConstructor
-public class JwtGeneratorFacadeImpl implements JwtGeneratorFacade {
+class JwtGeneratorFacadeImpl implements JwtGeneratorFacade {
 
     private final JwtUtils jwtUtils;
 
