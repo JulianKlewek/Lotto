@@ -8,13 +8,15 @@
 /out/
 /lotto-engine/target/
 /lotto-engine/out/
+/lotto-engine.iml
 /numbers-generator/target/
 /numbers-generator/out/
 /numbers-generator/numbers-generator.iml
-/lotto-engine.iml
 /discovery-server-service.iml
 /discovery-server-service/target/
 /discovery-server-service/discovery-server-service.iml
 /lotto-engine/lotto-engine.iml
 /gateway-service.iml
 /gateway-service/target/
+/authentication-service.iml
+/authentication-service/target/

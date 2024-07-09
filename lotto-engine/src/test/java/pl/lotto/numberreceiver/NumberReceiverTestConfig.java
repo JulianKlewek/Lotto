@@ -8,7 +8,6 @@ import java.time.*;
 class NumberReceiverTestConfig {
 
     TicketRepository ticketRepository = new TicketRepositoryTestImpl();
-//    Clock clock = Clock.systemUTC();
 
     @Bean("numberReceiverClock")
     @Primary
