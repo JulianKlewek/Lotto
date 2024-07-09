@@ -1,6 +1,6 @@
 package pl.lotto.jwtgenerator;
 
-public enum TokenType {
+enum TokenType {
     ACCESS,
     REFRESH
 }

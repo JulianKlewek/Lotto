@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import java.time.Clock;
 
 @Configuration
-public class JwtGeneratorConfiguration {
+class JwtGeneratorConfiguration {
 
     @Bean("jwtGeneratorClock")
     Clock clock() {

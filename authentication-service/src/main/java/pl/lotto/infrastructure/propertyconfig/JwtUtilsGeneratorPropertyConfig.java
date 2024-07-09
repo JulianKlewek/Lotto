@@ -1,4 +1,4 @@
-package pl.lotto.infrastracture.propertyconfig;
+package pl.lotto.infrastructure.propertyconfig;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +11,6 @@ class JwtUtilsGeneratorPropertyConfig implements JwtUtilsPropertyConfigurable {
     private String secret;
     private long expirationAccess;
     private long expirationRefresh;
-
 
     @Override
     public String getSecret() {
