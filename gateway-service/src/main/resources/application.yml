@@ -39,7 +39,19 @@ spring:
           predicates:
             - Path=/numbers-generator/v3/api-docs
             - Method=GET
+#        - id: AUTH-SERVICE
+#          uri: lb://auth-service
+#          predicates:
+#            - Path=/auth/**
+#          filters:
+#            - StripPrefix=1
+        - id: AUTH-SERVICE-swagger
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth-service/v3/api-docs
+            - Method=GET
 
+#http://localhost:8080/swagger-ui.html
 springdoc:
   api-docs:
     enabled: true
@@ -54,3 +66,5 @@ springdoc:
         name: Lotto Engine
       - url: /numbers-generator/v3/api-docs
         name: Numbers Generator
+      - url: /auth-service/v3/api-docs
+        name: Authentication Service

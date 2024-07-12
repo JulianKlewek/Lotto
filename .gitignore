@@ -20,3 +20,4 @@
 /gateway-service/target/
 /authentication-service.iml
 /authentication-service/target/
+.mvn/wrapper/maven-wrapper.jar

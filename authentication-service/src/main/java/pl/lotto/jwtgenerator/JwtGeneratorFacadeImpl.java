@@ -2,6 +2,7 @@ package pl.lotto.jwtgenerator;
 
 import lombok.AllArgsConstructor;
 import pl.lotto.jwtgenerator.dto.JwtResponse;
+import pl.lotto.jwtgenerator.dto.UserTokenRequest;
 
 @AllArgsConstructor
 class JwtGeneratorFacadeImpl implements JwtGeneratorFacade {
@@ -9,8 +10,8 @@ class JwtGeneratorFacadeImpl implements JwtGeneratorFacade {
     private final JwtUtils jwtUtils;
 
     @Override
-    public JwtResponse generateToken(String username, TokenType tokenType) {
-        String token = jwtUtils.generateToken(username, tokenType);
+    public JwtResponse generateToken(UserTokenRequest request) {
+        String token = jwtUtils.generateToken(request);
         return JwtResponse.builder()
                 .token(token)
                 .build();
