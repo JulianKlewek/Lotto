@@ -39,10 +39,10 @@ spring:
           predicates:
             - Path=/numbers-generator/v3/api-docs
             - Method=GET
-#        - id: AUTH-SERVICE
-#          uri: lb://auth-service
-#          predicates:
-#            - Path=/auth/**
+        - id: AUTH-SERVICE
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
 #          filters:
 #            - StripPrefix=1
         - id: AUTH-SERVICE-swagger

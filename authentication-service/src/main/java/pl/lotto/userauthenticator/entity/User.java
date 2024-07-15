@@ -8,11 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+@Data
 @Builder
 @AllArgsConstructor
-@Entity
-@Table
-@Data
+@Entity(name = "UserCredentials")
 public class User {
 
     @Id

@@ -12,7 +12,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
       MONGO_INITDB_DATABASE: lotto
     volumes:
-      - ../volumes/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./volumes/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
     networks:
       - lottery-net
 
@@ -43,6 +43,8 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: example
       POSTGRES_DB: lotto
+    volumes:
+      - ./volumes/postgres:/docker-entrypoint-initdb.d
     networks:
       - lottery-net
 
@@ -51,14 +53,9 @@ services:
     container_name: adminer
     restart: unless-stopped
     ports:
-      - "8089:8082"
+      - "8089:8080"
     environment:
       ADMINER_DEFAULT_SERVER: postgres
-      ADMINER_DEFAULT_USERNAME: root
-      ADMINER_DEFAULT_PASSWORD: example
-      ADMINER_DEFAULT_TYPE: postgresql
-      ADMINER_DEFAULT_PORT: 5432
-      ADMINER_DEFAULT_DB: lotto
     depends_on:
       - postgres
     networks:
@@ -131,7 +128,6 @@ services:
     environment:
       eureka.client.serviceUrl.defaultZone: http://discovery-server:8761/eureka/
       spring.datasource.url: jdbc:postgresql://postgres:5432/lotto
-      #      spring.jpa.properties.hibernate.tmp.use_jdbc_metadata_defaults: false
       spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
 
 networks:
