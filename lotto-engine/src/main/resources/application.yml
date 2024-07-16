@@ -40,11 +40,6 @@ lotto:
   result-checker:
     scheduler-cron: "${lotto.time.drawSecond} ${lotto.time.resultsMinute} ${lotto.time.drawHour} * * ${lotto.time.drawDayOfWeek}"
 
-openapi:
-  service:
-    title: lotto-engine doc
-    version: 1.0.0
-    url: http://localhost:8080 #api gateway url
 springdoc:
   swagger-ui:
     path: /lotto-engine/swagger-ui.html

@@ -30,11 +30,6 @@ jwt:
     access: '#{${jwt.expiration.minutes}*${jwt.expiration.seconds}*${jwt.expiration.millis}}'
     refresh: '#{${jwt.expiration.minutes}*${jwt.expiration.seconds}*${jwt.expiration.millis}*10}'
 
-openapi:
-  service:
-    title: auth-service doc
-    version: 1.0.0
-    url: http://localhost:8080 #api gateway url
 springdoc:
   swagger-ui:
     path: /auth-service/swagger-ui.html

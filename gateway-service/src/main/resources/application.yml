@@ -1,5 +1,6 @@
 server:
   port: 8080
+  forward-headers-strategy: framework
 
 eureka:
   client:
@@ -27,8 +28,6 @@ spring:
           uri: lb://lotto-engine
           predicates:
             - Path=/lottery/**,/result/**
-          filters:
-            - StripPrefix=1
         - id: LOTTO-ENGINE-swagger
           uri: lb://lotto-engine
           predicates:
@@ -43,8 +42,6 @@ spring:
           uri: lb://auth-service
           predicates:
             - Path=/auth/**
-#          filters:
-#            - StripPrefix=1
         - id: AUTH-SERVICE-swagger
           uri: lb://auth-service
           predicates:
