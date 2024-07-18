@@ -18,7 +18,7 @@ import static pl.lotto.userauthenticator.UserMapper.entityToResponse;
 import static pl.lotto.userauthenticator.UserMapper.userDetailsToInfoResponse;
 
 @RequiredArgsConstructor
-public class UserAuthFacadeImpl implements UserAuthFacade {
+class UserAuthFacadeImpl implements UserAuthFacade {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -39,7 +39,7 @@ public class UserAuthFacadeImpl implements UserAuthFacade {
     }
 
     @Override
-    public UserLoginResponse generateLoginResponse(UserDetailsImpl userDetails) {
+    public UserLoginResponse loginUser(UserDetailsImpl userDetails) {
         UserTokenRequest accessTokenRequest = UserTokenRequest.builder()
                 .username(userDetails.getUsername())
                 .tokenType("ACCESS")

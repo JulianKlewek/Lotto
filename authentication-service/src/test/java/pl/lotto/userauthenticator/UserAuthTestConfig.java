@@ -1,6 +1,4 @@
-package pl.lotto.userauth;
-
-import pl.lotto.userauthenticator.UserRepository;
+package pl.lotto.userauthenticator;
 
 class UserAuthTestConfig {
 

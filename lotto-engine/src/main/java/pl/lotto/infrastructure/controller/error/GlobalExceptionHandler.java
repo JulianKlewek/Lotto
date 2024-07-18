@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.util.WebUtils;
 
@@ -33,10 +34,10 @@ public class GlobalExceptionHandler {
         return handleExceptionInternal(exception, apiError, headers, status, request);
     }
 
-    protected ResponseEntity<ApiError> handleExceptionInternal(Exception exception, ApiError error,
-                                                               HttpHeaders headers, HttpStatus status, WebRequest request) {
+    private ResponseEntity<ApiError> handleExceptionInternal(Exception exception, ApiError error,
+                                                             HttpHeaders headers, HttpStatus status, WebRequest request) {
         if (HttpStatus.INTERNAL_SERVER_ERROR.equals(status)) {
-            request.setAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, exception, WebRequest.SCOPE_REQUEST);
+            request.setAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, exception, RequestAttributes.SCOPE_REQUEST);
         }
         return new ResponseEntity<>(error, headers, status);
     }

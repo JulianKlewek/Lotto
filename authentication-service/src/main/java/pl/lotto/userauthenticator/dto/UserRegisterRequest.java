@@ -1,12 +1,30 @@
 package pl.lotto.userauthenticator.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
+import pl.lotto.userauthenticator.validator.ValidPassword;
 
 import java.util.Arrays;
 import java.util.Objects;
 
 @Builder
-public record UserRegisterRequest(String username, String email, char[] password) {
+public record UserRegisterRequest(
+        @NotNull(message = "CANNOT_BE_NULL")
+        @NotEmpty(message = "CANNOT_BE_EMPTY")
+        @Size(min = 4, max = 20, message = "MUST_BE_IN_RANGE_4_TO_20")
+        String username,
+
+        @NotNull(message = "CANNOT_BE_NULL")
+        @NotEmpty(message = "CANNOT_BE_EMPTY")
+        @Email
+        @Size(min = 8, max = 50, message = "MUST_BE_IN_RANGE_8_TO_50")
+        String email,
+
+        @ValidPassword
+        char[] password) {
 
     @Override
     public boolean equals(Object o) {

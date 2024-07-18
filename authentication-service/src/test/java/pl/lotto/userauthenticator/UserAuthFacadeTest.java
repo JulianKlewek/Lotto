@@ -1,13 +1,10 @@
-package pl.lotto.userauth;
+package pl.lotto.userauthenticator;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.lotto.jwtgenerator.JwtGeneratorFacade;
 import pl.lotto.jwtgenerator.dto.JwtResponse;
 import pl.lotto.jwtgenerator.dto.UserTokenRequest;
-import pl.lotto.userauthenticator.UserAuthConfiguration;
-import pl.lotto.userauthenticator.UserAuthFacade;
-import pl.lotto.userauthenticator.UserDetailsImpl;
 import pl.lotto.userauthenticator.dto.UserLoginResponse;
 import pl.lotto.userauthenticator.dto.UserRegisterRequest;
 import pl.lotto.userauthenticator.dto.UserRegisterResponse;
@@ -57,7 +54,7 @@ class UserAuthFacadeTest extends UserAuthTestConfig {
                 .build();
         //when
         when(jwtGeneratorFacade.generateToken(accessTokenRequest)).thenReturn(accessTokenResponse);
-        UserLoginResponse loginResponse = userAuthFacade.generateLoginResponse(user1);
+        UserLoginResponse loginResponse = userAuthFacade.loginUser(user1);
         //then
         Assertions.assertThat(loginResponse.accessToken()).isEqualTo(accessToken);
         Assertions.assertThat(loginResponse.user().username()).isEqualTo(user1.getUsername());

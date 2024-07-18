@@ -1,6 +1,8 @@
 package pl.lotto.infrastructure.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.lotto.userauthenticator.UserAuthFacade;
@@ -16,8 +18,8 @@ public class AuthenticationRestController {
     private final UserAuthFacade userAuthFacade;
 
     @PostMapping("/signup")
-    public ResponseEntity<UserRegisterResponse> registerUser(@RequestBody UserRegisterRequest request) {
+    public ResponseEntity<UserRegisterResponse> registerUser(@Valid @RequestBody UserRegisterRequest request) {
         UserRegisterResponse response = userAuthFacade.register(request);
-        return ResponseEntity.ok(response);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }

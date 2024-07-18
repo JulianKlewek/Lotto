@@ -4,6 +4,8 @@ import pl.lotto.userauthenticator.dto.UserInfoResponse;
 import pl.lotto.userauthenticator.dto.UserRegisterResponse;
 import pl.lotto.userauthenticator.entity.User;
 
+import java.time.Instant;
+
 class UserMapper {
 
     private UserMapper() {
@@ -14,6 +16,8 @@ class UserMapper {
         return UserRegisterResponse.builder()
                 .username(user.getUsername())
                 .email(user.getEmail())
+                .message("ACCOUNT CREATED")
+                .timestamp(Instant.now())
                 .build();
     }
 
