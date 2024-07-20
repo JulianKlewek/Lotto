@@ -30,4 +30,9 @@ class RuleResult {
         this.setValid(false);
         this.errors.addAll(errors);
     }
+
+    public void addError(String error) {
+        this.setValid(false);
+        this.errors.add(error);
+    }
 }

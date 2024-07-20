@@ -49,6 +49,20 @@ public interface PasswordValidationTestConstants {
                         BasicCharacterData.UpperCase.getErrorCode(),
                         BasicCharacterData.Digit.getErrorCode(),
                         WhitespaceRule.ERROR_CODE
+                )),
+                Arguments.of("pas ".toCharArray(), List.of(
+                        BasicCharacterData.UpperCase.getErrorCode(),
+                        BasicCharacterData.Digit.getErrorCode(),
+                        BasicCharacterData.Special.getErrorCode(),
+                        WhitespaceRule.ERROR_CODE,
+                        LengthRule.ERROR_CODE_MIN
+                )),
+                Arguments.of("password password".toCharArray(), List.of(
+                        BasicCharacterData.UpperCase.getErrorCode(),
+                        BasicCharacterData.Digit.getErrorCode(),
+                        BasicCharacterData.Special.getErrorCode(),
+                        WhitespaceRule.ERROR_CODE,
+                        LengthRule.ERROR_CODE_MAX
                 ))
         );
     }

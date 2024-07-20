@@ -213,10 +213,86 @@ class PasswordValidatorTest implements PasswordValidationTestConstants {
     }
 
     @Test
+    @DisplayName("Length is correct")
+    void should_return_valid_rule_result_when_array_length_is_correct() {
+        //given
+        List<PasswordRule> rules = List.of(new LengthRule(8, 30));
+        PasswordValidator validator = new PasswordValidator(rules);
+        char[] password = "Password12#$%".toCharArray();
+        //when
+        RuleResult result = validator.validate(password);
+        //then
+        Assertions.assertThat(result.isValid()).isTrue();
+        Assertions.assertThat(result.getErrors()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Length is too short")
+    void should_return_invalid_rule_result_when_array_length_is_shorter_than_rule_min_length() {
+        //given
+        List<PasswordRule> rules = List.of(new LengthRule(4, 10));
+        PasswordValidator validator = new PasswordValidator(rules);
+        char[] password = "123".toCharArray();
+        List<String> errorsList = List.of("TOO_SHORT");
+        //when
+        RuleResult result = validator.validate(password);
+        //then
+        Assertions.assertThat(result.isValid()).isFalse();
+        Assertions.assertThat(result.getErrors()).isEqualTo(errorsList);
+    }
+
+    @Test
+    @DisplayName("Length equal to rule min length")
+    void should_return_invalid_rule_result_when_array_length_is_equal_to_rule_min_length() {
+        //given
+        List<PasswordRule> rules = List.of(new LengthRule(4, 10));
+        PasswordValidator validator = new PasswordValidator(rules);
+        char[] password = "1234".toCharArray();
+        //when
+        RuleResult result = validator.validate(password);
+        //then
+        Assertions.assertThat(result.isValid()).isTrue();
+    }
+
+    @Test
+    @DisplayName("Longer than rule max length")
+    void should_return_invalid_rule_result_when_array_length_is_longer_than_rule_max_length() {
+        //given
+        List<PasswordRule> rules = List.of(new LengthRule(8, 10));
+        PasswordValidator validator = new PasswordValidator(rules);
+        char[] password = "12345678901".toCharArray();
+        List<String> errorsList = List.of("TOO_LONG");
+        //when
+        RuleResult result = validator.validate(password);
+        //then
+        Assertions.assertThat(result.isValid()).isFalse();
+        Assertions.assertThat(result.getErrors()).isEqualTo(errorsList);
+    }
+
+    @Test
+    @DisplayName("Length equal to rule max length")
+    void should_return_invalid_rule_result_when_array_length_is_equal_to_rule_max_length() {
+        //given
+        List<PasswordRule> rules = List.of(new LengthRule(8, 10));
+        PasswordValidator validator = new PasswordValidator(rules);
+        char[] password = "1234567890".toCharArray();
+        //when
+        RuleResult result = validator.validate(password);
+        //then
+        Assertions.assertThat(result.isValid()).isTrue();
+    }
+
+    @Test
     @DisplayName("Correct password with all rules applied")
     void should_return_valid_rule_result_when_password_correct_with_all_rules_applied() {
         //given
-        List<PasswordRule> rules = List.of(new WhitespaceRule());
+        List<PasswordRule> rules = Arrays.asList(
+                new CharacterRule(BasicCharacterData.LowerCase),
+                new CharacterRule(BasicCharacterData.UpperCase),
+                new CharacterRule(BasicCharacterData.Digit),
+                new CharacterRule(BasicCharacterData.Special),
+                new WhitespaceRule(),
+                new LengthRule(8, 30));
         PasswordValidator validator = new PasswordValidator(rules);
         char[] password = "Password12#$%".toCharArray();
         //when
@@ -229,15 +305,15 @@ class PasswordValidatorTest implements PasswordValidationTestConstants {
     @ParameterizedTest
     @MethodSource("providePasswordsAndErrorsForIncorrectPassword")
     @DisplayName("Incorrect password with all rules applied")
-    void should_return_invalid_rule_result_password_incorrect_with_all_rules_applied(char[] password,
-                                                                                     List<String> expectedErrors) {
+    void should_return_invalid_rule_result_password_incorrect_with_all_rules_applied(char[] password, List<String> expectedErrors) {
         //given
         List<PasswordRule> rules = Arrays.asList(
                 new CharacterRule(BasicCharacterData.LowerCase),
                 new CharacterRule(BasicCharacterData.UpperCase),
                 new CharacterRule(BasicCharacterData.Digit),
                 new CharacterRule(BasicCharacterData.Special),
-                new WhitespaceRule());
+                new WhitespaceRule(),
+                new LengthRule(5, 15));
         PasswordValidator validator = new PasswordValidator(rules);
         //when
         RuleResult result = validator.validate(password);

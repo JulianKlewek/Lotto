@@ -30,6 +30,7 @@ class PasswordConstraintsValidator implements ConstraintValidator<ValidPassword,
                 new CharacterRule(BasicCharacterData.UpperCase),
                 new CharacterRule(BasicCharacterData.Digit),
                 new CharacterRule(BasicCharacterData.Special),
-                new WhitespaceRule());
+                new WhitespaceRule(),
+                new LengthRule(8, 30));
     }
 }
