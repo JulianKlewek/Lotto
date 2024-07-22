@@ -1,5 +1,6 @@
 server:
   port: 8080
+  forward-headers-strategy: framework
 
 eureka:
   client:
@@ -27,8 +28,6 @@ spring:
           uri: lb://lotto-engine
           predicates:
             - Path=/lottery/**,/result/**
-          filters:
-            - StripPrefix=1
         - id: LOTTO-ENGINE-swagger
           uri: lb://lotto-engine
           predicates:
@@ -39,13 +38,22 @@ spring:
           predicates:
             - Path=/numbers-generator/v3/api-docs
             - Method=GET
+        - id: AUTH-SERVICE
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
+        - id: AUTH-SERVICE-swagger
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth-service/v3/api-docs
+            - Method=GET
 
+#http://localhost:8080/swagger-ui.html
 springdoc:
   api-docs:
     enabled: true
   swagger-ui:
     enabled: true
-    path: /swagger-ui.html
     config-url: /v3/api-docs/swagger-config
     urls:
 #      - url: /v3/api-docs
@@ -54,3 +62,7 @@ springdoc:
         name: Lotto Engine
       - url: /numbers-generator/v3/api-docs
         name: Numbers Generator
+      - url: /auth-service/v3/api-docs
+        name: Authentication Service
+    disable-swagger-default-url: true
+    path: /swagger

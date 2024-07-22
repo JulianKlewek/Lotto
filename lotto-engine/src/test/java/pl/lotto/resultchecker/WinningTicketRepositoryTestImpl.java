@@ -13,10 +13,9 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-class WinnerTicketRepositoryTestImpl implements WinningTicketRepository {
+class WinningTicketRepositoryTestImpl implements WinningTicketRepository {
 
     Map<String, WinningTicket> database = new ConcurrentHashMap<>();
-
 
     @Override
     public <S extends WinningTicket> List<S> saveAll(Iterable<S> winningTickets) {
@@ -25,6 +24,11 @@ class WinnerTicketRepositoryTestImpl implements WinningTicketRepository {
         return (List<S>) database.values()
                 .stream()
                 .toList();
+    }
+
+    @Override
+    public void deleteAll() {
+        database.clear();
     }
 
     @Override
@@ -143,11 +147,6 @@ class WinnerTicketRepositoryTestImpl implements WinningTicketRepository {
 
     @Override
     public void deleteAll(Iterable<? extends WinningTicket> entities) {
-
-    }
-
-    @Override
-    public void deleteAll() {
 
     }
 

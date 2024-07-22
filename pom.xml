@@ -14,6 +14,7 @@
         <module>numbers-generator</module>
         <module>discovery-server-service</module>
         <module>gateway-service</module>
+        <module>authentication-service</module>
     </modules>
 
     <modelVersion>4.0.0</modelVersion>
@@ -26,7 +27,6 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
         <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.5.0</springdoc-openapi-starter-webmvc-ui.version>
         <swagger-annotations.version>2.2.22</swagger-annotations.version>
