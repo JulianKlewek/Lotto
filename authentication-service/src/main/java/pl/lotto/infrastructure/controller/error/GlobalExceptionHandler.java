@@ -9,23 +9,41 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.util.WebUtils;
+import pl.lotto.userauthenticator.UserAlreadyExistsException;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
-public class GlobalExceptionHandler {
+class GlobalExceptionHandler {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    static final String VALIDATION_FAILED_MSG = "VALIDATION FAILED";
+
+    @ExceptionHandler({MethodArgumentNotValidException.class, UserAlreadyExistsException.class})
     public final ResponseEntity<ApiErrorResponse> handleException(Exception exception, WebRequest request) {
         HttpHeaders headers = new HttpHeaders();
         if (exception instanceof MethodArgumentNotValidException argumentNotValidException) {
             HttpStatus status = HttpStatus.BAD_REQUEST;
             return handleValidationException(argumentNotValidException, headers, status, request);
+        } else if (exception instanceof UserAlreadyExistsException userAlreadyExistsException) {
+            HttpStatus status = HttpStatus.BAD_REQUEST;
+            return handleUserAlreadyExistsException(userAlreadyExistsException, headers, status, request);
         } else {
             HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
             return handleExceptionInternal(exception, null, headers, status, request);
         }
+    }
+
+    private ResponseEntity<ApiErrorResponse> handleUserAlreadyExistsException(
+            UserAlreadyExistsException exception, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        Map<String, String> errors = new HashMap<>();
+        if (exception.getMessage().startsWith("Email")) {
+            errors.put("email", exception.getMessage());
+        } else {
+            errors.put("username", exception.getMessage());
+        }
+        ApiErrorResponse apiError = new ApiErrorResponse(VALIDATION_FAILED_MSG, errors);
+        return handleExceptionInternal(exception, apiError, headers, status, request);
     }
 
     private ResponseEntity<ApiErrorResponse> handleValidationException(
@@ -38,8 +56,7 @@ public class GlobalExceptionHandler {
                 errors.put(error.getField(), error.getDefaultMessage());
             }
         });
-        String errorMsg = "VALIDATION_FAILED";
-        ApiErrorResponse apiError = new ApiErrorResponse(errorMsg, errors);
+        ApiErrorResponse apiError = new ApiErrorResponse(VALIDATION_FAILED_MSG, errors);
         return handleExceptionInternal(exception, apiError, headers, status, request);
 
     }

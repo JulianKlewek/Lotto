@@ -1,6 +1,5 @@
 package pl.lotto.userauthenticator;
 
-import org.junit.jupiter.api.AfterEach;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,15 +19,11 @@ class UserRepositoryTestImpl implements UserRepository {
     Map<Long, User> database = new ConcurrentHashMap<>();
     private static AtomicLong userId = new AtomicLong(0L);
 
-    @AfterEach
-    public void afterEach() {
-        database.clear();
-    }
-
-
     @Override
     public User save(User user) {
-        user.setId(userId.getAndIncrement());
+        if (user.getId() == null) {
+            user.setId(userId.getAndIncrement());
+        }
         database.put(user.getId(), user);
         return database.get(user.getId());
     }
@@ -38,6 +33,23 @@ class UserRepositoryTestImpl implements UserRepository {
         return database.values().stream()
                 .filter(user -> user.getUsername().equals(username))
                 .findFirst();
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return database.values().stream()
+                .anyMatch(user -> user.getUsername().equals(username));
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return database.values().stream()
+                .anyMatch(user -> user.getEmail().equals(email));
+    }
+
+    @Override
+    public void deleteAll() {
+        database.clear();
     }
 
     @Override
@@ -168,11 +180,6 @@ class UserRepositoryTestImpl implements UserRepository {
 
     @Override
     public void deleteAll(Iterable<? extends User> entities) {
-
-    }
-
-    @Override
-    public void deleteAll() {
 
     }
 

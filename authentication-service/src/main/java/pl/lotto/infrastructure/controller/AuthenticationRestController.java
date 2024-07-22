@@ -13,13 +13,15 @@ import pl.lotto.userauthenticator.dto.UserRegisterResponse;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-public class AuthenticationRestController {
+public class AuthenticationRestController implements AuthenticationApi {
 
     private final UserAuthFacade userAuthFacade;
 
     @PostMapping("/signup")
     public ResponseEntity<UserRegisterResponse> registerUser(@Valid @RequestBody UserRegisterRequest request) {
         UserRegisterResponse response = userAuthFacade.register(request);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
     }
 }

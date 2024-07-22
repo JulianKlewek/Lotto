@@ -10,6 +10,7 @@ import pl.lotto.userauthenticator.dto.UserRegisterRequest;
 import pl.lotto.userauthenticator.dto.UserRegisterResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -31,7 +32,42 @@ class UserAuthFacadeTest extends UserAuthTestConfig {
         //then
         assertThat(response.username()).isEqualTo(user1.username());
         assertThat(response.email()).isEqualTo(user1.email());
+    }
 
+    @Test
+    void should_not_register_user_and_return_user_already_exists_exception_for_email() {
+        //given
+        JwtGeneratorFacade jwtGeneratorFacade = mock(JwtGeneratorFacade.class);
+        UserAuthFacade userAuthFacade = new UserAuthConfiguration()
+                .createUserAuthFacadeForTests(userRepository, jwtGeneratorFacade);
+        UserRegisterRequest defaultuser1 = UserRegisterRequest.builder()
+                .username("defaultusername1")
+                .email("defaultemail@gmail.com")
+                .password("Password".toCharArray())
+                .build();
+        String exceptionMessage = "Email already exists: " + defaultuser1.email();
+        //when&then
+        assertThatExceptionOfType(UserAlreadyExistsException.class)
+                .isThrownBy(() -> userAuthFacade.register(defaultuser1))
+                .withMessage(exceptionMessage);
+    }
+
+    @Test
+    void should_not_register_user_and_return_user_already_exists_exception_for_username() {
+        //given
+        JwtGeneratorFacade jwtGeneratorFacade = mock(JwtGeneratorFacade.class);
+        UserAuthFacade userAuthFacade = new UserAuthConfiguration()
+                .createUserAuthFacadeForTests(userRepository, jwtGeneratorFacade);
+        UserRegisterRequest defaultuser = UserRegisterRequest.builder()
+                .username("defaultusername")
+                .email("defaultemail1@gmail.com")
+                .password("Password".toCharArray())
+                .build();
+        String exceptionMessage = "Username already exists: " + defaultuser.username();
+        //when&then
+        assertThatExceptionOfType(UserAlreadyExistsException.class)
+                .isThrownBy(() -> userAuthFacade.register(defaultuser))
+                .withMessage(exceptionMessage);
     }
 
     @Test

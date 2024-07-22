@@ -1,6 +1,5 @@
 package pl.lotto.numberreceiver;
 
-import org.junit.jupiter.api.AfterEach;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,11 +16,6 @@ import java.util.function.Function;
 class TicketRepositoryTestImpl implements TicketRepository {
 
     Map<String, Ticket> database = new ConcurrentHashMap<>();
-
-    @AfterEach
-    public void afterEach() {
-        database.clear();
-    }
 
     @Override
     public Ticket save(Ticket ticket) {
@@ -42,6 +36,11 @@ class TicketRepositoryTestImpl implements TicketRepository {
         return database.values()
                 .stream()
                 .toList();
+    }
+
+    @Override
+    public void deleteAll() {
+        database.clear();
     }
 
     @Override
@@ -131,11 +130,6 @@ class TicketRepositoryTestImpl implements TicketRepository {
 
     @Override
     public void deleteAll(Iterable<? extends Ticket> entities) {
-
-    }
-
-    @Override
-    public void deleteAll() {
 
     }
 

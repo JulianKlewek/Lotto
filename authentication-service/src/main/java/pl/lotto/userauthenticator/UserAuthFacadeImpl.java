@@ -27,6 +27,14 @@ class UserAuthFacadeImpl implements UserAuthFacade {
     @Override
     public UserRegisterResponse register(UserRegisterRequest request) {
         char[] passArray = request.password();
+        if (userRepository.existsByEmail(request.email())) {
+            cleanPassword(passArray);
+            throw new UserAlreadyExistsException("Email already exists: " + request.email());
+        }
+        if (userRepository.existsByUsername(request.username())) {
+            cleanPassword(passArray);
+            throw new UserAlreadyExistsException("Username already exists: " + request.username());
+        }
         CharSequence passCharSequence = CharBuffer.wrap(passArray);
         User user = User.builder()
                 .username(request.username())

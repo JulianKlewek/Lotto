@@ -21,6 +21,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
@@ -36,8 +37,9 @@ class LotteryGameIsSuccessfulIT extends BaseIntegrationTest {
         String expectedDrawDate = "2024-06-14T20:00:00Z";
         //when
         ResultActions perform = mockMvc.perform(post("/input-numbers")
-                .content("{\"inputNumbers\":" + typedNumbers + "}")
-                .contentType(MediaType.APPLICATION_JSON_VALUE));
+                        .content("{\"inputNumbers\":" + typedNumbers + "}")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andDo(print());
         //then
         MvcResult mvcInputNumbersResult = perform.andExpectAll(
                         status().isOk(),
@@ -50,7 +52,6 @@ class LotteryGameIsSuccessfulIT extends BaseIntegrationTest {
                 .andReturn();
         NumberReceiverResultDto receiverResult = objectMapper.readValue(
                 mvcInputNumbersResult.getResponse().getContentAsString(), NumberReceiverResultDto.class);
-
         //step 2: system generates winning numbers and returns winning numbers for given date
         //given
         Instant drawDate = receiverResult.ticket().drawDate();
@@ -60,7 +61,6 @@ class LotteryGameIsSuccessfulIT extends BaseIntegrationTest {
                 .drawDate(drawDate)
                 .build();
         String responseBody = objectMapper.writeValueAsString(winningNumbersResponseDto);
-
         //when & then
         wireMockServer.stubFor(WireMock.get(WireMock.urlPathTemplate("/winning-numbers/{drawDate}"))
                 .withPathParam("drawDate", WireMock.equalTo(encode("2024-06-14T20:00:00Z", UTF_8)))

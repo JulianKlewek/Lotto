@@ -16,7 +16,7 @@ import pl.lotto.resultannouncer.dto.AnnouncerWinningResultsResponseDto;
 import java.time.Instant;
 
 @Tag(name = "Result announcer RestController", description = "Microservice responsible for announcing results")
-interface ResultAnnouncerSwagger {
+interface ResultAnnouncerApi {
 
     @Operation(summary = "Returns result for given ticketId", description = "Returns a ticket with numbers given by user.")
     @ApiResponses(value = {

@@ -13,7 +13,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @RestController
 @RequestMapping("result")
-public class ResultAnnouncerRestController implements ResultAnnouncerSwagger {
+public class ResultAnnouncerRestController implements ResultAnnouncerApi {
 
     private final ResultAnnouncerFacade resultAnnouncerFacade;
 

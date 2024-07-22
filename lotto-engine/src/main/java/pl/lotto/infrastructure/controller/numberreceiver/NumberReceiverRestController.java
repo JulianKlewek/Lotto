@@ -17,7 +17,7 @@ import static pl.lotto.numberreceiver.NumberValidationResult.SUCCESS_MESSAGE;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("lottery")
-public class NumberReceiverRestController implements NumberReceiverSwagger {
+public class NumberReceiverRestController implements NumberReceiverApi {
 
     private final NumberReceiverFacade numberReceiverFacade;
 

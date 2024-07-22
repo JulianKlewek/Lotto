@@ -1,5 +1,6 @@
 package pl.lotto.userauthenticator.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -15,15 +16,19 @@ public record UserRegisterRequest(
         @NotNull(message = "CANNOT_BE_NULL")
         @NotEmpty(message = "CANNOT_BE_EMPTY")
         @Size(min = 4, max = 20, message = "MUST_BE_IN_RANGE_4_TO_20")
+        @Schema(name = "username", description = "Username", example = "User1")
         String username,
 
         @NotNull(message = "CANNOT_BE_NULL")
         @NotEmpty(message = "CANNOT_BE_EMPTY")
         @Email
         @Size(min = 8, max = 50, message = "MUST_BE_IN_RANGE_8_TO_50")
+        @Schema(name = "email", description = "email", example = "user1@gmail.com")
         String email,
 
         @ValidPassword
+        @Schema(name = "password", description = "Password array 8-30 length, upperCase, lowerCase, special, no whitespaces",
+                example = "[P,a,s,s,w,o,r,d,1,@]")
         char[] password) {
 
     @Override
