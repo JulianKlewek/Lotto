@@ -8,5 +8,5 @@ public interface UserAuthFacade {
 
     UserRegisterResponse register(UserRegisterRequest user);
 
-    UserLoginResponse loginUser(UserDetailsImpl userDetails);
+    UserLoginResponse prepareLoginResponse(UserDetailsImpl userDetails);
 }

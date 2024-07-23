@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import pl.lotto.infrastructure.controller.error.ApiErrorResponse;
+import pl.lotto.userauthenticator.dto.UserLoginRequest;
+import pl.lotto.userauthenticator.dto.UserLoginResponse;
 import pl.lotto.userauthenticator.dto.UserRegisterRequest;
 import pl.lotto.userauthenticator.dto.UserRegisterResponse;
 
@@ -26,4 +28,12 @@ public interface AuthenticationApi {
                             mediaType = "application/json")})
     })
     ResponseEntity<UserRegisterResponse> registerUser(@Valid @RequestBody UserRegisterRequest request);
+
+    @Operation(summary = "Login user", description = "Authenticates user and returns jwt")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User logged in successfully",
+                    content = {@Content(schema = @Schema(implementation = UserLoginResponse.class),
+                            mediaType = "application/json")})
+    })
+    ResponseEntity<UserLoginResponse> login(@RequestBody UserLoginRequest request);
 }

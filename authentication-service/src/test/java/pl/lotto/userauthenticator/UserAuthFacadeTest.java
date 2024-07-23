@@ -90,7 +90,7 @@ class UserAuthFacadeTest extends UserAuthTestConfig {
                 .build();
         //when
         when(jwtGeneratorFacade.generateToken(accessTokenRequest)).thenReturn(accessTokenResponse);
-        UserLoginResponse loginResponse = userAuthFacade.loginUser(user1);
+        UserLoginResponse loginResponse = userAuthFacade.prepareLoginResponse(user1);
         //then
         Assertions.assertThat(loginResponse.accessToken()).isEqualTo(accessToken);
         Assertions.assertThat(loginResponse.user().username()).isEqualTo(user1.getUsername());

@@ -1,14 +1,17 @@
 package pl.lotto.userauthenticator;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.lotto.userauthenticator.entity.User;
 
-@RequiredArgsConstructor
+@Service
+@AllArgsConstructor
 class UserDetailsServiceImpl implements UserDetailsService {
+
     private final UserRepository userRepository;
 
     @Override

@@ -47,7 +47,7 @@ class UserAuthFacadeImpl implements UserAuthFacade {
     }
 
     @Override
-    public UserLoginResponse loginUser(UserDetailsImpl userDetails) {
+    public UserLoginResponse prepareLoginResponse(UserDetailsImpl userDetails) {
         UserTokenRequest accessTokenRequest = UserTokenRequest.builder()
                 .username(userDetails.getUsername())
                 .tokenType("ACCESS")
