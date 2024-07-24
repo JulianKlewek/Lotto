@@ -16,7 +16,7 @@ import pl.lotto.jwtgenerator.JwtGeneratorFacade;
 
 @Configuration
 @EnableWebSecurity
-public class UserAuthConfiguration {
+class UserAuthConfiguration {
 
     @Bean
     public UserAuthFacade createUserAuthFacade(UserRepository userRepository,
