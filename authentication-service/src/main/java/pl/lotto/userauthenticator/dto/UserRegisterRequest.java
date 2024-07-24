@@ -28,7 +28,7 @@ public record UserRegisterRequest(
 
         @ValidPassword
         @Schema(name = "password", description = "Password array 8-30 length, upperCase, lowerCase, special, no whitespaces",
-                example = "[P,a,s,s,w,o,r,d,1,@]")
+                example = "[\"P\",\"a\",\"s\",\"s\",\"w\",\"o\",\"r\",\"d\",\"1\",\"!\"]")
         char[] password) {
 
     @Override

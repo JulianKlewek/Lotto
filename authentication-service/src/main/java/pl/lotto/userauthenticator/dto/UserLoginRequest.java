@@ -1,12 +1,17 @@
 package pl.lotto.userauthenticator.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 import java.util.Arrays;
 import java.util.Objects;
 
 @Builder
-public record UserLoginRequest(String username, char[] password) {
+public record UserLoginRequest(
+        @Schema(description = "Username", example = "User11")
+        String username,
+        @Schema(name = "password", example = "[\"P\",\"a\",\"s\",\"s\",\"w\",\"o\",\"r\",\"d\",\"1\",\"!\"]")
+        char[] password) {
 
     @Override
     public boolean equals(Object o) {

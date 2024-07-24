@@ -12,7 +12,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @AutoConfigureMockMvc
-@SpringBootTest(classes = {AuthServiceRunner.class, IntegrationConfiguration.class},
+@SpringBootTest(classes = {AuthServiceRunner.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
 public class BaseIntegrationTest {

@@ -16,7 +16,7 @@ import pl.lotto.jwtgenerator.JwtGeneratorFacade;
 
 @Configuration
 @EnableWebSecurity
-public class UserAuthConfiguration {
+class UserAuthConfiguration {
 
     @Bean
     public UserAuthFacade createUserAuthFacade(UserRepository userRepository,
@@ -53,11 +53,13 @@ public class UserAuthConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                                .anyRequest().permitAll()
+                        .anyRequest().permitAll()
                 )
+                .exceptionHandling(exception -> exception.accessDeniedHandler(new CustomAccessDeniedHandler())
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
                 .build();
     }
 }
