@@ -12,7 +12,7 @@ import pl.lotto.numberreceiver.dto.NumberReceiverRequestDto;
 import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
 
 @Tag(name = "Number receiver RestController", description = "Microservice responsible for accepting numbers from players")
-interface NumberReceiverSwagger {
+interface NumberReceiverApi {
 
     @Operation(summary = "Get user numbers input numbers", description = "Returns a ticket with numbers given by user.")
     @ApiResponses(value = {

@@ -3,10 +3,10 @@ package pl.lotto.resultchecker;
 import org.junit.jupiter.api.AfterEach;
 
 class ResultCheckerFacadeTestConfig {
-    WinnerTicketRepositoryTestImpl ticketRepository = new WinnerTicketRepositoryTestImpl();
+    WinningTicketRepository ticketRepository = new WinningTicketRepositoryTestImpl();
 
     @AfterEach
     public void clearDatabase() {
-        ticketRepository.database.clear();
+        ticketRepository.deleteAll();
     }
 }
