@@ -55,5 +55,5 @@ Continuous integration: <br>
 |     /lottery/input-numbers     |  POST  |     JSON BODY (user umbers)     | JSON (ticket)  |    creates new ticket for given numbers    |
 | /result/get-result/{ticketId}  |  GET   |     PATH VARIABLE(ticketId)     | JSON (ticket)  | returns lottery result for given ticketId  |
 | /result/get-results/{drawDate} |  GET   |     PATH VARIABLE(drawDate)     | JSON (results) | returns all lottery results for given date |
-|          /auth/signin          |  POST  | JSON BODY (UserRegisterRequest) | JSON (result)  |               registers user               |
-|          /auth/signup          |  POST  |  JSON BODY (UserLoginRequest)   | JSON (result)  |            allows user to login            |
+|          /auth/signup          |  POST  | JSON BODY (UserRegisterRequest) | JSON (result)  |               registers user               |
+|          /auth/signin          |  POST  |  JSON BODY (UserLoginRequest)   | JSON (result)  |            allows user to login            |

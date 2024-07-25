@@ -13,4 +13,5 @@ public interface JwtUtilsPropertyConfigurable {
     long getRefreshTokenExpiration();
 
     void setRefreshTokenExpiration(long refreshExpiration);
+
 }
