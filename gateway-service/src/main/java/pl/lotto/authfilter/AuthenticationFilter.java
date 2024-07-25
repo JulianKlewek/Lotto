@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -29,13 +30,21 @@ class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFi
                 if (authMissing(exchange.getRequest())) {
                     return onError(exchange, HttpStatus.UNAUTHORIZED);
                 }
-                final String token = request.getHeaders().getOrEmpty("Authorization").get(0);
+                final String token = parseJwt(request);
                 if (!jwtValidator.validate(token)) {
                     return onError(exchange, HttpStatus.UNAUTHORIZED);
                 }
             }
             return chain.filter(exchange);
         };
+    }
+
+    private static String parseJwt(ServerHttpRequest request) {
+        String authHeader = request.getHeaders().getOrEmpty("Authorization").get(0);
+        if (!StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+            return null;
+        }
+        return authHeader.substring(7);
     }
 
     private Mono<Void> onError(ServerWebExchange exchange, HttpStatus httpStatus) {
