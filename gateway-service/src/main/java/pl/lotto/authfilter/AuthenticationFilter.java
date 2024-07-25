@@ -12,8 +12,8 @@ import reactor.core.publisher.Mono;
 @Component
 class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
 
-    private RouteValidator routeValidator;
-    private JwtValidator jwtValidator;
+    private final RouteValidator routeValidator;
+    private final JwtValidator jwtValidator;
 
     public AuthenticationFilter(RouteValidator routeValidator, JwtValidator jwtValidator) {
         super(Config.class);
