@@ -30,7 +30,7 @@ class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFi
                     return onError(exchange, HttpStatus.UNAUTHORIZED);
                 }
                 final String token = request.getHeaders().getOrEmpty("Authorization").get(0);
-                if (jwtValidator.isExpired(token)) {
+                if (!jwtValidator.validate(token)) {
                     return onError(exchange, HttpStatus.UNAUTHORIZED);
                 }
             }

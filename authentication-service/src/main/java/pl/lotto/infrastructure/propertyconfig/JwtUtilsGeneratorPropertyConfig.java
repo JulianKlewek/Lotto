@@ -11,6 +11,15 @@ class JwtUtilsGeneratorPropertyConfig implements JwtUtilsPropertyConfigurable {
     private String secret;
     private long expirationAccess;
     private long expirationRefresh;
+    private Expiration expiration;
+
+    public Expiration getExpiration() {
+        return expiration;
+    }
+
+    public void setExpiration(Expiration expiration) {
+        this.expiration = expiration;
+    }
 
     @Override
     public String getSecret() {
@@ -24,7 +33,10 @@ class JwtUtilsGeneratorPropertyConfig implements JwtUtilsPropertyConfigurable {
 
     @Override
     public long getAccessTokenExpiration() {
-        return expirationAccess;
+        if (expirationAccess != 0) {
+            return expirationAccess;
+        }
+        return expiration.minutes() * expiration.seconds() * expiration.millis();
     }
 
     @Override
@@ -34,11 +46,18 @@ class JwtUtilsGeneratorPropertyConfig implements JwtUtilsPropertyConfigurable {
 
     @Override
     public long getRefreshTokenExpiration() {
-        return expirationRefresh;
+        if (expirationRefresh != 0) {
+            return expirationAccess;
+        }
+        return expiration.minutes() * expiration.seconds() * expiration.millis() * expiration.refreshOffset();
     }
 
     @Override
     public void setRefreshTokenExpiration(long expirationRefresh) {
         this.expirationRefresh = expirationRefresh;
+    }
+
+    record Expiration(long minutes, long seconds, long millis, long refreshOffset) {
+
     }
 }

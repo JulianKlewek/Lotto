@@ -2,7 +2,6 @@ package pl.lotto.authfilter;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
-import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -26,35 +24,30 @@ public class JwtValidator {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtValidatorConfig.getSecret()));
     }
 
-    public Claims extractClaims(String token) {
-        byte[] encodedSecret = Encoders.BASE64.encode(key().getEncoded()).getBytes();
-        SecretKey secret = Keys.hmacShaKeyFor(encodedSecret);
-        try{
-            return Jwts.parser()
+    public boolean validate(String token) {
+        SecretKey secret = Keys.hmacShaKeyFor(key().getEncoded());
+        try {
+            Jwts.parser()
                     .verifyWith(secret)
                     .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
+                    .parseSignedClaims(token);
         } catch (MalformedJwtException e) {
             logger.error("Invalid JWT token: {}", e.getMessage());
+            return false;
         } catch (ExpiredJwtException e) {
             logger.error("JWT token is expired: {}", e.getMessage());
+            return false;
         } catch (UnsupportedJwtException e) {
             logger.error("JWT token is unsupported: {}", e.getMessage());
+            return false;
         } catch (IllegalArgumentException e) {
             logger.error("JWT claims string is empty: {}", e.getMessage());
-        } catch (SignatureException e){
+            return false;
+        } catch (SignatureException e) {
             logger.error("JWT signature does not match locally computed signature: {}", e.getMessage());
+            return false;
         }
-        return Jwts.parser()
-                .verifyWith(secret)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-    }
-
-    public boolean isExpired(String token) {
-        return extractClaims(token).getExpiration().before(new Date());
+        return true;
     }
 
 }

@@ -6,11 +6,4 @@ public interface JwtValidatorConfigurable {
 
     void setSecret(String secret);
 
-    long getAccessTokenExpiration();
-
-    void setAccessTokenExpiration(long accessExpiration);
-
-    long getRefreshTokenExpiration();
-
-    void setRefreshTokenExpiration(long refreshExpiration);
 }

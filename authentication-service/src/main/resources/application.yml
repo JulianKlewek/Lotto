@@ -27,8 +27,7 @@ jwt:
     minutes: 5
     seconds: 60
     millis: 1000
-    access: '#{${jwt.expiration.minutes}*${jwt.expiration.seconds}*${jwt.expiration.millis}}'
-    refresh: '#{${jwt.expiration.minutes}*${jwt.expiration.seconds}*${jwt.expiration.millis}*10}'
+    refreshOffset: 10
 
 springdoc:
   swagger-ui:
