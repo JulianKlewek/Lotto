@@ -26,27 +26,27 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: LOTTO-ENGINE
+        - id: LOTTO-ENGINE-ROUTE
           uri: lb://lotto-engine
           predicates:
             - Path=/lottery/**,/result/**
           filters:
             - AuthenticationFilter
-        - id: LOTTO-ENGINE-swagger
+        - id: LOTTO-ENGINE-swagger-ROUTE
           uri: lb://lotto-engine
           predicates:
             - Path=/lotto-engine/v3/api-docs
             - Method=GET
-        - id: NUMBERS-GENERATOR-swagger
+        - id: NUMBERS-GENERATOR-swagger-ROUTE
           uri: lb://numbers-generator
           predicates:
             - Path=/numbers-generator/v3/api-docs
             - Method=GET
-        - id: AUTH-SERVICE
+        - id: AUTH-SERVICE-ROUTE
           uri: lb://auth-service
           predicates:
             - Path=/auth/**
-        - id: AUTH-SERVICE-swagger
+        - id: AUTH-SERVICE-swagger-ROUTE
           uri: lb://auth-service
           predicates:
             - Path=/auth-service/v3/api-docs
@@ -70,3 +70,14 @@ springdoc:
         name: Authentication Service
     disable-swagger-default-url: true
     path: /swagger
+
+management:
+  endpoint:
+    health:
+      show-details: always
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
