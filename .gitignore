@@ -3,5 +3,5 @@
 **/META-INF/
 */target/**
 **/*.iml
-*/out/
 */out/**
+/out/

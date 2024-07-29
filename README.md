@@ -6,6 +6,8 @@ generated once a week, at specified time. To win user must hit at least 4 matchi
 by using ticket unique id.
 
 This project uses modular monolithic application architecture with elements of hexagonal and microservice architecture.
+I have also implemented distributed configuration pattern using Spring Cloud Config Discovery First approach - this means
+that configuration files can be updated easily, without the need to change the application
 
 
 ## Tech
@@ -47,6 +49,7 @@ Continuous integration: <br>
 - API Gateway
 - Endpoints documented using Swagger
 - Authentication service with custom password validator
+- Config-server to externalize properties.
 
 ## Rest-API Endpoints
 
