@@ -1,6 +1,7 @@
 /.idea/
-*/out/**
 .mvn/wrapper/maven-wrapper.jar
 **/META-INF/
 */target/**
 **/*.iml
+*/out/
+*/out/**
