@@ -27,6 +27,7 @@
         <spring-cloud-starter-netflix-eureka-client.version>4.1.2</spring-cloud-starter-netflix-eureka-client.version>
         <wiremock.version>3.7.0</wiremock.version>
         <springdoc-openapi.version>2.6.0</springdoc-openapi.version>
+        <spring-cloud-dependencies.version>2023.0.2</spring-cloud-dependencies.version>
     </properties>
 
     <dependencies>
@@ -57,6 +58,14 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
         </dependency>
         <!-- TESTING COMPONENTS -->
         <dependency>
@@ -126,6 +135,18 @@
             <version>${springdoc-openapi.version}</version>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
