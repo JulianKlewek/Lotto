@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: lotto-engine
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+  main:
+    allow-bean-definition-overriding: true
+
+eureka:
+  client:
+    enabled: true
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}

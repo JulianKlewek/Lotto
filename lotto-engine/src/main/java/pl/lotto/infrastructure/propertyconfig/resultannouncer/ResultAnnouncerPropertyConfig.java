@@ -1,9 +1,11 @@
 package pl.lotto.infrastructure.propertyconfig.resultannouncer;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
 import pl.lotto.resultannouncer.ResultAnnouncerConfigurable;
 
+@RefreshScope
 @Configuration
 @ConfigurationProperties(prefix = "lotto.result-announcer")
 class ResultAnnouncerPropertyConfig implements ResultAnnouncerConfigurable {
