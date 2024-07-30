@@ -2,42 +2,32 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <groupId>org.example</groupId>
-        <artifactId>Lotto</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
+
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>numbers-generator</artifactId>
+    <groupId>org.example</groupId>
+    <version>1.0-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
+        <spring-boot-dependencies.version>3.3.2</spring-boot-dependencies.version>
+        <spring-cloud-dependencies.version>2023.0.2</spring-cloud-dependencies.version>
         <junit-jupiter.version>5.10.2</junit-jupiter.version>
         <assertj-core.version>3.25.3</assertj-core.version>
         <testcontainers.version>1.19.8</testcontainers.version>
         <awaitility.version>4.2.0</awaitility.version>
         <mockito-core.version>5.11.0</mockito-core.version>
         <lombok.version>1.18.30</lombok.version>
-        <spring-cloud-starter-netflix-eureka-client.version>4.1.2</spring-cloud-starter-netflix-eureka-client.version>
         <springdoc-openapi.version>2.6.0</springdoc-openapi.version>
-        <spring-cloud-dependencies.version>2023.0.2</spring-cloud-dependencies.version>
     </properties>
 
     <dependencies>
-        <!-- SPRING BOOT COMPONENTS -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -46,7 +36,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-            <version>${spring-cloud-starter-netflix-eureka-client.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -125,6 +114,13 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
