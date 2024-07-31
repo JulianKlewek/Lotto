@@ -25,6 +25,7 @@
         <mockito-core.version>5.11.0</mockito-core.version>
         <springdoc-openapi.version>2.6.0</springdoc-openapi.version>
         <lombok.version>1.18.30</lombok.version>
+        <spring-retry.version>2.0.6</spring-retry.version>
     </properties>
 
     <dependencies>
@@ -68,6 +69,16 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <!--        RETRY-->
+        <dependency>
+            <groupId>org.springframework.retry</groupId>
+            <artifactId>spring-retry</artifactId>
+            <version>${spring-retry.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
         <!--LOMBOK        -->
         <dependency>
@@ -179,12 +190,18 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>pl.lotto.AuthServiceRunner</mainClass>
                     <layout>JAR</layout>
                     <layers>
                         <enabled>true</enabled>
                     </layers>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

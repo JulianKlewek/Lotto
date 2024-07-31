@@ -68,8 +68,28 @@ services:
     restart: unless-stopped
     ports:
       - "8761:8761"
+    healthcheck:
+      test: "wget -T5 -qO- http://localhost:8761/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
     networks:
       - lottery-net
+
+  configuration-service:
+    build: config-server
+    image: julekkl/lottery/config-server:latest
+    container_name: config-server
+    restart: unless-stopped
+    depends_on:
+      discovery-server:
+        condition: service_healthy
+        restart: true
+    networks:
+      - lottery-net
+    environment:
+      eureka.client.serviceUrl.defaultZone: http://discovery-server:8761/eureka/
 
   gateway-service:
     build: gateway-service
@@ -79,7 +99,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - discovery-server
+      - configuration-service
     networks:
       - lottery-net
     environment:
@@ -92,28 +112,26 @@ services:
     restart: unless-stopped
     depends_on:
       - mongo
-      - discovery-server
-      - gateway-service
+      - configuration-service
     networks:
       - lottery-net
     environment:
       eureka.client.serviceUrl.defaultZone: http://discovery-server:8761/eureka/
-      spring.data.mongodb.host: mongo
+      SPRING_PROFILES_ACTIVE: docker
 
-  lotto-engine:
+  lottery-engine:
     build: lotto-engine
-    image: julekkl/lottery/lotto-engine
-    container_name: lotto-engine
+    image: julekkl/lottery/lottery-engine
+    container_name: lottery-engine
     restart: unless-stopped
     depends_on:
       - mongo
-      - discovery-server
-      - gateway-service
+      - configuration-service
     networks:
       - lottery-net
     environment:
       eureka.client.serviceUrl.defaultZone: http://discovery-server:8761/eureka/
-      spring.data.mongodb.host: mongo
+      SPRING_PROFILES_ACTIVE: docker
 
   auth-service:
     build: authentication-service
@@ -122,13 +140,12 @@ services:
     restart: unless-stopped
     depends_on:
       - postgres
-      - discovery-server
+      - configuration-service
     networks:
       - lottery-net
     environment:
       eureka.client.serviceUrl.defaultZone: http://discovery-server:8761/eureka/
-      spring.datasource.url: jdbc:postgresql://postgres:5432/lotto
-      spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_PROFILES_ACTIVE: docker
 
 networks:
   lottery-net:
