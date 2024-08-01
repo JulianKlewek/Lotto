@@ -2,7 +2,7 @@ services:
 
   mongo:
     image: mongo
-    container_name: mongo
+    container_name: db-mongo
     restart: unless-stopped
     ports:
       - "27017:27017"
@@ -17,7 +17,7 @@ services:
 
   mongo-express:
     image: mongo-express
-    container_name: mongo-express
+    container_name: db-mongo-express
     restart: unless-stopped
     ports:
       - "8088:8081"
@@ -33,7 +33,7 @@ services:
 
   postgres:
     image: postgres
-    container_name: postgres
+    container_name: db-postgres
     restart: unless-stopped
     shm_size: 128mb
     ports:
@@ -49,7 +49,7 @@ services:
 
   adminer:
     image: adminer
-    container_name: adminer
+    container_name: db-adminer
     restart: unless-stopped
     ports:
       - "8089:8080"
@@ -63,7 +63,7 @@ services:
   discovery-server:
     build: discovery-server-service
     image: julekkl/lottery/discovery-server:latest
-    container_name: discovery-server
+    container_name: service-discovery
     restart: unless-stopped
     ports:
       - "8761:8761"
@@ -79,7 +79,7 @@ services:
   configuration-service:
     build: config-server
     image: julekkl/lottery/config-server:latest
-    container_name: config-server
+    container_name: service-config
     restart: unless-stopped
     depends_on:
       discovery-server:
@@ -94,7 +94,7 @@ services:
   gateway-service:
     build: gateway-service
     image: julekkl/lottery/gateway-service:latest
-    container_name: gateway-service
+    container_name: service-gateway
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -108,7 +108,7 @@ services:
   numbers-generator:
     build: numbers-generator
     image: julekkl/lottery/numbers-generator
-    container_name: numbers-generator
+    container_name: service-numbers-generator
     restart: unless-stopped
     depends_on:
       - mongo
@@ -122,7 +122,7 @@ services:
   lottery-engine:
     build: lotto-engine
     image: julekkl/lottery/lottery-engine
-    container_name: lottery-engine
+    container_name: service-lottery-engine
     restart: unless-stopped
     depends_on:
       - mongo
@@ -136,7 +136,7 @@ services:
   auth-service:
     build: authentication-service
     image: julekkl/lottery/authentication-service
-    container_name: authentication-service
+    container_name: service-authentication
     restart: unless-stopped
     depends_on:
       - postgres
