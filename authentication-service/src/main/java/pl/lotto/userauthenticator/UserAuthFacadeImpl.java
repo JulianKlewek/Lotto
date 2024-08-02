@@ -9,9 +9,12 @@ import pl.lotto.userauthenticator.dto.UserInfoResponse;
 import pl.lotto.userauthenticator.dto.UserLoginResponse;
 import pl.lotto.userauthenticator.dto.UserRegisterRequest;
 import pl.lotto.userauthenticator.dto.UserRegisterResponse;
+import pl.lotto.userauthenticator.entity.Role;
 import pl.lotto.userauthenticator.entity.User;
 
 import java.nio.CharBuffer;
+import java.util.HashSet;
+import java.util.Set;
 
 import static pl.lotto.userauthenticator.PasswordCleaner.cleanPassword;
 import static pl.lotto.userauthenticator.UserMapper.entityToResponse;
@@ -21,6 +24,7 @@ import static pl.lotto.userauthenticator.UserMapper.userDetailsToInfoResponse;
 class UserAuthFacadeImpl implements UserAuthFacade {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtGeneratorFacade jwtGeneratorFacade;
 
@@ -35,11 +39,16 @@ class UserAuthFacadeImpl implements UserAuthFacade {
             cleanPassword(passArray);
             throw new UserAlreadyExistsException("Username already exists: " + request.username());
         }
+        Role userRole = roleRepository.findByName(UserRole.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        Set<Role> roles = new HashSet<>();
+        roles.add(userRole);
         CharSequence passCharSequence = CharBuffer.wrap(passArray);
         User user = User.builder()
                 .username(request.username())
                 .email(request.email())
                 .password(passwordEncoder.encode(passCharSequence))
+                .roles(roles)
                 .build();
         User saved = userRepository.save(user);
         cleanPassword(passArray);
@@ -49,7 +58,7 @@ class UserAuthFacadeImpl implements UserAuthFacade {
     @Override
     public UserLoginResponse prepareLoginResponse(UserDetailsImpl userDetails) {
         UserTokenRequest accessTokenRequest = UserTokenRequest.builder()
-                .username(userDetails.getUsername())
+                .id(userDetails.getId())
                 .tokenType("ACCESS")
                 .build();
         JwtResponse accessTokenResponse = jwtGeneratorFacade.generateToken(accessTokenRequest);

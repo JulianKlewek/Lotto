@@ -21,7 +21,7 @@ class UserAuthFacadeTest extends UserAuthTestConfig {
         //given
         JwtGeneratorFacade jwtGeneratorFacade = mock(JwtGeneratorFacade.class);
         UserAuthFacade userAuthFacade = new UserAuthConfiguration()
-                .createUserAuthFacadeForTests(userRepository, jwtGeneratorFacade);
+                .createUserAuthFacadeForTests(userRepository, roleRepository, jwtGeneratorFacade);
         UserRegisterRequest user1 = UserRegisterRequest.builder()
                 .username("user1")
                 .email("user1@gmail.com")
@@ -39,7 +39,7 @@ class UserAuthFacadeTest extends UserAuthTestConfig {
         //given
         JwtGeneratorFacade jwtGeneratorFacade = mock(JwtGeneratorFacade.class);
         UserAuthFacade userAuthFacade = new UserAuthConfiguration()
-                .createUserAuthFacadeForTests(userRepository, jwtGeneratorFacade);
+                .createUserAuthFacadeForTests(userRepository, roleRepository, jwtGeneratorFacade);
         UserRegisterRequest defaultuser1 = UserRegisterRequest.builder()
                 .username("defaultusername1")
                 .email("defaultemail@gmail.com")
@@ -57,7 +57,7 @@ class UserAuthFacadeTest extends UserAuthTestConfig {
         //given
         JwtGeneratorFacade jwtGeneratorFacade = mock(JwtGeneratorFacade.class);
         UserAuthFacade userAuthFacade = new UserAuthConfiguration()
-                .createUserAuthFacadeForTests(userRepository, jwtGeneratorFacade);
+                .createUserAuthFacadeForTests(userRepository, roleRepository, jwtGeneratorFacade);
         UserRegisterRequest defaultuser = UserRegisterRequest.builder()
                 .username("defaultusername")
                 .email("defaultemail1@gmail.com")
@@ -75,16 +75,17 @@ class UserAuthFacadeTest extends UserAuthTestConfig {
         //given
         JwtGeneratorFacade jwtGeneratorFacade = mock(JwtGeneratorFacade.class);
         UserAuthFacade userAuthFacade = new UserAuthConfiguration()
-                .createUserAuthFacadeForTests(userRepository, jwtGeneratorFacade);
+                .createUserAuthFacadeForTests(userRepository, roleRepository, jwtGeneratorFacade);
         UserDetailsImpl user1 = UserDetailsImpl.builder()
+                .id(1L)
                 .username("user1")
                 .email("user1@gmail.com")
                 .build();
         UserTokenRequest accessTokenRequest = UserTokenRequest.builder()
-                .username("user1")
+                .id(1L)
                 .tokenType("ACCESS")
                 .build();
-        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImlhdCI6MTcyMDQzNzA3MSwiZXhwIjoxNzIwNDM3MTkxfQ.LvdHq596zwBpHhhas-WvgQMKZRswhkQxJe_ZKfHgSJsGSCmxkFmOxQk6MgBGT5gLeLCx8zFLBEwYkAlaYb3DGg";
+        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiIxIiwiaWF0IjoxNzIwNDM3MDcxLCJleHAiOjE3MjA0MzcxOTF9.XhKxGNDsNF60yHgrmhL6QFlHXznv7shZRZsdImnm6VKWeAq1wP4U-iRbYnNI-q-smAWJCw9VU2eBA7h2ZQID2g";
         JwtResponse accessTokenResponse = JwtResponse.builder()
                 .token(accessToken)
                 .build();

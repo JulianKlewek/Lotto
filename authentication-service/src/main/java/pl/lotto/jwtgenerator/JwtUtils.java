@@ -35,7 +35,7 @@ class JwtUtils {
                 : jwtPropertyConfig.getRefreshTokenExpiration();
         Date expiration = new Date(now.getTime() + expirationMillis);
         return Jwts.builder()
-                .subject(request.username())
+                .id(String.valueOf(request.id()))
                 .issuedAt(now)
                 .expiration(expiration)
                 .signWith(key())

@@ -1,0 +1,6 @@
+jwt:
+  expiration:
+    minutes: 1
+    seconds: 60
+    millis: 1000
+    refreshOffset: 10
