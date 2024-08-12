@@ -1,15 +1,14 @@
 package pl.lotto.jwtgenerator;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import pl.lotto.jwtgenerator.dto.UserTokenRequest;
 
-import javax.crypto.SecretKey;
 import java.security.Key;
 import java.time.Clock;
 import java.time.Instant;
@@ -19,6 +18,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 class JwtUtils {
 
+    private static final Logger logger = LogManager.getLogger(JwtUtils.class);
     private final Clock clock;
     private final JwtUtilsPropertyConfigurable jwtPropertyConfig;
 
@@ -34,29 +34,12 @@ class JwtUtils {
                 ? jwtPropertyConfig.getAccessTokenExpiration()
                 : jwtPropertyConfig.getRefreshTokenExpiration();
         Date expiration = new Date(now.getTime() + expirationMillis);
+        logger.info("Generating {}-JWT for user ID: [{}] with expiration: [{}] ", tokenType, request.id(), expiration);
         return Jwts.builder()
                 .id(String.valueOf(request.id()))
                 .issuedAt(now)
                 .expiration(expiration)
                 .signWith(key())
                 .compact();
-    }
-
-    public Claims extractClaims(String token) {
-        byte[] encodedSecret = Encoders.BASE64.encode(key().getEncoded()).getBytes();
-        SecretKey secret = Keys.hmacShaKeyFor(encodedSecret);
-        return Jwts.parser()
-                .verifyWith(secret)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-    }
-
-    public Date extractExpirationDate(String token) {
-        return extractClaims(token).getExpiration();
-    }
-
-    private boolean isExpired(String token) {
-        return extractExpirationDate(token).before(new Date());
     }
 }

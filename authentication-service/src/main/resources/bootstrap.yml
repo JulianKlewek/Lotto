@@ -1,6 +1,31 @@
 spring:
   application:
-    name: auth-service
+    name: config-server
+  profiles:
+    active: dev-local
+
+---
+server:
+  port: 8080
+
+spring:
+  config:
+    activate:
+      on-profile: dev-local
+  cloud:
+    config:
+      discovery:
+        enabled: false
+
+eureka:
+  client:
+    enabled: false
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
   cloud:
     config:
       discovery:

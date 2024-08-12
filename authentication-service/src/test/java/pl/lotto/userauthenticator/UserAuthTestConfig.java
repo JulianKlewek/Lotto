@@ -8,8 +8,8 @@ import java.util.List;
 
 class UserAuthTestConfig {
 
-    UserRepository userRepository = new UserRepositoryTestImpl();
-    RoleRepository roleRepository = new RoleRepositoryTestImpl();
+    UserRepository userRepository = new InMemoryUserRepository();
+    RoleRepository roleRepository = new InMemoryRoleRepository();
 
     @BeforeEach
     public void beforeEach() {

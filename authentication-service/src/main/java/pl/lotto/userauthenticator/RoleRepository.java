@@ -1,13 +1,18 @@
 package pl.lotto.userauthenticator;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import pl.lotto.userauthenticator.entity.Role;
 
-import java.util.Optional;
+import java.util.List;
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role, Long> {
+public interface RoleRepository {
 
-    Optional<Role> findByName(UserRole name);
+    Role findByName(UserRole name);
+
+    void deleteAll();
+
+    Role save(Role role);
+
+    List<Role> saveAll(Iterable<Role> roles);
 }

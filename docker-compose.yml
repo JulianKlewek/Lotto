@@ -75,6 +75,8 @@ services:
       start_period: 15s
     networks:
       - lottery-net
+    profiles:
+      - prod
 
   configuration-service:
     build: config-server
@@ -90,6 +92,8 @@ services:
     environment:
       eureka.client.serviceUrl.defaultZone: http://discovery-server:8761/eureka/
       spring.profiles.active: docker
+    profiles:
+      - prod
 
   gateway-service:
     build: gateway-service
@@ -104,6 +108,8 @@ services:
       - lottery-net
     environment:
       eureka.client.serviceUrl.defaultZone: http://discovery-server:8761/eureka/
+    profiles:
+      - prod
 
   numbers-generator:
     build: numbers-generator
@@ -118,6 +124,8 @@ services:
     environment:
       eureka.client.serviceUrl.defaultZone: http://discovery-server:8761/eureka/
       spring.profiles.active: docker
+    profiles:
+      - prod
 
   lottery-engine:
     build: lotto-engine
@@ -132,6 +140,8 @@ services:
     environment:
       eureka.client.serviceUrl.defaultZone: http://discovery-server:8761/eureka/
       spring.profiles.active: docker
+    profiles:
+      - prod
 
   auth-service:
     build: authentication-service
@@ -146,6 +156,8 @@ services:
     environment:
       eureka.client.serviceUrl.defaultZone: http://discovery-server:8761/eureka/
       spring.profiles.active: docker
+    profiles:
+      - prod
 
 networks:
   lottery-net:

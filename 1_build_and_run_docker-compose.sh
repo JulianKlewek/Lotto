@@ -3,4 +3,4 @@
 # flags -d - detached mode
 
 docker-compose build
-docker-compose up -d
+docker-compose --profile prod up -d

@@ -1,13 +1,12 @@
 package pl.lotto.userauthenticator.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import pl.lotto.userauthenticator.UserRole;
 
 @Builder
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @Table(name = "roles")
 @Entity

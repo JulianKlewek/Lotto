@@ -1,0 +1,42 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/lotto_dev?createDatabaseIfNotExist=true
+    username: root
+    password: example
+  jpa:
+    hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: update
+
+jwt:
+  expiration:
+    minutes: 5
+    seconds: 60
+    millis: 1000
+    refreshOffset: 10
+
+springdoc:
+  swagger-ui:
+    path: /swagger
+  api-docs:
+    path: /swagger
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+logging:
+  level:
+    pl:
+      lotto: debug
+    root: info
+
+#    http://localhost:50161/auth-service/actuator/refresh
