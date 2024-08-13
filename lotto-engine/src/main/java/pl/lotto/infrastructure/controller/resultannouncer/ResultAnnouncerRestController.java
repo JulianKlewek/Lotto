@@ -18,14 +18,14 @@ public class ResultAnnouncerRestController implements ResultAnnouncerApi {
     private final ResultAnnouncerFacade resultAnnouncerFacade;
 
     @GetMapping("/get-result/{ticketId}")
-    public ResponseEntity<AnnouncerResponseDto> getTicketResult(@PathVariable String ticketId) {
+    public ResponseEntity<AnnouncerResponseDto> getTicketResult(@PathVariable("ticketId") String ticketId) {
         AnnouncerResponseDto results = resultAnnouncerFacade.findResultsForId(ticketId);
         return ResponseEntity
                 .ok(results);
     }
 
     @GetMapping("/get-results/{drawDate}")
-    public ResponseEntity<AnnouncerWinningResultsResponseDto> lotteryResultsForDate(@PathVariable Instant drawDate) {
+    public ResponseEntity<AnnouncerWinningResultsResponseDto> lotteryResultsForDate(@PathVariable("drawDate") Instant drawDate) {
         AnnouncerWinningResultsResponseDto response = resultAnnouncerFacade.getLotteryResultsForDate(drawDate);
         return ResponseEntity
                 .ok(response);

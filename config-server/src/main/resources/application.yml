@@ -1,6 +1,12 @@
 server:
   port: 0
 
+spring:
+  application:
+    name: config-server
+  profiles:
+    active: dev
+
 management:
   health:
     livenessstate:
@@ -19,11 +25,22 @@ eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 
+---
 spring:
-  application:
-    name: config-server
-  profiles:
-    active: native
+  config:
+    activate:
+      on-profile: dev
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/JulianKlewek/lottery-properties.git
+          default-label: dev
+---
+spring:
+  config:
+    activate:
+      on-profile: native
   cloud:
     config:
       server:

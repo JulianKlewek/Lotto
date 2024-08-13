@@ -20,13 +20,15 @@ class UserAuthConfiguration {
 
     @Bean
     public UserAuthFacade createUserAuthFacade(UserRepository userRepository,
+                                               RoleRepository roleRepository,
                                                JwtGeneratorFacade jwtGeneratorFacade) {
-        return new UserAuthFacadeImpl(userRepository, passwordEncoder(), jwtGeneratorFacade);
+        return new UserAuthFacadeImpl(userRepository, roleRepository, passwordEncoder(), jwtGeneratorFacade);
     }
 
     public UserAuthFacade createUserAuthFacadeForTests(UserRepository userRepository,
+                                                       RoleRepository roleRepository,
                                                        JwtGeneratorFacade jwtGeneratorFacade) {
-        return createUserAuthFacade(userRepository, jwtGeneratorFacade);
+        return createUserAuthFacade(userRepository, roleRepository, jwtGeneratorFacade);
     }
 
     @Bean

@@ -1,6 +1,9 @@
 package pl.lotto.userauthenticator.validator;
 
-public class LengthRule implements PasswordRule {
+import lombok.ToString;
+
+@ToString
+class LengthRule implements PasswordRule {
 
     public static final String ERROR_CODE_MIN = "TOO_SHORT";
     public static final String ERROR_CODE_MAX = "TOO_LONG";

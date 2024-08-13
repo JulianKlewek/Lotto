@@ -1,5 +1,8 @@
 package pl.lotto.userauthenticator.validator;
 
+import lombok.ToString;
+
+@ToString
 class WhitespaceRule implements PasswordRule {
 
     public static final String ERROR_CODE = "ILLEGAL_WHITESPACE";

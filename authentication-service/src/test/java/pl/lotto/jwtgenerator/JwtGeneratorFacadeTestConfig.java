@@ -20,6 +20,6 @@ public class JwtGeneratorFacadeTestConfig {
         return Clock.fixed(today.toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
     }
 
-    JwtUtilsPropertyConfigurable utilsPropertyConfigurable = new JwtUtilsPropertyTestConfig(
+    protected final JwtUtilsPropertyConfigurable utilsPropertyConfigurable = new JwtUtilsPropertyTestConfig(
             SECRET, ACCESS_EXPIRATION, REFRESH_EXPIRATION);
 }
