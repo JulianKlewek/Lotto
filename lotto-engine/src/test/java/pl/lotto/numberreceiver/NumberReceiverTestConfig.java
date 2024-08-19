@@ -8,7 +8,7 @@ import java.time.*;
 
 class NumberReceiverTestConfig {
 
-    TicketRepository ticketRepository = new TicketRepositoryTestImpl();
+    protected final TicketRepository ticketRepository = new InMemoryTicketRepository();
 
     @Bean("numberReceiverClock")
     @Primary

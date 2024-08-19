@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 class InMemoryUserRepository implements UserRepository {
 
-    protected static final Map<Long, User> database = new ConcurrentHashMap<>();
+    private final Map<Long, User> database = new ConcurrentHashMap<>();
     private static final AtomicLong userId = new AtomicLong(0L);
 
     @Override

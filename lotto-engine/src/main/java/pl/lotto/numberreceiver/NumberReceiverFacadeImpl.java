@@ -30,6 +30,7 @@ class NumberReceiverFacadeImpl implements NumberReceiverFacade {
     public NumberReceiverResultDto inputNumbers(List<Integer> numbersFromUser) {
         NumberValidationResult validationResult = numberValidator.validate(new HashSet<>(numbersFromUser));
         if (!validationResult.isValidationSuccessful()) {
+            log.debug("Input numbers validation failed, numbers: [{}]", numbersFromUser);
             return new NumberReceiverResultDto(
                     validationResult.validationStatus(),
                     validationResult.errorsList(),
@@ -39,7 +40,7 @@ class NumberReceiverFacadeImpl implements NumberReceiverFacade {
         DrawDateDto drawDateDto = drawDateGenerator.getNextDrawDate(Instant.now(clock));
         Ticket ticket = new Ticket(hash, numbersFromUser, drawDateDto.drawDate());
         Ticket saved = ticketRepository.save(ticket);
-        log.info("Ticket {} registered", hash);
+        log.info("Ticket [{}] registered", hash);
         return new NumberReceiverResultDto(
                 validationResult.validationStatus(),
                 validationResult.errorsList(),
@@ -49,7 +50,7 @@ class NumberReceiverFacadeImpl implements NumberReceiverFacade {
     @Override
     public UserTicketsDto usersNumbers(Instant drawDate) {
         List<Ticket> ticketsForDate = ticketRepository.findAllByDrawDate(drawDate);
-        log.info("Returned {} tickets for date: {}", ticketsForDate.size(), drawDate);
+        log.info("Returned [{}] tickets for date: [{}]", ticketsForDate.size(), drawDate);
         List<TicketDto> ticketsDto = toDtoList(ticketsForDate);
         return UserTicketsDto.builder()
                 .tickets(ticketsDto)

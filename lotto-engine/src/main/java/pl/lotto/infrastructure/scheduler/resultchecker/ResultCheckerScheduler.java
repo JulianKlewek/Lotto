@@ -1,5 +1,6 @@
 package pl.lotto.infrastructure.scheduler.resultchecker;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -10,6 +11,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 
+@Log4j2
 @Component
 public class ResultCheckerScheduler {
 
@@ -25,6 +27,7 @@ public class ResultCheckerScheduler {
     public void checkResults() {
         Instant latestDrawDate = Instant.now(clock)
                 .truncatedTo(ChronoUnit.MINUTES);
+        log.info("Scheduled result checking for date [{}]", latestDrawDate);
         resultCheckerFacade.checkAllWinningTicketsForGivenDrawDate(latestDrawDate);
     }
 }

@@ -1,11 +1,9 @@
 package pl.lotto.userauthenticator;
 
-import org.springframework.stereotype.Repository;
 import pl.lotto.userauthenticator.entity.Role;
 
 import java.util.List;
 
-@Repository
 public interface RoleRepository {
 
     Role findByName(UserRole name);
