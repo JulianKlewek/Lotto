@@ -5,7 +5,7 @@ services:
     container_name: db-mongo
     restart: unless-stopped
     ports:
-      - "27017:27017"
+      - ${MONGO_DEV_PORT}:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
@@ -37,7 +37,7 @@ services:
     restart: unless-stopped
     shm_size: 128mb
     ports:
-      - "5432:5432"
+      - ${POSTGRES_DEV_PORT}:5432
     environment:
       POSTGRES_USER: ${POSTGRES_USERNAME}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}

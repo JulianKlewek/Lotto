@@ -1,0 +1,48 @@
+server:
+  port: 8060
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: lotto
+      username: admin
+      password: admin
+      auto-index-creation: true
+
+lotto:
+  numbers:
+    minimumNumber: 1
+    maximumNumber: 50
+    amountOfNumbers: 6
+  time:
+    drawDayOfWeek: 5
+    drawHour: 20
+    drawMinute: 0
+    drawSecond: 0
+    drawTime: "${lotto.time.drawHour}:${lotto.time.drawMinute}:${lotto.time.drawSecond}}"
+  number-generator:
+    scheduler-cron: "${lotto.time.drawSecond} ${lotto.time.drawMinute} ${lotto.time.drawHour} * * ${lotto.time.drawDayOfWeek}"
+
+springdoc:
+  swagger-ui:
+    path: /swagger
+  api-docs:
+    path: /swagger
+
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+logging:
+  level:
+    pl:
+      lotto: debug
+    root: info

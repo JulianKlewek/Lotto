@@ -1,6 +1,29 @@
 spring:
   application:
     name: numbers-generator
+  profiles:
+    active: dev-local
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev-local
+  cloud:
+    config:
+      discovery:
+        enabled: false
+      enabled: false
+
+eureka:
+  client:
+    enabled: false
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
   cloud:
     config:
       discovery:

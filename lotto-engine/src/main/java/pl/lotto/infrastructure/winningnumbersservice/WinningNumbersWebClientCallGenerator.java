@@ -15,19 +15,21 @@ import java.time.Instant;
 public class WinningNumbersWebClientCallGenerator {
 
     private final WebClient.Builder webClient;
-    private String NUMBERS_GENERATOR_SERVICE_URL;
+    private String numbersGeneratorServiceUrl;
 
-    public WinningNumbersWebClientCallGenerator(WebClient.Builder webClient, @Value("${lotto.number-generator.service.url}") String NUMBERS_GENERATOR_SERVICE_URL) {
+    public WinningNumbersWebClientCallGenerator(WebClient.Builder webClient, @Value("${lotto.number-generator.service.url}") String numbersGeneratorServiceUrl) {
         this.webClient = webClient;
-        this.NUMBERS_GENERATOR_SERVICE_URL = NUMBERS_GENERATOR_SERVICE_URL;
+        this.numbersGeneratorServiceUrl = numbersGeneratorServiceUrl;
     }
 
     public WinningNumbersResponseDto callForWinningNumbersWithDrawDate(Instant drawDate) {
         log.debug("Processing request numbers generator service to fetch winning numbers for date [{}]", drawDate);
+        String uri = "/winning-numbers/{drawDate}";
+        log.debug("Calling Numbers-generator-service for url: [{}{}]", numbersGeneratorServiceUrl, uri);
         return webClient
-                .baseUrl(NUMBERS_GENERATOR_SERVICE_URL).build()
+                .baseUrl(numbersGeneratorServiceUrl).build()
                 .get()
-                .uri("/winning-numbers/{drawDate}", drawDate)
+                .uri(uri, drawDate)
                 .retrieve()
                 .bodyToMono(WinningNumbersResponseDto.class)
                 .onErrorResume(e ->
