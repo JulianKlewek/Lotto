@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 class InMemoryRoleRepository implements RoleRepository {
 
-    protected final static Map<Long, Role> database = new ConcurrentHashMap<>();
+    private final Map<Long, Role> database = new ConcurrentHashMap<>();
     private static final AtomicLong roleId = new AtomicLong(0L);
 
     @Override

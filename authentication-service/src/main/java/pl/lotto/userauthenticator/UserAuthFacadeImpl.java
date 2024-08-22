@@ -1,8 +1,7 @@
 package pl.lotto.userauthenticator;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.lotto.jwtgenerator.JwtGeneratorFacade;
 import pl.lotto.jwtgenerator.dto.JwtResponse;
@@ -22,10 +21,10 @@ import static pl.lotto.userauthenticator.PasswordCleaner.cleanPassword;
 import static pl.lotto.userauthenticator.UserMapper.entityToResponse;
 import static pl.lotto.userauthenticator.UserMapper.userDetailsToInfoResponse;
 
+@Log4j2
 @RequiredArgsConstructor
 class UserAuthFacadeImpl implements UserAuthFacade {
 
-    private static final Logger logger = LogManager.getLogger(UserAuthFacadeImpl.class);
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
@@ -36,11 +35,11 @@ class UserAuthFacadeImpl implements UserAuthFacade {
         char[] passArray = request.password();
         if (userRepository.existsByEmail(request.email())) {
             cleanPassword(passArray);
-            logger.info("User [{}] register failed, email already exists: {}", request.username(), request.email());
+            log.info("User [{}] register failed, email already exists: {}", request.username(), request.email());
             throw new UserAlreadyExistsException("Email already exists: " + request.email());
         }
         if (userRepository.existsByUsername(request.username())) {
-            logger.info("User [{}] register failed, username already exists.", request.username());
+            log.info("User [{}] register failed, username already exists.", request.username());
             cleanPassword(passArray);
             throw new UserAlreadyExistsException("Username already exists: " + request.username());
         }
@@ -55,7 +54,7 @@ class UserAuthFacadeImpl implements UserAuthFacade {
                 .roles(roles)
                 .build();
         User saved = userRepository.save(user);
-        logger.info("Created account for username: [{}], with id: [{}]", saved.getUsername(), saved.getId());
+        log.info("Created account for username: [{}], with id: [{}]", saved.getUsername(), saved.getId());
         cleanPassword(passArray);
         return entityToResponse(saved);
     }

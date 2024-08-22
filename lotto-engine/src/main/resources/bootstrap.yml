@@ -1,6 +1,31 @@
 spring:
   application:
     name: lotto-engine
+  profiles:
+    active: dev-local
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev-local
+  cloud:
+    config:
+      discovery:
+        enabled: false
+      enabled: false
+  main:
+    allow-bean-definition-overriding: true
+
+eureka:
+  client:
+    enabled: false
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
   cloud:
     config:
       discovery:

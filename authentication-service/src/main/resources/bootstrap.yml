@@ -1,13 +1,10 @@
 spring:
   application:
-    name: config-server
+    name: auth-service
   profiles:
     active: dev-local
 
 ---
-server:
-  port: 8080
-
 spring:
   config:
     activate:
@@ -16,6 +13,7 @@ spring:
     config:
       discovery:
         enabled: false
+      enabled: false
 
 eureka:
   client:

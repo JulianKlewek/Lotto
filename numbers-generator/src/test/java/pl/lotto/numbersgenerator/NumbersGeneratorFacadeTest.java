@@ -25,7 +25,6 @@ class NumbersGeneratorFacadeTest extends NumbersGeneratorTestConfig {
         //then
         List<Integer> winningNumbersSet = winningNumbersDto.numbers();
         Long lotteryNumber = winningNumbersDto.lotteryNumber();
-
         assertAll(
                 () -> assertThat(winningNumbersSet)
                         .hasSize(EXPECTED_AMOUNT_OF_GENERATED_NUMBERS)

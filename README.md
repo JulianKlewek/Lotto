@@ -5,12 +5,13 @@ provides 6 distinct numbers in range from 1 to 50 for which system generates cou
 generated once a week, at specified time. To win user must hit at least 4 matching numbers. Users can check if they won
 by using ticket unique id.
 
-This project uses modular monolithic application architecture with elements of hexagonal and microservice architecture.
-I have also implemented distributed configuration pattern using Spring Cloud Config Discovery First approach - this means
-that configuration files can be updated easily, without the need to change the application
+## Table of Content
+- [Technologies](#technologies)
+- [Architecture](#architecture)
+- [Installation](#installation)
+- [Rest-API Endpoints](#endpoints)
 
-
-## Tech
+## Technologies
 
 Order System is developed using following technologies: <br>
 ![image](https://img.shields.io/badge/17-Java-orange?style=for-the-badge) &nbsp;
@@ -34,24 +35,47 @@ Other:<br>
 Continuous integration: <br>
 [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/DmCGbhvsat4gP2YLSDSfx4/JtzsURR2NSU8SyxJrkdYBo/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/DmCGbhvsat4gP2YLSDSfx4/JtzsURR2NSU8SyxJrkdYBo/tree/master)
 
-## Specification
+## Architecture
 
-- Spring Boot, web application
-- Modular monolith hexagonal architecture with one module extracted as microservice
-- All modules are containerized using Docker
-- Developed using CircleCi - Continuous Integration tool
-- Facade design pattern
-- NoSQL Database (MongoDB)
-- Relational Database (Postgres)
-- Good coverage with unit tests, including "happy path" integration tests
-- Scheduled winning numbers generation and results processing
-- Netflix-Eureka server used as discovery service
-- API Gateway
-- Endpoints documented using Swagger
-- Authentication service with custom password validator
-- Config-server to externalize properties.
+This project uses microservice architecture with elements of hexagonal and modular monolithic application architecture.
 
-## Rest-API Endpoints
+I have also implemented distributed configuration pattern using Spring Cloud Config Discovery First approach - this means
+that configuration files can be updated easily, without the need to change the application.
+
+
+|          Service          |                                                   Description                                                   |
+|:-------------------------:|:---------------------------------------------------------------------------------------------------------------:|
+|     Discovery service     |    Allows services to dynamically find and communicate with each other without hard-coding hostname and port    |
+|      Config service       |                      Stores and serves distributed configurations across multiple services                      |
+|      Gateway service      |                         Provides routing mechanism and JSON Web Token validation filter                         |
+|  Authentication service   |                              Handles registration, login. Generates JSON Web Token                              |
+|      Engine service       | Retrieves user numbers, creates tickets and handles results announcing. Modular monolith hexagonal architecture |
+| Numbers generator service |              Generates winning numbers at scheduled time. Allows services to fetch winning numbers              |
+
+
+## Installation
+
+Clone the repository:
+```bash
+ git clone https://github.com/JulianKlewek/Lotto.git
+ ```
+
+Install dependencies and build project:
+```mvn
+./mvnw clean install
+ ```
+Run application
+```mvn
+./mvnw spring-boot:run
+ ```
+
+Or if you have docker installed you can simply run application using docker-compose file.
+```docker
+docker-compose --profile prod up -d
+```
+
+
+## Endpoints
 
 |            ENDPOINT            | METHOD |             REQUEST             |    RESPONSE    |                  FUNCTION                  |
 |:------------------------------:|:------:|:-------------------------------:|:--------------:|:------------------------------------------:|

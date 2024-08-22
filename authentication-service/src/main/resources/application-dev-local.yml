@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/lotto_dev?createDatabaseIfNotExist=true
+    url: jdbc:postgresql://localhost:5432/lotto?createDatabaseIfNotExist=true
     username: root
     password: example
   jpa:

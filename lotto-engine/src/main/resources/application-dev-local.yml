@@ -1,0 +1,48 @@
+server:
+  port: 8070
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: lotto
+      username: admin
+      password: admin
+      auto-index-creation: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+
+lotto:
+  number-generator:
+    service:
+      url: "http://localhost:8060"
+  time:
+    drawDayOfWeek: 5
+    drawHour: 20
+    drawMinute: 0
+    resultsMinute: 1
+    drawSecond: 0
+    drawTime: "${lotto.time.drawHour}:${lotto.time.drawMinute}:${lotto.time.drawSecond}}"
+  result-announcer:
+    win-message-received: "Congratulations you have won, but already received reward."
+    win-message-not-received: "Congratulations you have won, you can receive reward."
+    lose-message: "Unfortunately you didn't won."
+  result-checker:
+    scheduler-cron: "${lotto.time.drawSecond} ${lotto.time.resultsMinute} ${lotto.time.drawHour} * * ${lotto.time.drawDayOfWeek}"
+
+springdoc:
+  swagger-ui:
+    path: /swagger
+  api-docs:
+    path: /swagger
+
+logging:
+  level:
+    pl:
+      lotto: debug
+    root: info

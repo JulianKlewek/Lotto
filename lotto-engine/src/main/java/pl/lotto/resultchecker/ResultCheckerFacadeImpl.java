@@ -12,8 +12,8 @@ import java.util.List;
 
 import static pl.lotto.resultchecker.WinningTicketMapper.toDtoList;
 
-@AllArgsConstructor
 @Log4j2
+@AllArgsConstructor
 public class ResultCheckerFacadeImpl implements ResultCheckerFacade {
 
     private final NumberReceiverFacade numberReceiverFacade;
@@ -34,6 +34,7 @@ public class ResultCheckerFacadeImpl implements ResultCheckerFacade {
             log.info("No one won. Adding empty ticket");
         }
         List<WinningTicket> savedWinningTickets = saveWinningTickets(winningTickets, drawDate);
+        log.info("Number of winning tickets: [{}] for date: [{}]", savedWinningTickets.size(), drawDate);
         List<WinningTicketDto> winningTicketsDto = toDtoList(savedWinningTickets);
         return WinningTicketsDto.builder()
                 .winningTickets(winningTicketsDto)
@@ -57,6 +58,8 @@ public class ResultCheckerFacadeImpl implements ResultCheckerFacade {
     public BasicTicketInfoResponseDto checkGivenNumbersForLottery(List<Integer> userNumbers, Instant drawDate) {
         WinningNumbersResponseDto winningNumbersDto = winningNumbersPort.getWinningNumbersForDate(drawDate);
         int matchingNumbersAmount = numberChecker.checkTicketNumbers(userNumbers, winningNumbersDto.numbers());
+        log.debug("User have [{}] matching numbers. User numbers: [{}], winning numbers: [{}]",
+                matchingNumbersAmount, userNumbers, winningNumbersDto.numbers());
         return checkerResponseGenerator.prepareBasicTicketInfoResponse(winningNumbersDto, matchingNumbersAmount);
     }
 
@@ -64,13 +67,15 @@ public class ResultCheckerFacadeImpl implements ResultCheckerFacade {
     public BasicTicketInfoResponseDto checkGivenNumbersForLottery(List<Integer> userNumbers, Long lotteryId) {
         WinningNumbersResponseDto winningNumbersDto = winningNumbersPort.getWinningNumbersForLotteryNumber(lotteryId);
         int matchingNumbersAmount = numberChecker.checkTicketNumbers(userNumbers, winningNumbersDto.numbers());
+        log.debug("User have [{}] matching numbers. User numbers: [{}], winning numbers: [{}]",
+                matchingNumbersAmount, userNumbers, winningNumbersDto.numbers());
         return checkerResponseGenerator.prepareBasicTicketInfoResponse(winningNumbersDto, matchingNumbersAmount);
     }
 
     @Override
     public TicketResultResponseDto isSpecificTicketWon(String ticketHash) {
-        WinningTicket winningTicket = ticketRepository.findByHash(ticketHash).orElse(
-                WinningTicket.builder()
+        WinningTicket winningTicket = ticketRepository.findByHash(ticketHash)
+                .orElse(WinningTicket.builder()
                         .hash(ticketHash)
                         .build());
         return checkerResponseGenerator.prepareTicketResultResponse(winningTicket);

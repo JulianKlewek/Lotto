@@ -2,20 +2,18 @@ package pl.lotto.userauthenticator.validator;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.Arrays;
 import java.util.List;
 
+@Log4j2
 class PasswordConstraintsValidator implements ConstraintValidator<ValidPassword, char[]> {
-
-    private static final Logger logger = LogManager.getLogger(PasswordConstraintsValidator.class);
 
     @Override
     public boolean isValid(char[] password, ConstraintValidatorContext validatorContext) {
         List<PasswordRule> rules = getPasswordRules();
-        logger.debug("Validating password with rules {}", rules);
+        log.debug("Validating password with rules {}", rules);
         PasswordValidator validator = new PasswordValidator(rules);
         RuleResult result = validator.validate(password);
         if (result.isValid()) {

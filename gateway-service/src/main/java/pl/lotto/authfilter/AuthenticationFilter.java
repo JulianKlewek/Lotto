@@ -1,5 +1,6 @@
 package pl.lotto.authfilter;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+@Log4j2
 @Component
 class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
 
@@ -27,6 +29,7 @@ class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFi
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
             if (routeValidator.isSecured.test(request)) {
+                log.debug("Processing request");
                 if (authMissing(exchange.getRequest())) {
                     return onError(exchange, HttpStatus.UNAUTHORIZED);
                 }
@@ -42,8 +45,10 @@ class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFi
     private static String parseJwt(ServerHttpRequest request) {
         String authHeader = request.getHeaders().getOrEmpty("Authorization").get(0);
         if (!StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+            log.info("Token not valid, header: [{}]", authHeader);
             return null;
         }
+        log.info("Token parsed successfully, header: [{}]", authHeader);
         return authHeader.substring(7);
     }
 

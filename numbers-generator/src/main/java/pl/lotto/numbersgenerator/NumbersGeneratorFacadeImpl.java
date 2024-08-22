@@ -1,6 +1,7 @@
 package pl.lotto.numbersgenerator;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import pl.lotto.numbersgenerator.dto.WinningNumbersResponseDto;
 
 import java.time.Clock;
@@ -11,6 +12,7 @@ import java.util.Set;
 
 import static pl.lotto.numbersgenerator.WinningNumbersMapper.toDto;
 
+@Log4j2
 @AllArgsConstructor
 class NumbersGeneratorFacadeImpl implements NumbersGeneratorFacade {
 
@@ -23,13 +25,15 @@ class NumbersGeneratorFacadeImpl implements NumbersGeneratorFacade {
     public WinningNumbersResponseDto generateWinningNumbers() {
         Instant createdAt = Instant.now(clock).truncatedTo(ChronoUnit.MINUTES);
         if (numbersRepository.existsByDrawDate(createdAt)) {
-            WinningNumbersDetails fetchedWinningNumbers = numbersRepository.findByDrawDate(createdAt).orElseThrow(
-                    () -> new WinningNumbersNotFoundException("Could not fetch winning numbers for given date"));
+            log.info("Numbers are already generated for [{}].", createdAt);
+            WinningNumbersDetails fetchedWinningNumbers = numbersRepository.findByDrawDate(createdAt);
+            log.info("Fetched winning numbers for given date [{}].", fetchedWinningNumbers.numbers);
             return toDto(fetchedWinningNumbers);
         }
         Set<Integer> winningNumbersSet = winningNumbersGenerator.generateSixNumbersInGivenRange();
         Long drawNumber = drawNumberGenerator.generateDrawNumber();
         List<Integer> winningNumbers = List.copyOf(winningNumbersSet);
+        log.info("Generated [{}] winning numbers for date: [{}]", winningNumbers, createdAt);
         WinningNumbersDetails winningNumberDetails = WinningNumbersDetails.builder()
                 .numbers(winningNumbers)
                 .lotteryNumber(drawNumber)
@@ -41,22 +45,19 @@ class NumbersGeneratorFacadeImpl implements NumbersGeneratorFacade {
 
     @Override
     public WinningNumbersResponseDto getWinningNumbersForDate(Instant drawDate) {
-        WinningNumbersDetails winningNumbers = numbersRepository.findByDrawDate(drawDate).orElseThrow(
-                () -> new WinningNumbersNotFoundException("Winning numbers not found"));
+        WinningNumbersDetails winningNumbers = numbersRepository.findByDrawDate(drawDate);
         return toDto(winningNumbers);
     }
 
     @Override
     public WinningNumbersResponseDto getWinningNumbersForLotteryNumber(Long lotteryId) {
-        WinningNumbersDetails winningNumbers = numbersRepository.findByLotteryNumber(lotteryId).orElseThrow(
-                () -> new WinningNumbersNotFoundException("Winning numbers not found"));
+        WinningNumbersDetails winningNumbers = numbersRepository.findByLotteryNumber(lotteryId);
         return toDto(winningNumbers);
     }
 
     @Override
     public Instant getLatestDrawDateWithGeneratedNumbers() {
-        WinningNumbersDetails latestNumbers = numbersRepository.findFirstByOrderByDrawDate().orElseThrow(
-                () -> new WinningNumbersNotFoundException("Not found any winning numbers"));
+        WinningNumbersDetails latestNumbers = numbersRepository.findFirstByOrderByDrawDate();
         return latestNumbers.drawDate;
     }
 }
