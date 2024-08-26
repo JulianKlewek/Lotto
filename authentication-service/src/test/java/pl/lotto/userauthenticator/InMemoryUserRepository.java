@@ -2,8 +2,7 @@ package pl.lotto.userauthenticator;
 
 import pl.lotto.userauthenticator.entity.User;
 
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -46,6 +45,27 @@ class InMemoryUserRepository implements UserRepository {
     @Override
     public void deleteAll() {
         database.clear();
+    }
+
+    @Override
+    public User findById(Long id) {
+        return database.values().stream()
+                .filter(user -> user.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new UserNotFoundException("User with id: " + id + " not found"));
+    }
+
+    @Override
+    public List<User> saveAll(List<User> users) {
+        List<User> result = new ArrayList<>();
+        for (User user : users) {
+            if (user.getId() == null) {
+                user.setId(userId.getAndIncrement());
+            }
+            database.put(user.getId(), user);
+            result.add(user);
+        }
+        return result;
     }
 
 }

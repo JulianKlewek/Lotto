@@ -1,5 +1,6 @@
 package pl.lotto.userauthenticator;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import pl.lotto.jwtgenerator.JwtGeneratorFacade;
 
+import java.time.Clock;
+
 @Configuration
 @EnableWebSecurity
 class UserAuthConfiguration {
@@ -21,14 +24,27 @@ class UserAuthConfiguration {
     @Bean
     public UserAuthFacade createUserAuthFacade(UserRepository userRepository,
                                                RoleRepository roleRepository,
-                                               JwtGeneratorFacade jwtGeneratorFacade) {
-        return new UserAuthFacadeImpl(userRepository, roleRepository, passwordEncoder(), jwtGeneratorFacade);
+                                               JwtGeneratorFacade jwtGeneratorFacade,
+                                               ConfirmationTokenRepository confirmationTokenRepository,
+                                               @Qualifier("confirmationTokenClock") Clock clock) {
+        ConfirmationTokenGenerator confirmationTokenGenerator = new ConfirmationTokenGenerator(
+                confirmationTokenRepository, clock);
+        UserAccountEnabler userAccountEnabler = new UserAccountEnabler(userRepository, clock);
+        return new UserAuthFacadeImpl(userRepository, roleRepository, passwordEncoder(), jwtGeneratorFacade,
+                confirmationTokenGenerator, confirmationTokenRepository, userAccountEnabler);
     }
 
     public UserAuthFacade createUserAuthFacadeForTests(UserRepository userRepository,
                                                        RoleRepository roleRepository,
-                                                       JwtGeneratorFacade jwtGeneratorFacade) {
-        return createUserAuthFacade(userRepository, roleRepository, jwtGeneratorFacade);
+                                                       JwtGeneratorFacade jwtGeneratorFacade,
+                                                       ConfirmationTokenRepository confirmationTokenRepository,
+                                                       @Qualifier("confirmationTokenClock") Clock clock) {
+        return createUserAuthFacade(userRepository, roleRepository, jwtGeneratorFacade, confirmationTokenRepository, clock);
+    }
+
+    @Bean("confirmationTokenClock")
+    Clock clock() {
+        return Clock.systemUTC();
     }
 
     @Bean

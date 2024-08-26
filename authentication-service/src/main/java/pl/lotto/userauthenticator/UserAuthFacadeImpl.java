@@ -3,13 +3,12 @@ package pl.lotto.userauthenticator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import pl.lotto.jwtgenerator.JwtGeneratorFacade;
 import pl.lotto.jwtgenerator.dto.JwtResponse;
 import pl.lotto.jwtgenerator.dto.UserTokenRequest;
-import pl.lotto.userauthenticator.dto.UserInfoResponse;
-import pl.lotto.userauthenticator.dto.UserLoginResponse;
-import pl.lotto.userauthenticator.dto.UserRegisterRequest;
-import pl.lotto.userauthenticator.dto.UserRegisterResponse;
+import pl.lotto.userauthenticator.dto.*;
+import pl.lotto.userauthenticator.entity.ConfirmationToken;
 import pl.lotto.userauthenticator.entity.Role;
 import pl.lotto.userauthenticator.entity.User;
 
@@ -29,16 +28,20 @@ class UserAuthFacadeImpl implements UserAuthFacade {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtGeneratorFacade jwtGeneratorFacade;
+    private final ConfirmationTokenGenerator confirmationTokenGenerator;
+    private final ConfirmationTokenRepository confirmationTokenRepository;
+    private final UserAccountEnabler userAccountEnabler;
 
     @Override
+    @Transactional
     public UserRegisterResponse register(UserRegisterRequest request) {
         char[] passArray = request.password();
-        if (userRepository.existsByEmail(request.email())) {
+        if (emailExists(request.email())) {
             cleanPassword(passArray);
             log.info("User [{}] register failed, email already exists: {}", request.username(), request.email());
             throw new UserAlreadyExistsException("Email already exists: " + request.email());
         }
-        if (userRepository.existsByUsername(request.username())) {
+        if (usernameExists(request.username())) {
             log.info("User [{}] register failed, username already exists.", request.username());
             cleanPassword(passArray);
             throw new UserAlreadyExistsException("Username already exists: " + request.username());
@@ -53,10 +56,14 @@ class UserAuthFacadeImpl implements UserAuthFacade {
                 .password(passwordEncoder.encode(passCharSequence))
                 .roles(roles)
                 .build();
-        User saved = userRepository.save(user);
-        log.info("Created account for username: [{}], with id: [{}]", saved.getUsername(), saved.getId());
+        User savedUser = userRepository.save(user);
+        log.info("Created account for username: [{}], with id: [{}]", savedUser.getUsername(), savedUser.getId());
+        ConfirmationToken confirmationToken = confirmationTokenGenerator.generate(savedUser);
+        ConfirmationToken savedConfToken = confirmationTokenRepository.save(confirmationToken);
+        log.info("Saved confirmation token [{}] for username: [{}]", savedConfToken.getToken(), savedUser.getUsername());
+        //todo: RABBITMQ EMAIL-SERVICE
         cleanPassword(passArray);
-        return entityToResponse(saved);
+        return entityToResponse(savedUser);
     }
 
     @Override
@@ -71,5 +78,24 @@ class UserAuthFacadeImpl implements UserAuthFacade {
                 .user(userInfoResponse)
                 .accessToken(accessTokenResponse.token())
                 .build();
+    }
+
+    @Override
+    public EmailConfirmationResponse confirmEmail(String token) {
+        log.debug("Processing email confirmation token");
+        ConfirmationToken confToken = confirmationTokenRepository.findByToken(token);
+        ConfirmationResult confResult = userAccountEnabler.enable(confToken);
+        log.info("Deleting confirmation token from database [{}]", confToken.getToken());
+        confirmationTokenRepository.delete(confToken);
+        String username = confToken.getUser().getUsername();
+        return new EmailConfirmationResponse(username, confResult.status(), confResult.errors());
+    }
+
+    private boolean usernameExists(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    private boolean emailExists(String email) {
+        return userRepository.existsByEmail(email);
     }
 }
