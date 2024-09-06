@@ -1,5 +1,15 @@
 services:
 
+  rabbitmq:
+    image: rabbitmq:3.13.7-management-alpine
+    container_name: rabbitmq
+    restart: unless-stopped
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - lottery-net
+
   mongo:
     image: mongo
     container_name: db-mongo

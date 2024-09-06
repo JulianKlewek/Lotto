@@ -11,5 +11,5 @@ public interface UserAuthFacade {
 
     UserLoginResponse login(UserDetailsImpl userDetails);
 
-    EmailConfirmationResponse confirmEmail(String token);
+    EmailConfirmationResponse confirmAccount(String token);
 }

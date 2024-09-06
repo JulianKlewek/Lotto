@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserRegisterSuccessfullyIT extends BaseIntegrationTest {
 
     @Test
-    @DisplayName("User creates account and receives 201 created")
+    @DisplayName("User creates account and confirms email")
     void happyPath_shouldUserInputRegistrationData_andReceive201Created() throws Exception {
         //step 1: user types registration data
         //given
@@ -39,5 +39,8 @@ class UserRegisterSuccessfullyIT extends BaseIntegrationTest {
                         jsonPath("$.username").value(username),
                         jsonPath("$.email").value(email))
                 .andReturn();
+        //step 1: user confirms email
+        //given
+
     }
 }

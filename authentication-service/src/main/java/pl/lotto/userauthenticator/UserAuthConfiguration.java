@@ -26,20 +26,33 @@ class UserAuthConfiguration {
                                                RoleRepository roleRepository,
                                                JwtGeneratorFacade jwtGeneratorFacade,
                                                ConfirmationTokenRepository confirmationTokenRepository,
-                                               @Qualifier("confirmationTokenClock") Clock clock) {
+                                               @Qualifier("confirmationTokenClock") Clock clock,
+                                               EmailSenderPort emailSenderPort) {
         ConfirmationTokenGenerator confirmationTokenGenerator = new ConfirmationTokenGenerator(
                 confirmationTokenRepository, clock);
         UserAccountEnabler userAccountEnabler = new UserAccountEnabler(userRepository, clock);
-        return new UserAuthFacadeImpl(userRepository, roleRepository, passwordEncoder(), jwtGeneratorFacade,
-                confirmationTokenGenerator, confirmationTokenRepository, userAccountEnabler);
+        return new UserAuthFacadeImpl(userRepository,
+                roleRepository,
+                passwordEncoder(),
+                jwtGeneratorFacade,
+                confirmationTokenGenerator,
+                confirmationTokenRepository,
+                userAccountEnabler,
+                emailSenderPort);
     }
 
     public UserAuthFacade createUserAuthFacadeForTests(UserRepository userRepository,
                                                        RoleRepository roleRepository,
                                                        JwtGeneratorFacade jwtGeneratorFacade,
                                                        ConfirmationTokenRepository confirmationTokenRepository,
-                                                       @Qualifier("confirmationTokenClock") Clock clock) {
-        return createUserAuthFacade(userRepository, roleRepository, jwtGeneratorFacade, confirmationTokenRepository, clock);
+                                                       @Qualifier("confirmationTokenClock") Clock clock,
+                                                       EmailSenderPort emailSenderPort) {
+        return createUserAuthFacade(userRepository,
+                roleRepository,
+                jwtGeneratorFacade,
+                confirmationTokenRepository,
+                clock,
+                emailSenderPort);
     }
 
     @Bean("confirmationTokenClock")

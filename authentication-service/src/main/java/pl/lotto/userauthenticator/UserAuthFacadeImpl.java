@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import pl.lotto.infrastructure.emailsenderservice.dto.ConfTokenEmailMessage;
 import pl.lotto.jwtgenerator.JwtGeneratorFacade;
 import pl.lotto.jwtgenerator.dto.JwtResponse;
 import pl.lotto.jwtgenerator.dto.UserTokenRequest;
@@ -31,6 +32,7 @@ class UserAuthFacadeImpl implements UserAuthFacade {
     private final ConfirmationTokenGenerator confirmationTokenGenerator;
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final UserAccountEnabler userAccountEnabler;
+    private final EmailSenderPort emailSenderPort;
 
     @Override
     @Transactional
@@ -60,11 +62,21 @@ class UserAuthFacadeImpl implements UserAuthFacade {
         log.info("Created account for username: [{}], with id: [{}]", savedUser.getUsername(), savedUser.getId());
         ConfirmationToken confirmationToken = confirmationTokenGenerator.generate(savedUser);
         ConfirmationToken savedConfToken = confirmationTokenRepository.save(confirmationToken);
-        log.info("Saved confirmation token [{}] for username: [{}]", savedConfToken.getToken(), savedUser.getUsername());
-        //todo: RABBITMQ EMAIL-SERVICE
+        log.info("Saved confirmation token: [{}] for username: [{}]", savedConfToken.getToken(), savedUser.getUsername());
+        ConfTokenEmailMessage emailRequest = sendConfirmationEmail(savedUser, savedConfToken);
+        log.info("Sent email message: [{}]", emailRequest);
         cleanPassword(passArray);
         return entityToResponse(savedUser);
     }
+
+    private ConfTokenEmailMessage sendConfirmationEmail(User savedUser, ConfirmationToken savedConfToken) {
+        ConfTokenEmailMessage emailRequest = new ConfTokenEmailMessage(savedUser.getEmail(),
+                savedConfToken.getToken(),
+                savedConfToken.getExpiryAt());
+        emailSenderPort.sendConfirmationEmail(emailRequest);
+        return emailRequest;
+    }
+
 
     @Override
     public UserLoginResponse login(UserDetailsImpl userDetails) {
@@ -81,7 +93,7 @@ class UserAuthFacadeImpl implements UserAuthFacade {
     }
 
     @Override
-    public EmailConfirmationResponse confirmEmail(String token) {
+    public EmailConfirmationResponse confirmAccount(String token) {
         log.debug("Processing email confirmation token");
         ConfirmationToken confToken = confirmationTokenRepository.findByToken(token);
         ConfirmationResult confResult = userAccountEnabler.enable(confToken);

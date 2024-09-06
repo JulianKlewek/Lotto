@@ -26,6 +26,7 @@
         <springdoc-openapi.version>2.6.0</springdoc-openapi.version>
         <lombok.version>1.18.30</lombok.version>
         <spring-retry.version>2.0.6</spring-retry.version>
+        <spring-rabbit.version>3.1.6</spring-rabbit.version>
     </properties>
 
     <dependencies>
@@ -65,6 +66,12 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-rabbit</artifactId>
+            <version>${spring-rabbit.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>

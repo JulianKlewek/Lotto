@@ -21,8 +21,9 @@ class UserAuthFacadeTest extends UserAuthTestConfig {
     void should_register_user_and_return_response_dto() {
         //given
         JwtGeneratorFacade jwtGeneratorFacade = mock(JwtGeneratorFacade.class);
+        EmailSenderPort emailSenderPort = mock(EmailSenderPort.class);
         UserAuthFacade userAuthFacade = new UserAuthConfiguration().createUserAuthFacadeForTests(
-                userRepository, roleRepository, jwtGeneratorFacade, confirmationTokenRepository, clock());
+                userRepository, roleRepository, jwtGeneratorFacade, confirmationTokenRepository, clock(), emailSenderPort);
         UserRegisterRequest user1 = UserRegisterRequest.builder()
                 .username("user1")
                 .email("user1@gmail.com")
@@ -39,8 +40,9 @@ class UserAuthFacadeTest extends UserAuthTestConfig {
     void should_not_register_user_and_return_user_already_exists_exception_for_email() {
         //given
         JwtGeneratorFacade jwtGeneratorFacade = mock(JwtGeneratorFacade.class);
+        EmailSenderPort emailSenderPort = mock(EmailSenderPort.class);
         UserAuthFacade userAuthFacade = new UserAuthConfiguration().createUserAuthFacadeForTests(
-                userRepository, roleRepository, jwtGeneratorFacade, confirmationTokenRepository, clock());
+                userRepository, roleRepository, jwtGeneratorFacade, confirmationTokenRepository, clock(), emailSenderPort);
         UserRegisterRequest defaultUser1 = UserRegisterRequest.builder()
                 .username("nonExistingUsername")
                 .email("existingEmail@gmail.com")
@@ -57,8 +59,9 @@ class UserAuthFacadeTest extends UserAuthTestConfig {
     void should_not_register_user_and_return_user_already_exists_exception_for_username() {
         //given
         JwtGeneratorFacade jwtGeneratorFacade = mock(JwtGeneratorFacade.class);
+        EmailSenderPort emailSenderPort = mock(EmailSenderPort.class);
         UserAuthFacade userAuthFacade = new UserAuthConfiguration().createUserAuthFacadeForTests(
-                userRepository, roleRepository, jwtGeneratorFacade, confirmationTokenRepository, clock());
+                userRepository, roleRepository, jwtGeneratorFacade, confirmationTokenRepository, clock(), emailSenderPort);
         UserRegisterRequest defaultUser = UserRegisterRequest.builder()
                 .username("existingUsername")
                 .email("nonExistingEmail@gmail.com")
@@ -75,8 +78,9 @@ class UserAuthFacadeTest extends UserAuthTestConfig {
     void should_return_user_info_and_token() {
         //given
         JwtGeneratorFacade jwtGeneratorFacade = mock(JwtGeneratorFacade.class);
+        EmailSenderPort emailSenderPort = mock(EmailSenderPort.class);
         UserAuthFacade userAuthFacade = new UserAuthConfiguration().createUserAuthFacadeForTests(
-                userRepository, roleRepository, jwtGeneratorFacade, confirmationTokenRepository, clock());
+                userRepository, roleRepository, jwtGeneratorFacade, confirmationTokenRepository, clock(), emailSenderPort);
         UserDetailsImpl user1 = UserDetailsImpl.builder()
                 .id(1L)
                 .username("user1")
@@ -103,11 +107,12 @@ class UserAuthFacadeTest extends UserAuthTestConfig {
     void should_return_true_and_enable_user_when_valid_confirmation_token_and_date_before_expiration() {
         //given
         JwtGeneratorFacade jwtGeneratorFacade = mock(JwtGeneratorFacade.class);
+        EmailSenderPort emailSenderPort = mock(EmailSenderPort.class);
         UserAuthFacade userAuthFacade = new UserAuthConfiguration().createUserAuthFacadeForTests(
-                userRepository, roleRepository, jwtGeneratorFacade, confirmationTokenRepository, clock());
+                userRepository, roleRepository, jwtGeneratorFacade, confirmationTokenRepository, clock(), emailSenderPort);
         String validToken = "9f30fefc-5971-4e55-b6f8-9fd8e44e7c5f";
         //when
-        EmailConfirmationResponse response = userAuthFacade.confirmEmail(validToken);
+        EmailConfirmationResponse response = userAuthFacade.confirmAccount(validToken);
         //then
         Assertions.assertThat(response.username()).isEqualTo("expectedNonRegisteredUsername");
         Assertions.assertThat(response.success()).isTrue();
@@ -117,11 +122,12 @@ class UserAuthFacadeTest extends UserAuthTestConfig {
     void should_return_false_and_token_expired_information_when_date_after_expiration() {
         //given
         JwtGeneratorFacade jwtGeneratorFacade = mock(JwtGeneratorFacade.class);
+        EmailSenderPort emailSenderPort = mock(EmailSenderPort.class);
         UserAuthFacade userAuthFacade = new UserAuthConfiguration().createUserAuthFacadeForTests(
-                userRepository, roleRepository, jwtGeneratorFacade, confirmationTokenRepository, clock());
+                userRepository, roleRepository, jwtGeneratorFacade, confirmationTokenRepository, clock(), emailSenderPort);
         String validToken = "9f30feff-5971-4e55-b6f8-9fd8e44e7c5f";
         //when
-        EmailConfirmationResponse response = userAuthFacade.confirmEmail(validToken);
+        EmailConfirmationResponse response = userAuthFacade.confirmAccount(validToken);
         //then
         Assertions.assertThat(response.username()).isEqualTo("expectedNonRegisteredUsername1");
         Assertions.assertThat(response.success()).isFalse();
@@ -132,13 +138,14 @@ class UserAuthFacadeTest extends UserAuthTestConfig {
     void should_return_confirmation_token_not_found_exception() {
         //given
         JwtGeneratorFacade jwtGeneratorFacade = mock(JwtGeneratorFacade.class);
+        EmailSenderPort emailSenderPort = mock(EmailSenderPort.class);
         UserAuthFacade userAuthFacade = new UserAuthConfiguration().createUserAuthFacadeForTests(
-                userRepository, roleRepository, jwtGeneratorFacade, confirmationTokenRepository, clock());
+                userRepository, roleRepository, jwtGeneratorFacade, confirmationTokenRepository, clock(), emailSenderPort);
         String nonExistingToken = "abcdefgh-5971-4e55-b6f8-9fd8e44e7c5f";
         String exceptionMessage = "Given token does not exists " + nonExistingToken;
         //when&then
         assertThatExceptionOfType(ConfirmationTokenNotFoundException.class)
-                .isThrownBy(() -> userAuthFacade.confirmEmail(nonExistingToken))
+                .isThrownBy(() -> userAuthFacade.confirmAccount(nonExistingToken))
                 .withMessage(exceptionMessage);
     }
 }
