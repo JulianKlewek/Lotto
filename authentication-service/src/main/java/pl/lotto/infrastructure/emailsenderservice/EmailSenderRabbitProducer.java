@@ -3,7 +3,7 @@ package pl.lotto.infrastructure.emailsenderservice;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
-import pl.lotto.infrastructure.emailsenderservice.dto.ConfTokenEmailMessage;
+import pl.lotto.infrastructure.emailsenderservice.dto.ConfTokenEmailEvent;
 import pl.lotto.userauthenticator.EmailSenderPort;
 
 @Service
@@ -19,7 +19,7 @@ class EmailSenderRabbitProducer implements EmailSenderPort {
     }
 
     @Override
-    public void sendConfirmationEmail(ConfTokenEmailMessage message) {
+    public void sendConfirmationEmail(ConfTokenEmailEvent message) {
         String exchange = emailSenderPropertyConfig.getExchange();
         String routingKey = emailSenderPropertyConfig.getRoutingKey().registration();
         log.debug("Processing registration email message with exchange: [{}], routingKey: [{}], confToken: [{}]",

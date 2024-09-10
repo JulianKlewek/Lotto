@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-import pl.lotto.infrastructure.emailsenderservice.dto.ConfTokenEmailMessage;
+import pl.lotto.infrastructure.emailsenderservice.dto.ConfTokenEmailEvent;
 import pl.lotto.jwtgenerator.JwtGeneratorFacade;
 import pl.lotto.jwtgenerator.dto.JwtResponse;
 import pl.lotto.jwtgenerator.dto.UserTokenRequest;
@@ -63,14 +63,14 @@ class UserAuthFacadeImpl implements UserAuthFacade {
         ConfirmationToken confirmationToken = confirmationTokenGenerator.generate(savedUser);
         ConfirmationToken savedConfToken = confirmationTokenRepository.save(confirmationToken);
         log.info("Saved confirmation token: [{}] for username: [{}]", savedConfToken.getToken(), savedUser.getUsername());
-        ConfTokenEmailMessage emailRequest = sendConfirmationEmail(savedUser, savedConfToken);
+        ConfTokenEmailEvent emailRequest = sendConfirmationEmail(savedUser, savedConfToken);
         log.info("Sent email message: [{}]", emailRequest);
         cleanPassword(passArray);
         return entityToResponse(savedUser);
     }
 
-    private ConfTokenEmailMessage sendConfirmationEmail(User savedUser, ConfirmationToken savedConfToken) {
-        ConfTokenEmailMessage emailRequest = new ConfTokenEmailMessage(savedUser.getEmail(),
+    private ConfTokenEmailEvent sendConfirmationEmail(User savedUser, ConfirmationToken savedConfToken) {
+        ConfTokenEmailEvent emailRequest = new ConfTokenEmailEvent(savedUser.getEmail(),
                 savedConfToken.getToken(),
                 savedConfToken.getExpiryAt());
         emailSenderPort.sendConfirmationEmail(emailRequest);
@@ -94,7 +94,7 @@ class UserAuthFacadeImpl implements UserAuthFacade {
 
     @Override
     public EmailConfirmationResponse confirmAccount(String token) {
-        log.debug("Processing email confirmation token");
+        log.debug("Processing email confirmation token [{}]", token);
         ConfirmationToken confToken = confirmationTokenRepository.findByToken(token);
         ConfirmationResult confResult = userAccountEnabler.enable(confToken);
         log.info("Deleting confirmation token from database [{}]", confToken.getToken());
