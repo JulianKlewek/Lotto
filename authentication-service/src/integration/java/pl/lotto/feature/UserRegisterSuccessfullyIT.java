@@ -5,8 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import pl.lotto.BaseIntegrationTest;
+import pl.lotto.infrastructure.emailsenderservice.dto.ConfTokenEmailEvent;
 import pl.lotto.userauthenticator.dto.UserRegisterRequest;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -15,8 +17,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserRegisterSuccessfullyIT extends BaseIntegrationTest {
 
     @Test
-    @DisplayName("User creates account and receives 201 created")
-    void happyPath_shouldUserInputRegistrationData_andReceive201Created() throws Exception {
+    @DisplayName("User creates account and confirms email")
+    void happyPath_shouldUserCreateAccountConfirmEmail_andReceive200Ok() throws Exception {
         //step 1: user types registration data
         //given
         String username = "User1";
@@ -28,16 +30,33 @@ class UserRegisterSuccessfullyIT extends BaseIntegrationTest {
                 .password(password)
                 .build();
         //when
-        ResultActions perform = mockMvc.perform(post("/auth/signup")
+        ResultActions performRegister = mockMvc.perform(post("/auth/signup")
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print());
         //then
-        perform.andExpectAll(
+        performRegister.andExpectAll(
                         status().isCreated(),
                         jsonPath("$.message").value("ACCOUNT CREATED"),
                         jsonPath("$.username").value(username),
                         jsonPath("$.email").value(email))
+                .andReturn();
+
+        //step 2: user confirms email
+        //given
+        ConfTokenEmailEvent sentMessage = (ConfTokenEmailEvent) rabbitTemplate.receiveAndConvert(rabbitQueueName);
+        assert sentMessage != null;
+        String generatedToken = sentMessage.token();
+        //when
+        ResultActions performConfirmation = mockMvc.perform(get("/auth/confirm-account")
+                        .param("token", generatedToken))
+                .andDo(print());
+        //then
+        performConfirmation.andExpectAll(
+                        status().isOk(),
+                        jsonPath("$.username").value(username),
+                        jsonPath("$.success").value(true),
+                        jsonPath("$.errors").isEmpty())
                 .andReturn();
     }
 }

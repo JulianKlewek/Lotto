@@ -2,14 +2,21 @@ server:
   port: 8080
 
 spring:
+  config:
+    import: optional:file:.env[.properties]
   datasource:
-    url: jdbc:postgresql://localhost:5432/lotto?createDatabaseIfNotExist=true
-    username: root
-    password: example
+    url: jdbc:postgresql://localhost:${POSTGRES_DEV_PORT}/${POSTGRES_DEV_DATABASE}?createDatabaseIfNotExist=true
+    username: ${POSTGRES_DEV_USERNAME}
+    password: ${POSTGRES_DEV_PASSWORD}
   jpa:
     hibernate:
       dialect: org.hibernate.dialect.PostgreSQLDialect
       ddl-auto: update
+  rabbitmq:
+    host: localhost
+    port: ${RABBITMQ_DEV_PORT}
+    username: ${RABBITMQ_DEV_USERNAME}
+    password: ${RABBITMQ_DEV_PASSWORD}
 
 jwt:
   expiration:
@@ -17,6 +24,13 @@ jwt:
     seconds: 60
     millis: 1000
     refreshOffset: 10
+
+email:
+  sender:
+    queue: email.service
+    exchange: auth.exchange
+    routing-key:
+      registration: email.sender.registration
 
 springdoc:
   swagger-ui:

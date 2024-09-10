@@ -3,8 +3,8 @@ package pl.lotto.jwtgenerator;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import pl.lotto.jwtgenerator.dto.UserTokenRequest;
 
@@ -15,11 +15,15 @@ import java.util.Date;
 
 @Log4j2
 @Service
-@RequiredArgsConstructor
 class JwtUtils {
 
     private final Clock clock;
     private final JwtUtilsPropertyConfigurable jwtPropertyConfig;
+
+    public JwtUtils(@Qualifier("jwtGeneratorClock") Clock clock, JwtUtilsPropertyConfigurable jwtPropertyConfig) {
+        this.clock = clock;
+        this.jwtPropertyConfig = jwtPropertyConfig;
+    }
 
     private Key key() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtPropertyConfig.getSecret()));
