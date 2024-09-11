@@ -2,7 +2,7 @@ package pl.lotto.drawdategenerator;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import pl.lotto.drawdategenerator.dto.DrawDateDto;
+import pl.lotto.drawdategenerator.dto.DrawDate;
 
 import java.time.Instant;
 import java.time.ZonedDateTime;
@@ -18,7 +18,7 @@ class DrawDateGeneratorFacadeTest extends DrawDateGeneratorFacadeConfig {
         DrawDateGeneratorFacade drawDateGeneratorFacade = new DrawDateGeneratorConfiguration()
                 .drawDateGeneratorFacadeForTest(propertyConfigurable);
         //when
-        DrawDateDto drawDateDto = drawDateGeneratorFacade.getNextDrawDate(ticketCreatedAt.toInstant());
+        DrawDate drawDateDto = drawDateGeneratorFacade.getNextDrawDate(ticketCreatedAt.toInstant());
         //then
         Instant drawDate = drawDateDto.drawDate();
         assertThat(drawDate)
@@ -32,7 +32,7 @@ class DrawDateGeneratorFacadeTest extends DrawDateGeneratorFacadeConfig {
         DrawDateGeneratorFacade drawDateGeneratorFacade = new DrawDateGeneratorConfiguration()
                 .drawDateGeneratorFacadeForTest(propertyConfigurable);
         //when
-        DrawDateDto drawDateDto = drawDateGeneratorFacade.getNextDrawDate(ticketCreatedAt.toInstant());
+        DrawDate drawDateDto = drawDateGeneratorFacade.getNextDrawDate(ticketCreatedAt.toInstant());
         //then
         Instant drawDate = drawDateDto.drawDate();
         assertThat(drawDate)

@@ -1,10 +1,10 @@
 package pl.lotto.numberreceiver;
 
-import pl.lotto.numberreceiver.dto.TicketDto;
+import pl.lotto.numberreceiver.dto.TicketPayload;
 
 import java.util.List;
 
-import static pl.lotto.numberreceiver.dto.TicketDto.*;
+import static pl.lotto.numberreceiver.dto.TicketPayload.*;
 
 class TicketMapper {
 
@@ -12,7 +12,7 @@ class TicketMapper {
         throw new IllegalStateException("Utility class");
     }
 
-    public static TicketDto toDto(Ticket ticket) {
+    public static TicketPayload toDto(pl.lotto.numberreceiver.Ticket ticket) {
         List<Integer> userNumbersList = List.copyOf(ticket.userNumbers);
         return builder()
                 .hash(ticket.hash)
@@ -21,7 +21,7 @@ class TicketMapper {
                 .build();
     }
 
-    public static List<TicketDto> toDtoList(List<Ticket> tickets) {
+    public static List<TicketPayload> toDtoList(List<pl.lotto.numberreceiver.Ticket> tickets) {
         return tickets.stream()
                 .map(TicketMapper::toDto)
                 .toList();

@@ -4,14 +4,25 @@ lotto:
       url:
   result-checker:
     scheduler-cron: "*/8 * * * * *"
-
-eureka:
-  client:
-    enabled: false
+  time:
+    drawDayOfWeek: 5
+    drawHour: 20
+    drawMinute: 0
+    resultsMinute: 1
+    drawSecond: 0
+    drawTime: "${lotto.time.drawHour}:${lotto.time.drawMinute}:${lotto.time.drawSecond}}"
+  result-announcer:
+    win-message-received: "Congratulations you have won, but already received reward."
+    win-message-not-received: "Congratulations you have won, you can receive reward."
+    lose-message: "Unfortunately you didn't won."
 
 spring:
   cloud:
     loadbalancer:
       enabled: false
 
-
+logging:
+  level:
+    pl:
+      lotto: debug
+    root: info

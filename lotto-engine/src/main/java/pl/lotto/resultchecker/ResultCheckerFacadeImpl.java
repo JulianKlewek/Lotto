@@ -2,9 +2,9 @@ package pl.lotto.resultchecker;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import pl.lotto.infrastructure.winningnumbersservice.dto.WinningNumbersResponseDto;
+import pl.lotto.infrastructure.winningnumbersservice.dto.WinningNumbersResponse;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
-import pl.lotto.numberreceiver.dto.UserTicketsDto;
+import pl.lotto.numberreceiver.dto.UserTickets;
 import pl.lotto.resultchecker.dto.*;
 
 import java.time.Instant;
@@ -24,10 +24,10 @@ public class ResultCheckerFacadeImpl implements ResultCheckerFacade {
     private final NobodyWonTicketGenerator generateDataNobodyWon;
 
     @Override
-    public WinningTicketsDto checkAllWinningTicketsForGivenDrawDate(Instant drawDate) {
-        UserTicketsDto userTicketsDto = numberReceiverFacade.usersNumbers(drawDate);
-        WinningNumbersResponseDto winningNumbers = winningNumbersPort.getWinningNumbersForDate(drawDate);
-        List<WinningTicket> winningTickets = numberChecker.checkTicketsNumbers(userTicketsDto.tickets(), winningNumbers);
+    public WinningTickets checkAllWinningTicketsForGivenDrawDate(Instant drawDate) {
+        UserTickets userTickets = numberReceiverFacade.usersNumbers(drawDate);
+        WinningNumbersResponse winningNumbers = winningNumbersPort.getWinningNumbersForDate(drawDate);
+        List<WinningTicket> winningTickets = numberChecker.checkTicketsNumbers(userTickets.tickets(), winningNumbers);
         if (winningTickets.isEmpty()) {
             WinningTicket ticketNobodyWon = generateDataNobodyWon.generateDataNobodyWon(winningNumbers);
             winningTickets.add(ticketNobodyWon);
@@ -35,8 +35,8 @@ public class ResultCheckerFacadeImpl implements ResultCheckerFacade {
         }
         List<WinningTicket> savedWinningTickets = saveWinningTickets(winningTickets, drawDate);
         log.info("Number of winning tickets: [{}] for date: [{}]", savedWinningTickets.size(), drawDate);
-        List<WinningTicketDto> winningTicketsDto = toDtoList(savedWinningTickets);
-        return WinningTicketsDto.builder()
+        List<WinningTicketPayload> winningTicketsDto = toDtoList(savedWinningTickets);
+        return WinningTickets.builder()
                 .winningTickets(winningTicketsDto)
                 .build();
     }
@@ -55,8 +55,8 @@ public class ResultCheckerFacadeImpl implements ResultCheckerFacade {
     }
 
     @Override
-    public BasicTicketInfoResponseDto checkGivenNumbersForLottery(List<Integer> userNumbers, Instant drawDate) {
-        WinningNumbersResponseDto winningNumbersDto = winningNumbersPort.getWinningNumbersForDate(drawDate);
+    public BasicTicketInfoResponse checkGivenNumbersForLottery(List<Integer> userNumbers, Instant drawDate) {
+        WinningNumbersResponse winningNumbersDto = winningNumbersPort.getWinningNumbersForDate(drawDate);
         int matchingNumbersAmount = numberChecker.checkTicketNumbers(userNumbers, winningNumbersDto.numbers());
         log.debug("User have [{}] matching numbers. User numbers: [{}], winning numbers: [{}]",
                 matchingNumbersAmount, userNumbers, winningNumbersDto.numbers());
@@ -64,8 +64,8 @@ public class ResultCheckerFacadeImpl implements ResultCheckerFacade {
     }
 
     @Override
-    public BasicTicketInfoResponseDto checkGivenNumbersForLottery(List<Integer> userNumbers, Long lotteryId) {
-        WinningNumbersResponseDto winningNumbersDto = winningNumbersPort.getWinningNumbersForLotteryNumber(lotteryId);
+    public BasicTicketInfoResponse checkGivenNumbersForLottery(List<Integer> userNumbers, Long lotteryId) {
+        WinningNumbersResponse winningNumbersDto = winningNumbersPort.getWinningNumbersForLotteryNumber(lotteryId);
         int matchingNumbersAmount = numberChecker.checkTicketNumbers(userNumbers, winningNumbersDto.numbers());
         log.debug("User have [{}] matching numbers. User numbers: [{}], winning numbers: [{}]",
                 matchingNumbersAmount, userNumbers, winningNumbersDto.numbers());
@@ -73,7 +73,7 @@ public class ResultCheckerFacadeImpl implements ResultCheckerFacade {
     }
 
     @Override
-    public TicketResultResponseDto isSpecificTicketWon(String ticketHash) {
+    public TicketResultResponse isSpecificTicketWon(String ticketHash) {
         WinningTicket winningTicket = ticketRepository.findByHash(ticketHash)
                 .orElse(WinningTicket.builder()
                         .hash(ticketHash)
@@ -87,8 +87,8 @@ public class ResultCheckerFacadeImpl implements ResultCheckerFacade {
     }
 
     @Override
-    public WinningNumbersResultsDto findWinningNumbersForLottery(Instant drawDate) {
-        WinningNumbersResponseDto response = winningNumbersPort.getWinningNumbersForDate(drawDate);
+    public WinningNumbersResults findWinningNumbersForLottery(Instant drawDate) {
+        WinningNumbersResponse response = winningNumbersPort.getWinningNumbersForDate(drawDate);
         return WinningNumbersResultMapper.responseToDto(response);
     }
 

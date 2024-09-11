@@ -1,14 +1,14 @@
 package pl.lotto.numberreceiver;
 
-import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
-import pl.lotto.numberreceiver.dto.UserTicketsDto;
+import pl.lotto.numberreceiver.dto.NumberReceiverResult;
+import pl.lotto.numberreceiver.dto.UserTickets;
 
 import java.time.Instant;
 import java.util.List;
 
 public interface NumberReceiverFacade {
 
-    NumberReceiverResultDto inputNumbers(List<Integer> integers);
+    NumberReceiverResult inputNumbers(List<Integer> integers);
 
-    UserTicketsDto usersNumbers(Instant drawDate);
+    UserTickets usersNumbers(Instant drawDate);
 }

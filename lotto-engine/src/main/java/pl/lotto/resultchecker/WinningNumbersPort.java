@@ -1,13 +1,13 @@
 package pl.lotto.resultchecker;
 
-import pl.lotto.infrastructure.winningnumbersservice.dto.WinningNumbersResponseDto;
+import pl.lotto.infrastructure.winningnumbersservice.dto.WinningNumbersResponse;
 
 import java.time.Instant;
 
 public interface WinningNumbersPort {
 
-    WinningNumbersResponseDto getWinningNumbersForDate(Instant drawDate);
+    WinningNumbersResponse getWinningNumbersForDate(Instant drawDate);
 
-    WinningNumbersResponseDto getWinningNumbersForLotteryNumber(Long lotteryId);
+    WinningNumbersResponse getWinningNumbersForLotteryNumber(Long lotteryId);
 
 }

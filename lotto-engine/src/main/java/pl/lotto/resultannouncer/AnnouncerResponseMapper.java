@@ -1,8 +1,8 @@
 package pl.lotto.resultannouncer;
 
-import pl.lotto.resultannouncer.dto.AnnouncerResponseDto;
-import pl.lotto.resultannouncer.dto.AnnouncerTicketDto;
-import pl.lotto.resultchecker.dto.TicketResultResponseDto;
+import pl.lotto.resultannouncer.dto.AnnouncerResultResponse;
+import pl.lotto.resultannouncer.dto.AnnouncerTicket;
+import pl.lotto.resultchecker.dto.TicketResultResponse;
 
 class AnnouncerResponseMapper {
 
@@ -10,11 +10,11 @@ class AnnouncerResponseMapper {
         throw new IllegalStateException("Utility class");
     }
 
-    public static AnnouncerResponseDto toDto(TicketResultResponseDto ticket, String resultMessage) {
-        AnnouncerTicketDto announcerTicketDto = AnnouncerTicketMapper.toDto(ticket.winningTicket());
-        return AnnouncerResponseDto.builder()
+    public static AnnouncerResultResponse toDto(TicketResultResponse ticket, String resultMessage) {
+        AnnouncerTicket announcerTicket = AnnouncerTicketMapper.toDto(ticket.winningTicket());
+        return AnnouncerResultResponse.builder()
                 .message(resultMessage)
-                .ticket(announcerTicketDto)
+                .ticket(announcerTicket)
                 .build();
     }
 }

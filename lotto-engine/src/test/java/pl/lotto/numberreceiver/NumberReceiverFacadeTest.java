@@ -2,10 +2,10 @@ package pl.lotto.numberreceiver;
 
 import org.junit.jupiter.api.Test;
 import pl.lotto.drawdategenerator.DrawDateGeneratorFacade;
-import pl.lotto.drawdategenerator.dto.DrawDateDto;
-import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
-import pl.lotto.numberreceiver.dto.TicketDto;
-import pl.lotto.numberreceiver.dto.UserTicketsDto;
+import pl.lotto.drawdategenerator.dto.DrawDate;
+import pl.lotto.numberreceiver.dto.NumberReceiverResult;
+import pl.lotto.numberreceiver.dto.TicketPayload;
+import pl.lotto.numberreceiver.dto.UserTickets;
 
 import java.time.*;
 import java.util.List;
@@ -25,11 +25,11 @@ class NumberReceiverFacadeTest extends NumberReceiverTestConfig {
         DrawDateGeneratorFacade drawDateGeneratorFacade = mock(DrawDateGeneratorFacade.class);
         LocalDateTime localDateTime = of(2024, Month.JUNE, 12, 20, 0);
         Instant instant = localDateTime.toInstant(ZoneOffset.UTC);
-        when(drawDateGeneratorFacade.getNextDrawDate(any())).thenReturn(DrawDateDto.builder().drawDate(instant).build());
+        when(drawDateGeneratorFacade.getNextDrawDate(any())).thenReturn(DrawDate.builder().drawDate(instant).build());
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()
                 .createNumberReceiverFacadeForTests(ticketRepository, drawDateGeneratorFacade, clock());
         //when
-        NumberReceiverResultDto result = numberReceiverFacade.inputNumbers(correctNumbersFromUser);
+        NumberReceiverResult result = numberReceiverFacade.inputNumbers(correctNumbersFromUser);
         //then
         assertThat(result.status()).isEqualTo("success");
         assertThat(result.errorsList()).isEmpty();
@@ -42,11 +42,11 @@ class NumberReceiverFacadeTest extends NumberReceiverTestConfig {
         DrawDateGeneratorFacade drawDateGeneratorFacade = mock(DrawDateGeneratorFacade.class);
         LocalDateTime localDateTime = of(2024, Month.JUNE, 12, 20, 0);
         Instant instant = localDateTime.toInstant(ZoneOffset.UTC);
-        when(drawDateGeneratorFacade.getNextDrawDate(any())).thenReturn(DrawDateDto.builder().drawDate(instant).build());
+        when(drawDateGeneratorFacade.getNextDrawDate(any())).thenReturn(DrawDate.builder().drawDate(instant).build());
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()
                 .createNumberReceiverFacadeForTests(ticketRepository, drawDateGeneratorFacade, clock());
         //when
-        NumberReceiverResultDto result = numberReceiverFacade.inputNumbers(lessThanCorrectAmountOfNumbers);
+        NumberReceiverResult result = numberReceiverFacade.inputNumbers(lessThanCorrectAmountOfNumbers);
         //then
         assertThat(result.status()).isEqualTo("failure");
         assertThat(result.errorsList()).contains(ValidationError.LESS_THAN_SIX_NUMBERS.errorMessage);
@@ -59,11 +59,11 @@ class NumberReceiverFacadeTest extends NumberReceiverTestConfig {
         DrawDateGeneratorFacade drawDateGeneratorFacade = mock(DrawDateGeneratorFacade.class);
         LocalDateTime localDateTime = of(2024, Month.JUNE, 12, 20, 0);
         Instant instant = localDateTime.toInstant(ZoneOffset.UTC);
-        when(drawDateGeneratorFacade.getNextDrawDate(any())).thenReturn(DrawDateDto.builder().drawDate(instant).build());
+        when(drawDateGeneratorFacade.getNextDrawDate(any())).thenReturn(DrawDate.builder().drawDate(instant).build());
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()
                 .createNumberReceiverFacadeForTests(ticketRepository, drawDateGeneratorFacade, clock());
         //when
-        NumberReceiverResultDto result = numberReceiverFacade.inputNumbers(moreThanCorrectAmountOfNumbers);
+        NumberReceiverResult result = numberReceiverFacade.inputNumbers(moreThanCorrectAmountOfNumbers);
         //then
         assertThat(result.status()).isEqualTo("failure");
         assertThat(result.errorsList()).contains(ValidationError.MORE_THAN_SIX_NUMBERS.errorMessage);
@@ -76,11 +76,11 @@ class NumberReceiverFacadeTest extends NumberReceiverTestConfig {
         DrawDateGeneratorFacade drawDateGeneratorFacade = mock(DrawDateGeneratorFacade.class);
         LocalDateTime localDateTime = of(2024, Month.JUNE, 12, 20, 0);
         Instant instant = localDateTime.toInstant(ZoneOffset.UTC);
-        when(drawDateGeneratorFacade.getNextDrawDate(any())).thenReturn(DrawDateDto.builder().drawDate(instant).build());
+        when(drawDateGeneratorFacade.getNextDrawDate(any())).thenReturn(DrawDate.builder().drawDate(instant).build());
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()
                 .createNumberReceiverFacadeForTests(ticketRepository, drawDateGeneratorFacade, clock());
         //when
-        NumberReceiverResultDto result = numberReceiverFacade.inputNumbers(numbersOutOfRange);
+        NumberReceiverResult result = numberReceiverFacade.inputNumbers(numbersOutOfRange);
         //then
         assertThat(result.status()).isEqualTo("failure");
         assertThat(result.errorsList()).contains(ValidationError.OUT_OF_RANGE.errorMessage);
@@ -92,15 +92,15 @@ class NumberReceiverFacadeTest extends NumberReceiverTestConfig {
         DrawDateGeneratorFacade drawDateGeneratorFacade = mock(DrawDateGeneratorFacade.class);
         LocalDateTime localDateTime = of(2024, Month.JUNE, 14, 20, 0);
         Instant instant = localDateTime.toInstant(ZoneOffset.UTC);
-        when(drawDateGeneratorFacade.getNextDrawDate(any())).thenReturn(DrawDateDto.builder().drawDate(instant).build());
+        when(drawDateGeneratorFacade.getNextDrawDate(any())).thenReturn(DrawDate.builder().drawDate(instant).build());
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()
                 .createNumberReceiverFacadeForTests(ticketRepository, drawDateGeneratorFacade, clock());
         numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 5, 6));
         numberReceiverFacade.inputNumbers(List.of(3, 15, 20, 24, 35, 46));
         //when
-        UserTicketsDto userTickets = numberReceiverFacade.usersNumbers(instant);
+        UserTickets userTickets = numberReceiverFacade.usersNumbers(instant);
         //then
-        List<TicketDto> tickets = userTickets.tickets();
+        List<TicketPayload> tickets = userTickets.tickets();
         assertThat(tickets).hasSizeGreaterThan(0);
     }
 
@@ -110,13 +110,13 @@ class NumberReceiverFacadeTest extends NumberReceiverTestConfig {
         DrawDateGeneratorFacade drawDateGeneratorFacade = mock(DrawDateGeneratorFacade.class);
         LocalDateTime localDateTime = of(2024, Month.JUNE, 14, 20, 0);
         Instant instant = localDateTime.toInstant(ZoneOffset.UTC);
-        when(drawDateGeneratorFacade.getNextDrawDate(any())).thenReturn(DrawDateDto.builder().drawDate(instant).build());
+        when(drawDateGeneratorFacade.getNextDrawDate(any())).thenReturn(DrawDate.builder().drawDate(instant).build());
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()
                 .createNumberReceiverFacadeForTests(ticketRepository, drawDateGeneratorFacade, clock());
         //when
-        UserTicketsDto userTickets = numberReceiverFacade.usersNumbers(instant);
+        UserTickets userTickets = numberReceiverFacade.usersNumbers(instant);
         //then
-        List<TicketDto> tickets = userTickets.tickets();
+        List<TicketPayload> tickets = userTickets.tickets();
         assertThat(tickets).isEmpty();
     }
 }

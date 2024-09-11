@@ -1,13 +1,13 @@
 package pl.lotto.resultannouncer;
 
-import pl.lotto.resultannouncer.dto.AnnouncerResponseDto;
-import pl.lotto.resultannouncer.dto.AnnouncerWinningResultsResponseDto;
+import pl.lotto.resultannouncer.dto.AnnouncerResultResponse;
+import pl.lotto.resultannouncer.dto.AnnouncerWinningResultsResponse;
 
 import java.time.Instant;
 
 public interface ResultAnnouncerFacade {
 
-    AnnouncerResponseDto findResultsForId(String uuid);
+    AnnouncerResultResponse findResultsForId(String uuid);
 
-    AnnouncerWinningResultsResponseDto getLotteryResultsForDate(Instant drawDate);
+    AnnouncerWinningResultsResponse getLotteryResultsForDate(Instant drawDate);
 }

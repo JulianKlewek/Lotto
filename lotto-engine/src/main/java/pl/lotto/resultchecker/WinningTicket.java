@@ -2,6 +2,7 @@ package pl.lotto.resultchecker;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,6 +13,7 @@ import java.util.List;
 @Document("WinningTicket")
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 class WinningTicket {
     @Id

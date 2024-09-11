@@ -11,9 +11,9 @@ import java.util.HashSet;
 import java.util.List;
 
 @AutoConfigureMockMvc
-@SpringBootTest(classes = {NumberGeneratorRunner.class, IntegrationConfiguration.class})
+@SpringBootTest(classes = {NumberGeneratorRunner.class})
 @Testcontainers
-public class BaseIntegrationTest {
+public abstract class BaseIntegrationTest {
 
     @Bean
     @Primary

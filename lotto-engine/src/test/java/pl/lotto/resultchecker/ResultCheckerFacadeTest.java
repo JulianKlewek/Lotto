@@ -1,14 +1,14 @@
 package pl.lotto.resultchecker;
 
 import org.junit.jupiter.api.Test;
-import pl.lotto.infrastructure.winningnumbersservice.dto.WinningNumbersResponseDto;
+import pl.lotto.infrastructure.winningnumbersservice.dto.WinningNumbersResponse;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
-import pl.lotto.numberreceiver.dto.TicketDto;
-import pl.lotto.numberreceiver.dto.UserTicketsDto;
-import pl.lotto.resultchecker.dto.BasicTicketInfoResponseDto;
-import pl.lotto.resultchecker.dto.TicketResultResponseDto;
-import pl.lotto.resultchecker.dto.WinningTicketDto;
-import pl.lotto.resultchecker.dto.WinningTicketsDto;
+import pl.lotto.numberreceiver.dto.TicketPayload;
+import pl.lotto.numberreceiver.dto.UserTickets;
+import pl.lotto.resultchecker.dto.BasicTicketInfoResponse;
+import pl.lotto.resultchecker.dto.TicketResultResponse;
+import pl.lotto.resultchecker.dto.WinningTicketPayload;
+import pl.lotto.resultchecker.dto.WinningTickets;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -33,26 +33,26 @@ class ResultCheckerFacadeTest extends ResultCheckerFacadeTestConfig {
         LocalDateTime localDateTime = of(2024, Month.JUNE, 14, 20, 0);
         Instant drawDate = localDateTime.toInstant(ZoneOffset.UTC);
         when(winningNumbersPort.getWinningNumbersForDate(drawDate)).thenReturn(
-                new WinningNumbersResponseDto(List.of(11, 12, 21, 39, 40, 41), drawDate, 2L));
+                new WinningNumbersResponse(List.of(11, 12, 21, 39, 40, 41), drawDate, 2L));
         when(numberReceiverFacade.usersNumbers(any())).thenReturn(
-                new UserTicketsDto(List.of(
-                        new TicketDto("hash1", List.of(11, 12, 21, 39, 40, 41), drawDate, ""),
-                        new TicketDto("hash2", List.of(11, 12, 21, 39, 40, 41), drawDate, ""),
-                        new TicketDto("hash3", List.of(11, 12, 21, 39, 40, 1), drawDate, ""),
-                        new TicketDto("hash4", List.of(11, 12, 21, 39, 1, 2), drawDate, ""),
-                        new TicketDto("hash5", List.of(11, 12, 21, 1, 2, 3), drawDate, ""),
-                        new TicketDto("hash6", List.of(11, 12, 3, 4, 5, 6), drawDate, ""),
-                        new TicketDto("hash7", List.of(1, 2, 3, 4, 5, 6), drawDate, ""))));
+                new UserTickets(List.of(
+                        new TicketPayload("hash1", List.of(11, 12, 21, 39, 40, 41), drawDate, ""),
+                        new TicketPayload("hash2", List.of(11, 12, 21, 39, 40, 41), drawDate, ""),
+                        new TicketPayload("hash3", List.of(11, 12, 21, 39, 40, 1), drawDate, ""),
+                        new TicketPayload("hash4", List.of(11, 12, 21, 39, 1, 2), drawDate, ""),
+                        new TicketPayload("hash5", List.of(11, 12, 21, 1, 2, 3), drawDate, ""),
+                        new TicketPayload("hash6", List.of(11, 12, 3, 4, 5, 6), drawDate, ""),
+                        new TicketPayload("hash7", List.of(1, 2, 3, 4, 5, 6), drawDate, ""))));
         //when
-        WinningTicketsDto winningTickets = resultCheckerFacade.checkAllWinningTicketsForGivenDrawDate(drawDate);
+        WinningTickets winningTickets = resultCheckerFacade.checkAllWinningTicketsForGivenDrawDate(drawDate);
         //then
-        List<WinningTicketDto> winnersWithSixCorrectNumbers = winningTickets.winningTickets().stream()
+        List<WinningTicketPayload> winnersWithSixCorrectNumbers = winningTickets.winningTickets().stream()
                 .filter(e -> e.amountOfCorrectNumbers() == 6)
                 .toList();
-        List<WinningTicketDto> winnersWithFiveCorrectNumbers = winningTickets.winningTickets().stream()
+        List<WinningTicketPayload> winnersWithFiveCorrectNumbers = winningTickets.winningTickets().stream()
                 .filter(e -> e.amountOfCorrectNumbers() == 5)
                 .toList();
-        List<WinningTicketDto> winnersWithFourCorrectNumbers = winningTickets.winningTickets().stream()
+        List<WinningTicketPayload> winnersWithFourCorrectNumbers = winningTickets.winningTickets().stream()
                 .filter(e -> e.amountOfCorrectNumbers() == 4)
                 .toList();
         int numberOfWinners = winningTickets.winningTickets().size();
@@ -74,30 +74,30 @@ class ResultCheckerFacadeTest extends ResultCheckerFacadeTestConfig {
         Instant drawDate = localDateTime.toInstant(ZoneOffset.UTC);
         List<Integer> winningNumbersList = List.of(11, 12, 21, 39, 40, 41);
         when(winningNumbersPort.getWinningNumbersForDate(drawDate)).thenReturn(
-                new WinningNumbersResponseDto(winningNumbersList, drawDate, 2L));
+                new WinningNumbersResponse(winningNumbersList, drawDate, 2L));
         when(numberReceiverFacade.usersNumbers(any())).thenReturn(
-                new UserTicketsDto(List.of(
-                        new TicketDto("hash1", List.of(11, 12, 21, 39, 40, 41), drawDate, ""),
-                        new TicketDto("hash2", List.of(11, 12, 21, 39, 40, 41), drawDate, ""),
-                        new TicketDto("hash3", List.of(11, 12, 21, 39, 40, 1), drawDate, ""),
-                        new TicketDto("hash4", List.of(11, 12, 21, 39, 1, 2), drawDate, ""),
-                        new TicketDto("hash5", List.of(11, 12, 21, 1, 2, 3), drawDate, ""),
-                        new TicketDto("hash6", List.of(11, 12, 3, 4, 5, 6), drawDate, ""),
-                        new TicketDto("hash7", List.of(1, 2, 3, 4, 5, 6), drawDate, ""))));
+                new UserTickets(List.of(
+                        new TicketPayload("hash1", List.of(11, 12, 21, 39, 40, 41), drawDate, ""),
+                        new TicketPayload("hash2", List.of(11, 12, 21, 39, 40, 41), drawDate, ""),
+                        new TicketPayload("hash3", List.of(11, 12, 21, 39, 40, 1), drawDate, ""),
+                        new TicketPayload("hash4", List.of(11, 12, 21, 39, 1, 2), drawDate, ""),
+                        new TicketPayload("hash5", List.of(11, 12, 21, 1, 2, 3), drawDate, ""),
+                        new TicketPayload("hash6", List.of(11, 12, 3, 4, 5, 6), drawDate, ""),
+                        new TicketPayload("hash7", List.of(1, 2, 3, 4, 5, 6), drawDate, ""))));
         //when
-        WinningTicketsDto winningTickets = resultCheckerFacade.checkAllWinningTicketsForGivenDrawDate(drawDate);
+        WinningTickets winningTickets = resultCheckerFacade.checkAllWinningTicketsForGivenDrawDate(drawDate);
         //then
-        List<WinningTicketDto> winnersWithSixCorrectNumbers = winningTickets.winningTickets().stream()
+        List<WinningTicketPayload> winnersWithSixCorrectNumbers = winningTickets.winningTickets().stream()
                 .filter(e -> e.amountOfCorrectNumbers() == 6)
                 .toList();
         assertThat(winnersWithSixCorrectNumbers)
                 .hasSize(2)
-                .extracting(WinningTicketDto::userNumbers)
+                .extracting(WinningTicketPayload::userNumbers)
                 .containsOnly(winningNumbersList);
     }
 
     @Test
-    void should_return_ticket_with_status_PRIZE_NOT_RECEIVED_for_given_hash(){
+    void should_return_ticket_with_status_PRIZE_NOT_RECEIVED_for_given_hash() {
         //given
         NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
         WinningNumbersPort winningNumbersPort = mock(WinningNumbersPort.class);
@@ -110,19 +110,19 @@ class ResultCheckerFacadeTest extends ResultCheckerFacadeTestConfig {
         WinningTicket winningTicket2 = new WinningTicket(hash2, numbers, Instant.now(), 1L, 4, false);
         ticketRepository.saveAll(List.of(winningTicket1, winningTicket2));
         //when
-        TicketResultResponseDto ticketWon = resultCheckerFacade.isSpecificTicketWon(hash);
+        TicketResultResponse ticketWon = resultCheckerFacade.isSpecificTicketWon(hash);
         //then
-        WinningTicketDto winningTicketDto = ticketWon.winningTicket();
+        WinningTicketPayload winningTicketPayload = ticketWon.winningTicket();
         assertAll(
                 () -> assertThat(ticketWon.status()).isEqualTo(ResultStatus.PRIZE_NOT_RECEIVED),
-                () -> assertThat(winningTicketDto.hash()).isEqualTo(hash),
-                () -> assertThat(winningTicketDto.userNumbers())
+                () -> assertThat(winningTicketPayload.hash()).isEqualTo(hash),
+                () -> assertThat(winningTicketPayload.userNumbers())
                         .hasSize(6)
                         .containsAll(numbers));
     }
 
     @Test
-    void should_return_ticket_with_status_PRIZE_RECEIVED_for_given_hash(){
+    void should_return_ticket_with_status_PRIZE_RECEIVED_for_given_hash() {
         //given
         NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
         WinningNumbersPort winningNumbersPort = mock(WinningNumbersPort.class);
@@ -135,19 +135,19 @@ class ResultCheckerFacadeTest extends ResultCheckerFacadeTestConfig {
         WinningTicket winningTicket2 = new WinningTicket(hash2, numbers, Instant.now(), 1L, 4, false);
         ticketRepository.saveAll(List.of(winningTicket1, winningTicket2));
         //when
-        TicketResultResponseDto ticketWon = resultCheckerFacade.isSpecificTicketWon(hash);
+        TicketResultResponse ticketWon = resultCheckerFacade.isSpecificTicketWon(hash);
         //then
-        WinningTicketDto winningTicketDto = ticketWon.winningTicket();
+        WinningTicketPayload winningTicketPayload = ticketWon.winningTicket();
         assertAll(
                 () -> assertThat(ticketWon.status()).isEqualTo(ResultStatus.PRIZE_RECEIVED),
-                () -> assertThat(winningTicketDto.hash()).isEqualTo(hash),
-                () -> assertThat(winningTicketDto.userNumbers())
+                () -> assertThat(winningTicketPayload.hash()).isEqualTo(hash),
+                () -> assertThat(winningTicketPayload.userNumbers())
                         .hasSize(6)
                         .containsAll(numbers));
     }
 
     @Test
-    void should_return_not_found_status_when_winning_ticket_does_not_exists_in_winning_tickets_db(){
+    void should_return_not_found_status_when_winning_ticket_does_not_exists_in_winning_tickets_db() {
         //given
         NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
         WinningNumbersPort winningNumbersPort = mock(WinningNumbersPort.class);
@@ -155,13 +155,13 @@ class ResultCheckerFacadeTest extends ResultCheckerFacadeTestConfig {
                 numberReceiverFacade, winningNumbersPort, ticketRepository);
         String hash = "hash1";
         //when
-        TicketResultResponseDto ticketWon = resultCheckerFacade.isSpecificTicketWon(hash);
+        TicketResultResponse ticketWon = resultCheckerFacade.isSpecificTicketWon(hash);
         //then
         assertThat(ticketWon.status()).isEqualTo(ResultStatus.NOT_FOUND);
     }
 
     @Test
-    void should_return_true_with_six_matching_numbers_for_given_draw_date_and_numbers(){
+    void should_return_true_with_six_matching_numbers_for_given_draw_date_and_numbers() {
         //given
         NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
         WinningNumbersPort winningNumbersPort = mock(WinningNumbersPort.class);
@@ -171,7 +171,7 @@ class ResultCheckerFacadeTest extends ResultCheckerFacadeTestConfig {
         Instant drawDate = localDateTime.toInstant(ZoneOffset.UTC);
         List<Integer> winningNumbersList = List.of(1, 2, 3, 4, 5, 6);
         when(winningNumbersPort.getWinningNumbersForDate(any())).thenReturn(
-                new WinningNumbersResponseDto(winningNumbersList, drawDate, 2L));
+                new WinningNumbersResponse(winningNumbersList, drawDate, 2L));
         String hash = "hash1";
         String hash2 = "hash2";
         List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6);
@@ -180,7 +180,7 @@ class ResultCheckerFacadeTest extends ResultCheckerFacadeTestConfig {
         WinningTicket winningTicket2 = new WinningTicket(hash2, numbers2, drawDate, 1L, 4, false);
         ticketRepository.saveAll(List.of(winningTicket1, winningTicket2));
         //when
-        BasicTicketInfoResponseDto ticketResult = resultCheckerFacade.checkGivenNumbersForLottery(numbers, drawDate);
+        BasicTicketInfoResponse ticketResult = resultCheckerFacade.checkGivenNumbersForLottery(numbers, drawDate);
         //then
         assertAll(
                 () -> assertThat(ticketResult.won()).isTrue(),
@@ -188,7 +188,7 @@ class ResultCheckerFacadeTest extends ResultCheckerFacadeTestConfig {
     }
 
     @Test
-    void should_return_true_with_four_matching_numbers_for_given_draw_date_and_numbers(){
+    void should_return_true_with_four_matching_numbers_for_given_draw_date_and_numbers() {
         //given
         NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
         WinningNumbersPort winningNumbersPort = mock(WinningNumbersPort.class);
@@ -198,16 +198,16 @@ class ResultCheckerFacadeTest extends ResultCheckerFacadeTestConfig {
         Instant drawDate = localDateTime.toInstant(ZoneOffset.UTC);
         List<Integer> winningNumbersList = List.of(1, 2, 3, 4, 5, 6);
         when(winningNumbersPort.getWinningNumbersForDate(any())).thenReturn(
-                new WinningNumbersResponseDto(winningNumbersList, drawDate, 2L));
+                new WinningNumbersResponse(winningNumbersList, drawDate, 2L));
         String hash = "hash1";
         String hash2 = "hash2";
         List<Integer> numbers1 = List.of(7, 12, 3, 4, 5, 6);
-        List<Integer> numbers2 = List.of(11, 22, 33,44, 45, 46);
+        List<Integer> numbers2 = List.of(11, 22, 33, 44, 45, 46);
         WinningTicket winningTicket1 = new WinningTicket(hash, numbers1, drawDate, 1L, 6, true);
         WinningTicket winningTicket2 = new WinningTicket(hash2, numbers2, drawDate, 1L, 4, false);
         ticketRepository.saveAll(List.of(winningTicket1, winningTicket2));
         //when
-        BasicTicketInfoResponseDto ticketResult = resultCheckerFacade.checkGivenNumbersForLottery(numbers1, drawDate);
+        BasicTicketInfoResponse ticketResult = resultCheckerFacade.checkGivenNumbersForLottery(numbers1, drawDate);
         //then
         assertAll(
                 () -> assertThat(ticketResult.won()).isTrue(),
@@ -215,7 +215,7 @@ class ResultCheckerFacadeTest extends ResultCheckerFacadeTestConfig {
     }
 
     @Test
-    void should_return_false_if_less_than_four_matching_numbers_for_given_draw_date_and_numbers(){
+    void should_return_false_if_less_than_four_matching_numbers_for_given_draw_date_and_numbers() {
         //given
         NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
         WinningNumbersPort winningNumbersPort = mock(WinningNumbersPort.class);
@@ -225,16 +225,16 @@ class ResultCheckerFacadeTest extends ResultCheckerFacadeTestConfig {
         Instant drawDate = localDateTime.toInstant(ZoneOffset.UTC);
         List<Integer> winningNumbersList = List.of(1, 2, 3, 4, 5, 6);
         when(winningNumbersPort.getWinningNumbersForDate(any())).thenReturn(
-                new WinningNumbersResponseDto(winningNumbersList, drawDate, 2L));
+                new WinningNumbersResponse(winningNumbersList, drawDate, 2L));
         String hash = "hash1";
         String hash2 = "hash2";
         List<Integer> numbers1 = List.of(7, 12, 33, 4, 5, 6);
-        List<Integer> numbers2 = List.of(11, 22, 33,44, 45, 46);
+        List<Integer> numbers2 = List.of(11, 22, 33, 44, 45, 46);
         WinningTicket winningTicket1 = new WinningTicket(hash, numbers1, drawDate, 1L, 6, true);
         WinningTicket winningTicket2 = new WinningTicket(hash2, numbers2, drawDate, 1L, 4, false);
         ticketRepository.saveAll(List.of(winningTicket1, winningTicket2));
         //when
-        BasicTicketInfoResponseDto ticketResult = resultCheckerFacade.checkGivenNumbersForLottery(numbers1, drawDate);
+        BasicTicketInfoResponse ticketResult = resultCheckerFacade.checkGivenNumbersForLottery(numbers1, drawDate);
         //then
         assertAll(
                 () -> assertThat(ticketResult.won()).isFalse(),
@@ -242,7 +242,7 @@ class ResultCheckerFacadeTest extends ResultCheckerFacadeTestConfig {
     }
 
     @Test
-    void should_return_true_with_six_matching_numbers_for_given_lottery_number_and_numbers(){
+    void should_return_true_with_six_matching_numbers_for_given_lottery_number_and_numbers() {
         //given
         NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
         WinningNumbersPort winningNumbersPort = mock(WinningNumbersPort.class);
@@ -252,7 +252,7 @@ class ResultCheckerFacadeTest extends ResultCheckerFacadeTestConfig {
         Instant drawDate = localDateTime.toInstant(ZoneOffset.UTC);
         List<Integer> winningNumbersList = List.of(1, 2, 3, 4, 5, 6);
         when(winningNumbersPort.getWinningNumbersForLotteryNumber(any())).thenReturn(
-                new WinningNumbersResponseDto(winningNumbersList, drawDate, 2L));
+                new WinningNumbersResponse(winningNumbersList, drawDate, 2L));
         String hash = "hash1";
         String hash2 = "hash2";
         List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6);
@@ -261,7 +261,7 @@ class ResultCheckerFacadeTest extends ResultCheckerFacadeTestConfig {
         WinningTicket winningTicket2 = new WinningTicket(hash2, numbers2, Instant.now(), 1L, 4, false);
         ticketRepository.saveAll(List.of(winningTicket1, winningTicket2));
         //when
-        BasicTicketInfoResponseDto ticketResult = resultCheckerFacade.checkGivenNumbersForLottery(numbers, 1L);
+        BasicTicketInfoResponse ticketResult = resultCheckerFacade.checkGivenNumbersForLottery(numbers, 1L);
         //then
         assertAll(
                 () -> assertThat(ticketResult.won()).isTrue(),
@@ -269,7 +269,7 @@ class ResultCheckerFacadeTest extends ResultCheckerFacadeTestConfig {
     }
 
     @Test
-    void should_return_true_with_four_matching_numbers_for_given_lottery_number_and_numbers(){
+    void should_return_true_with_four_matching_numbers_for_given_lottery_number_and_numbers() {
         //given
         NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
         WinningNumbersPort winningNumbersPort = mock(WinningNumbersPort.class);
@@ -279,16 +279,16 @@ class ResultCheckerFacadeTest extends ResultCheckerFacadeTestConfig {
         Instant drawDate = localDateTime.toInstant(ZoneOffset.UTC);
         List<Integer> winningNumbersList = List.of(1, 2, 3, 4, 5, 6);
         when(winningNumbersPort.getWinningNumbersForLotteryNumber(any())).thenReturn(
-                new WinningNumbersResponseDto(winningNumbersList, drawDate, 2L));
+                new WinningNumbersResponse(winningNumbersList, drawDate, 2L));
         String hash = "hash1";
         String hash2 = "hash2";
         List<Integer> numbers1 = List.of(7, 12, 3, 4, 5, 6);
-        List<Integer> numbers2 = List.of(11, 22, 33,44, 45, 46);
+        List<Integer> numbers2 = List.of(11, 22, 33, 44, 45, 46);
         WinningTicket winningTicket1 = new WinningTicket(hash, numbers1, Instant.now(), 1L, 6, true);
         WinningTicket winningTicket2 = new WinningTicket(hash2, numbers2, Instant.now(), 1L, 4, false);
         ticketRepository.saveAll(List.of(winningTicket1, winningTicket2));
         //when
-        BasicTicketInfoResponseDto ticketResult = resultCheckerFacade.checkGivenNumbersForLottery(numbers1, 1L);
+        BasicTicketInfoResponse ticketResult = resultCheckerFacade.checkGivenNumbersForLottery(numbers1, 1L);
         //then
         assertAll(
                 () -> assertThat(ticketResult.won()).isTrue(),
@@ -296,7 +296,7 @@ class ResultCheckerFacadeTest extends ResultCheckerFacadeTestConfig {
     }
 
     @Test
-    void should_return_false_if_less_than_four_matching_numbers_for_given_lottery_number_and_numbers(){
+    void should_return_false_if_less_than_four_matching_numbers_for_given_lottery_number_and_numbers() {
         //given
         NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
         WinningNumbersPort winningNumbersPort = mock(WinningNumbersPort.class);
@@ -306,16 +306,16 @@ class ResultCheckerFacadeTest extends ResultCheckerFacadeTestConfig {
         Instant drawDate = localDateTime.toInstant(ZoneOffset.UTC);
         List<Integer> winningNumbersList = List.of(1, 2, 3, 4, 5, 6);
         when(winningNumbersPort.getWinningNumbersForLotteryNumber(any())).thenReturn(
-                new WinningNumbersResponseDto(winningNumbersList, drawDate, 2L));
+                new WinningNumbersResponse(winningNumbersList, drawDate, 2L));
         String hash = "hash1";
         String hash2 = "hash2";
         List<Integer> numbers1 = List.of(7, 12, 33, 4, 5, 6);
-        List<Integer> numbers2 = List.of(11, 22, 33,44, 45, 46);
+        List<Integer> numbers2 = List.of(11, 22, 33, 44, 45, 46);
         WinningTicket winningTicket1 = new WinningTicket(hash, numbers1, Instant.now(), 1L, 6, true);
         WinningTicket winningTicket2 = new WinningTicket(hash2, numbers2, Instant.now(), 1L, 4, false);
         ticketRepository.saveAll(List.of(winningTicket1, winningTicket2));
         //when
-        BasicTicketInfoResponseDto ticketResult = resultCheckerFacade.checkGivenNumbersForLottery(numbers1, 1L);
+        BasicTicketInfoResponse ticketResult = resultCheckerFacade.checkGivenNumbersForLottery(numbers1, 1L);
         //then
         assertAll(
                 () -> assertThat(ticketResult.won()).isFalse(),

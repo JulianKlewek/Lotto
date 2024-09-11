@@ -2,7 +2,7 @@ package pl.lotto.infrastructure.winningnumbersservice;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.lotto.infrastructure.winningnumbersservice.dto.WinningNumbersResponseDto;
+import pl.lotto.infrastructure.winningnumbersservice.dto.WinningNumbersResponse;
 import pl.lotto.resultchecker.WinningNumbersPort;
 
 import java.time.Instant;
@@ -14,12 +14,12 @@ public class WinningNumbersGeneratorPortHttpService implements WinningNumbersPor
     private final WinningNumbersWebClientCallGenerator winningNumbersWebClientCallGenerator;
 
     @Override
-    public WinningNumbersResponseDto getWinningNumbersForDate(Instant drawDate) {
+    public WinningNumbersResponse getWinningNumbersForDate(Instant drawDate) {
         return winningNumbersWebClientCallGenerator.callForWinningNumbersWithDrawDate(drawDate);
     }
 
     @Override
-    public WinningNumbersResponseDto getWinningNumbersForLotteryNumber(Long lotteryId) {
+    public WinningNumbersResponse getWinningNumbersForLotteryNumber(Long lotteryId) {
         return null;
     }
 

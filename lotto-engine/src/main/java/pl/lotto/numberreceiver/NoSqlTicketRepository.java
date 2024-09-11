@@ -27,7 +27,7 @@ class NoSqlTicketRepository implements TicketRepository {
 
     @Override
     public List<Ticket> findAllByDrawDate(Instant drawDate) {
-        return ticketRepository.findAllByDrawDate();
+        return ticketRepository.findAllByDrawDate(drawDate);
     }
 
     @Override
@@ -39,5 +39,5 @@ class NoSqlTicketRepository implements TicketRepository {
 @Repository
 interface MongoTicketRepository extends MongoRepository<Ticket, String> {
 
-    List<Ticket> findAllByDrawDate();
+    List<Ticket> findAllByDrawDate(Instant drawDate);
 }

@@ -11,10 +11,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 import pl.lotto.infrastructure.scheduler.resultchecker.ResultCheckerScheduler;
 import pl.lotto.resultchecker.ResultCheckerFacade;
 import pl.lotto.resultchecker.WinningNumbersPort;
@@ -26,9 +22,8 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
 @AutoConfigureMockMvc
 @SpringBootTest(classes = {LottoEngine.class, IntegrationConfiguration.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Testcontainers
 @ActiveProfiles("integration")
-public class BaseIntegrationTest {
+public abstract class BaseIntegrationTest implements MongoTestContainer {
 
     protected static final String WIREMOCK_SERVER_HOST = "http://localhost";
 
@@ -42,12 +37,9 @@ public class BaseIntegrationTest {
     protected ObjectMapper objectMapper;
     @SpyBean
     protected ResultCheckerScheduler resultCheckerScheduler;
-    @Container
-    private static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
 
     @DynamicPropertySource
     private static void propertyOverride(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
         registry.add("lotto.number-generator.service.url", () -> WIREMOCK_SERVER_HOST + ":" + wireMockServer.getPort());
         registry.add("spring.cloud.loadbalancer.enabled", () -> false);
     }

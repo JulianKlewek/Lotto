@@ -1,7 +1,7 @@
 package pl.lotto.resultchecker;
 
-import pl.lotto.infrastructure.winningnumbersservice.dto.WinningNumbersResponseDto;
-import pl.lotto.numberreceiver.dto.TicketDto;
+import pl.lotto.infrastructure.winningnumbersservice.dto.WinningNumbersResponse;
+import pl.lotto.numberreceiver.dto.TicketPayload;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -12,9 +12,9 @@ class NumberChecker {
     private static final int MINIMAL_AMOUNT_OF_MATCHING_NUMBERS = 4;
     private static final boolean DEFAULT_COLLECTED_REWARD_VALUE = false;
 
-    List<WinningTicket> checkTicketsNumbers(List<TicketDto> userTickets, WinningNumbersResponseDto winningNumbers) {
+    List<WinningTicket> checkTicketsNumbers(List<TicketPayload> userTickets, WinningNumbersResponse winningNumbers) {
         List<WinningTicket> winningTickets = new LinkedList<>();
-        for (TicketDto ticket : userTickets) {
+        for (TicketPayload ticket : userTickets) {
             if (isTicketContainsWinningNumbers(ticket.numbers(), winningNumbers.numbers())) {
                 int amountOfSameNumbers = checkAmountOfMatchedNumbers(ticket.numbers(), winningNumbers.numbers());
                 if (amountOfSameNumbers >= MINIMAL_AMOUNT_OF_MATCHING_NUMBERS) {

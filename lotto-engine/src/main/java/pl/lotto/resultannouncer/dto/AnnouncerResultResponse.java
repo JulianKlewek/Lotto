@@ -4,9 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 @Builder
-public record AnnouncerResponseDto(
+public record AnnouncerResultResponse(
         @Schema(description = "Ticket object")
-        AnnouncerTicketDto ticket,
+        AnnouncerTicket ticket,
         @Schema(description = "Result message", example = "Congratulations you have won, but already received reward.")
         String message) {
 
