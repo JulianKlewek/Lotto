@@ -5,8 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
-import pl.lotto.numberreceiver.dto.NumberReceiverRequestDto;
-import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
+import pl.lotto.numberreceiver.dto.NumberReceiverRequest;
+import pl.lotto.numberreceiver.dto.NumberReceiverResult;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,9 +22,9 @@ public class NumberReceiverRestController implements NumberReceiverApi {
     private final NumberReceiverFacade numberReceiverFacade;
 
     @PostMapping("/input-numbers")
-    public ResponseEntity<NumberReceiverResultDto> inputNumbers(@RequestBody NumberReceiverRequestDto request) {
+    public ResponseEntity<NumberReceiverResult> inputNumbers(@RequestBody NumberReceiverRequest request) {
         List<Integer> numbersList = request.inputNumbers();
-        NumberReceiverResultDto result = numberReceiverFacade.inputNumbers(numbersList);
+        NumberReceiverResult result = numberReceiverFacade.inputNumbers(numbersList);
         HttpStatus httpStatus = Objects.equals(result.status(), SUCCESS_MESSAGE)
                 ? HttpStatus.CREATED
                 : HttpStatus.BAD_REQUEST;

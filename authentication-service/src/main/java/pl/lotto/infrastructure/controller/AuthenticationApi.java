@@ -35,6 +35,12 @@ public interface AuthenticationApi {
     })
     ResponseEntity<UserLoginResponse> login(@RequestBody UserLoginRequest request);
 
+    @Operation(summary = "Confirm user email", description = "Confirms emails and enables account")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User account enabled successfully",
+                    content = {@Content(schema = @Schema(implementation = EmailConfirmationResponse.class),
+                            mediaType = "application/json")})
+    })
     ResponseEntity<EmailConfirmationResponse> confirmEmail(@RequestParam String confirmationToken);
 
 }

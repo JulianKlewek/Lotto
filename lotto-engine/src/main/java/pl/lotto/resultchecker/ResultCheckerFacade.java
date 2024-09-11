@@ -1,23 +1,23 @@
 package pl.lotto.resultchecker;
 
-import pl.lotto.resultchecker.dto.BasicTicketInfoResponseDto;
-import pl.lotto.resultchecker.dto.TicketResultResponseDto;
-import pl.lotto.resultchecker.dto.WinningNumbersResultsDto;
-import pl.lotto.resultchecker.dto.WinningTicketsDto;
+import pl.lotto.resultchecker.dto.BasicTicketInfoResponse;
+import pl.lotto.resultchecker.dto.TicketResultResponse;
+import pl.lotto.resultchecker.dto.WinningNumbersResults;
+import pl.lotto.resultchecker.dto.WinningTickets;
 
 import java.time.Instant;
 import java.util.List;
 
 public interface ResultCheckerFacade {
-    WinningTicketsDto checkAllWinningTicketsForGivenDrawDate(Instant drawDate);
+    WinningTickets checkAllWinningTicketsForGivenDrawDate(Instant drawDate);
 
-    BasicTicketInfoResponseDto checkGivenNumbersForLottery(List<Integer> numbers, Instant drawDate);
+    BasicTicketInfoResponse checkGivenNumbersForLottery(List<Integer> numbers, Instant drawDate);
 
-    BasicTicketInfoResponseDto checkGivenNumbersForLottery(List<Integer> numbers, Long lotteryId);
+    BasicTicketInfoResponse checkGivenNumbersForLottery(List<Integer> numbers, Long lotteryId);
 
-    TicketResultResponseDto isSpecificTicketWon(String ticketHash);
+    TicketResultResponse isSpecificTicketWon(String ticketHash);
 
     boolean isSystemGeneratedResults(Instant drawDate);
 
-    WinningNumbersResultsDto findWinningNumbersForLottery(Instant drawDate);
+    WinningNumbersResults findWinningNumbersForLottery(Instant drawDate);
 }

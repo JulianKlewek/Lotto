@@ -1,7 +1,7 @@
 package pl.lotto.resultchecker;
 
 
-import pl.lotto.resultchecker.dto.WinningTicketDto;
+import pl.lotto.resultchecker.dto.WinningTicketPayload;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ public class WinningTicketMapper {
         throw new IllegalStateException("Utility class");
     }
 
-    public static WinningTicketDto toDto(WinningTicket winningTicket) {
-        return WinningTicketDto.builder()
+    public static WinningTicketPayload toDto(WinningTicket winningTicket) {
+        return WinningTicketPayload.builder()
                 .userNumbers(winningTicket.userNumbers)
                 .hash(winningTicket.hash)
                 .lotteryNumber(winningTicket.lotteryNumber)
@@ -21,7 +21,7 @@ public class WinningTicketMapper {
                 .build();
     }
 
-    public static List<WinningTicketDto> toDtoList(List<WinningTicket> winningTicketList) {
+    public static List<WinningTicketPayload> toDtoList(List<WinningTicket> winningTicketList) {
         return winningTicketList.stream()
                 .map(WinningTicketMapper::toDto)
                 .toList();

@@ -6,6 +6,6 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record NumberReceiverRequestDto(
+public record NumberReceiverRequest(
         @Schema(name = "inputNumbers", description = "List of integers.", example = "[1,2,3,4,5,6]") List<Integer> inputNumbers) {
 }

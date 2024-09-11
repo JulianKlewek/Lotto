@@ -1,10 +1,10 @@
 package pl.lotto.drawdategenerator;
 
-import pl.lotto.drawdategenerator.dto.DrawDateDto;
+import pl.lotto.drawdategenerator.dto.DrawDate;
 
 import java.time.Instant;
 
 public interface DrawDateGeneratorFacade {
 
-    DrawDateDto getNextDrawDate(Instant ticketCreatedAt);
+    DrawDate getNextDrawDate(Instant ticketCreatedAt);
 }

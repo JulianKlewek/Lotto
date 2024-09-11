@@ -6,5 +6,5 @@ import java.time.Instant;
 import java.util.List;
 
 @Builder
-public record WinningNumbersResponseDto(List<Integer> numbers, Instant drawDate, Long lotteryNumber) {
+public record WinningNumbersResponse(List<Integer> numbers, Instant drawDate, Long lotteryNumber) {
 }

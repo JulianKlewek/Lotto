@@ -4,5 +4,5 @@ import lombok.Builder;
 import pl.lotto.resultchecker.ResultStatus;
 
 @Builder
-public record TicketResultResponseDto(WinningTicketDto winningTicket, ResultStatus status) {
+public record TicketResultResponse(WinningTicketPayload winningTicket, ResultStatus status) {
 }

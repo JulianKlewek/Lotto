@@ -1,7 +1,7 @@
 package pl.lotto.resultannouncer;
 
-import pl.lotto.resultannouncer.dto.AnnouncerWinningResultsResponseDto;
-import pl.lotto.resultchecker.dto.WinningNumbersResultsDto;
+import pl.lotto.resultannouncer.dto.AnnouncerWinningResultsResponse;
+import pl.lotto.resultchecker.dto.WinningNumbersResults;
 
 public class WinningNumbersAnnouncerMapper {
 
@@ -9,8 +9,8 @@ public class WinningNumbersAnnouncerMapper {
         throw new IllegalStateException("Utility class");
     }
 
-    public static AnnouncerWinningResultsResponseDto resultsToResponse(WinningNumbersResultsDto results) {
-        return AnnouncerWinningResultsResponseDto.builder()
+    public static AnnouncerWinningResultsResponse resultsToResponse(WinningNumbersResults results) {
+        return AnnouncerWinningResultsResponse.builder()
                 .numbers(results.numbers())
                 .drawDate(results.drawDate())
                 .lotteryNumber(results.lotteryNumber())

@@ -1,11 +1,11 @@
 package pl.lotto.resultannouncer;
 
 import org.junit.jupiter.api.Test;
-import pl.lotto.resultannouncer.dto.AnnouncerResponseDto;
+import pl.lotto.resultannouncer.dto.AnnouncerResultResponse;
 import pl.lotto.resultchecker.ResultCheckerFacade;
 import pl.lotto.resultchecker.ResultCheckerFacadeImpl;
 import pl.lotto.resultchecker.ResultStatus;
-import pl.lotto.resultchecker.dto.TicketResultResponseDto;
+import pl.lotto.resultchecker.dto.TicketResultResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -24,10 +24,10 @@ class ResultAnnouncerFacadeTest extends ResultAnnouncerFacadeTestConfig {
                 winReceivedMsg, winNotReceivedMsg, loseMsg);
         ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerConfiguration().createResultAnnouncerFacadeForTests(
                 resultCheckerFacade, resultAnnouncerConfigurable);
-        when(resultCheckerFacade.isSpecificTicketWon(any())).thenReturn(new TicketResultResponseDto(
+        when(resultCheckerFacade.isSpecificTicketWon(any())).thenReturn(new TicketResultResponse(
                 winningTicket, ResultStatus.PRIZE_NOT_RECEIVED));
         //when
-        AnnouncerResponseDto resultsForId = resultAnnouncerFacade.findResultsForId(hash);
+        AnnouncerResultResponse resultsForId = resultAnnouncerFacade.findResultsForId(hash);
         //then
         assertAll(
                 () -> assertThat(resultsForId.message()).isEqualTo(winNotReceivedMsg),
@@ -44,9 +44,9 @@ class ResultAnnouncerFacadeTest extends ResultAnnouncerFacadeTestConfig {
         ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerConfiguration().createResultAnnouncerFacadeForTests(
                 resultCheckerFacade, resultAnnouncerConfigurable);
         when(resultCheckerFacade.isSpecificTicketWon(any())).thenReturn(
-                new TicketResultResponseDto(winningTicket, ResultStatus.PRIZE_RECEIVED));
+                new TicketResultResponse(winningTicket, ResultStatus.PRIZE_RECEIVED));
         //when
-        AnnouncerResponseDto resultsForId = resultAnnouncerFacade.findResultsForId(hash);
+        AnnouncerResultResponse resultsForId = resultAnnouncerFacade.findResultsForId(hash);
         //then
         assertAll(
                 () -> assertThat(resultsForId.message()).isEqualTo(winReceivedMsg),
@@ -63,9 +63,9 @@ class ResultAnnouncerFacadeTest extends ResultAnnouncerFacadeTestConfig {
         ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerConfiguration().createResultAnnouncerFacadeForTests(
                 resultCheckerFacade, resultAnnouncerConfigurable);
         when(resultCheckerFacade.isSpecificTicketWon(any())).thenReturn(
-                new TicketResultResponseDto(losingTicket, ResultStatus.NOT_FOUND));
+                new TicketResultResponse(losingTicket, ResultStatus.NOT_FOUND));
         //when
-        AnnouncerResponseDto resultsForId = resultAnnouncerFacade.findResultsForId(hash);
+        AnnouncerResultResponse resultsForId = resultAnnouncerFacade.findResultsForId(hash);
         //then
         assertAll(
                 () -> assertThat(resultsForId.message()).isEqualTo(loseMsg),

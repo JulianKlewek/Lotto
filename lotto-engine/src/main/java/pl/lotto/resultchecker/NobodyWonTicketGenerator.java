@@ -1,12 +1,12 @@
 package pl.lotto.resultchecker;
 
-import pl.lotto.infrastructure.winningnumbersservice.dto.WinningNumbersResponseDto;
+import pl.lotto.infrastructure.winningnumbersservice.dto.WinningNumbersResponse;
 
 import java.util.List;
 
 class NobodyWonTicketGenerator {
 
-    public WinningTicket generateDataNobodyWon(WinningNumbersResponseDto winningNumber) {
+    public WinningTicket generateDataNobodyWon(WinningNumbersResponse winningNumber) {
         String hash = "hash" + winningNumber.lotteryNumber();
         return WinningTicket.builder()
                 .userNumbers(inverseWinningNumbers(winningNumber.numbers()))

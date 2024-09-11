@@ -45,9 +45,9 @@ class NoSqlWinningTicketRepository implements WinningTicketRepository {
 @Repository
 interface MongoWinningTicketRepository extends MongoRepository<WinningTicket, Long> {
 
-    Optional<WinningTicket> findByHash(String hash);
-
     boolean existsByDrawDate(Instant drawDate);
 
     List<WinningTicket> findAllByDrawDate(Instant drawDate);
+
+    Optional<WinningTicket> findByHash(String hash);
 }

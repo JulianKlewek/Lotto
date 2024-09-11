@@ -7,9 +7,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import pl.lotto.BaseIntegrationTest;
-import pl.lotto.infrastructure.winningnumbersservice.dto.WinningNumbersResponseDto;
-import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
-import pl.lotto.resultchecker.dto.WinningTicketsDto;
+import pl.lotto.infrastructure.winningnumbersservice.dto.WinningNumbersResponse;
+import pl.lotto.numberreceiver.dto.NumberReceiverResult;
+import pl.lotto.resultchecker.dto.WinningTickets;
 
 import java.time.Instant;
 import java.util.List;
@@ -36,13 +36,13 @@ class LotteryGameIsSuccessfulIT extends BaseIntegrationTest {
         List<Integer> typedNumbers = List.of(1, 2, 3, 4, 5, 6);
         String expectedDrawDate = "2024-06-14T20:00:00Z";
         //when
-        ResultActions perform = mockMvc.perform(post("/input-numbers")
+        ResultActions perform = mockMvc.perform(post("/lottery/input-numbers")
                         .content("{\"inputNumbers\":" + typedNumbers + "}")
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print());
         //then
         MvcResult mvcInputNumbersResult = perform.andExpectAll(
-                        status().isOk(),
+                        status().isCreated(),
                         jsonPath("$.status").value("success"),
                         jsonPath("$.errorsList", hasSize(0)),
                         jsonPath("$.ticket.hash", matchesPattern(UUID_REGEX)),
@@ -50,17 +50,17 @@ class LotteryGameIsSuccessfulIT extends BaseIntegrationTest {
                         jsonPath("$.ticket.drawDate", equalTo(expectedDrawDate)),
                         jsonPath("$.ticket.message", equalTo((null))))
                 .andReturn();
-        NumberReceiverResultDto receiverResult = objectMapper.readValue(
-                mvcInputNumbersResult.getResponse().getContentAsString(), NumberReceiverResultDto.class);
+        NumberReceiverResult receiverResult = objectMapper.readValue(
+                mvcInputNumbersResult.getResponse().getContentAsString(), NumberReceiverResult.class);
         //step 2: system generates winning numbers and returns winning numbers for given date
         //given
         Instant drawDate = receiverResult.ticket().drawDate();
-        WinningNumbersResponseDto winningNumbersResponseDto = WinningNumbersResponseDto.builder()
+        WinningNumbersResponse winningNumbersResponse = WinningNumbersResponse.builder()
                 .numbers(List.of(1, 2, 3, 4, 5, 6))
                 .lotteryNumber(1L)
                 .drawDate(drawDate)
                 .build();
-        String responseBody = objectMapper.writeValueAsString(winningNumbersResponseDto);
+        String responseBody = objectMapper.writeValueAsString(winningNumbersResponse);
         //when & then
         wireMockServer.stubFor(WireMock.get(WireMock.urlPathTemplate("/winning-numbers/{drawDate}"))
                 .withPathParam("drawDate", WireMock.equalTo(encode("2024-06-14T20:00:00Z", UTF_8)))
@@ -72,7 +72,7 @@ class LotteryGameIsSuccessfulIT extends BaseIntegrationTest {
         await().atMost(20, TimeUnit.SECONDS)
                 .pollInterval(1, TimeUnit.SECONDS)
                 .until(() -> {
-                    WinningTicketsDto tickets = resultCheckerFacade.checkAllWinningTicketsForGivenDrawDate(drawDate);
+                    WinningTickets tickets = resultCheckerFacade.checkAllWinningTicketsForGivenDrawDate(drawDate);
                     return !tickets.winningTickets().isEmpty();
                 });
 
@@ -80,7 +80,7 @@ class LotteryGameIsSuccessfulIT extends BaseIntegrationTest {
         //given & when
         String ticketId = receiverResult.ticket().hash();
         String wonNotReceived = "Congratulations you have won, you can receive reward.";
-        ResultActions performResults = mockMvc.perform(get("/get-result/" + ticketId)
+        ResultActions performResults = mockMvc.perform(get("/result/get-result/" + ticketId)
                 .contentType(MediaType.APPLICATION_JSON_VALUE));
         //then
         performResults.andExpectAll(

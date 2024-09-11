@@ -1,7 +1,7 @@
 package pl.lotto.resultchecker;
 
-import pl.lotto.infrastructure.winningnumbersservice.dto.WinningNumbersResponseDto;
-import pl.lotto.resultchecker.dto.WinningNumbersResultsDto;
+import pl.lotto.infrastructure.winningnumbersservice.dto.WinningNumbersResponse;
+import pl.lotto.resultchecker.dto.WinningNumbersResults;
 
 public class WinningNumbersResultMapper {
 
@@ -9,8 +9,8 @@ public class WinningNumbersResultMapper {
         throw new IllegalStateException("Utility class");
     }
 
-    public static WinningNumbersResultsDto responseToDto(WinningNumbersResponseDto response) {
-        return WinningNumbersResultsDto.builder()
+    public static WinningNumbersResults responseToDto(WinningNumbersResponse response) {
+        return WinningNumbersResults.builder()
                 .numbers(response.numbers())
                 .drawDate(response.drawDate())
                 .lotteryNumber(response.lotteryNumber())

@@ -3,10 +3,10 @@ package pl.lotto.numberreceiver;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import pl.lotto.drawdategenerator.DrawDateGeneratorFacade;
-import pl.lotto.drawdategenerator.dto.DrawDateDto;
-import pl.lotto.numberreceiver.dto.NumberReceiverResultDto;
-import pl.lotto.numberreceiver.dto.TicketDto;
-import pl.lotto.numberreceiver.dto.UserTicketsDto;
+import pl.lotto.drawdategenerator.dto.DrawDate;
+import pl.lotto.numberreceiver.dto.NumberReceiverResult;
+import pl.lotto.numberreceiver.dto.TicketPayload;
+import pl.lotto.numberreceiver.dto.UserTickets;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -27,33 +27,33 @@ class NumberReceiverFacadeImpl implements NumberReceiverFacade {
     private final Clock clock;
 
     @Override
-    public NumberReceiverResultDto inputNumbers(List<Integer> numbersFromUser) {
+    public NumberReceiverResult inputNumbers(List<Integer> numbersFromUser) {
         NumberValidationResult validationResult = numberValidator.validate(new HashSet<>(numbersFromUser));
         if (!validationResult.isValidationSuccessful()) {
             log.debug("Input numbers validation failed, numbers: [{}]", numbersFromUser);
-            return new NumberReceiverResultDto(
+            return new NumberReceiverResult(
                     validationResult.validationStatus(),
                     validationResult.errorsList(),
                     null);
         }
         String hash = hashGenerator.getHash();
-        DrawDateDto drawDateDto = drawDateGenerator.getNextDrawDate(Instant.now(clock));
-        Ticket ticket = new Ticket(hash, numbersFromUser, drawDateDto.drawDate());
-        Ticket saved = ticketRepository.save(ticket);
+        DrawDate drawDate = drawDateGenerator.getNextDrawDate(Instant.now(clock));
+        pl.lotto.numberreceiver.Ticket ticket = new pl.lotto.numberreceiver.Ticket(hash, numbersFromUser, drawDate.drawDate());
+        pl.lotto.numberreceiver.Ticket saved = ticketRepository.save(ticket);
         log.info("Ticket [{}] registered", hash);
-        return new NumberReceiverResultDto(
+        return new NumberReceiverResult(
                 validationResult.validationStatus(),
                 validationResult.errorsList(),
                 toDto(saved));
     }
 
     @Override
-    public UserTicketsDto usersNumbers(Instant drawDate) {
-        List<Ticket> ticketsForDate = ticketRepository.findAllByDrawDate(drawDate);
+    public UserTickets usersNumbers(Instant drawDate) {
+        List<pl.lotto.numberreceiver.Ticket> ticketsForDate = ticketRepository.findAllByDrawDate(drawDate);
         log.info("Returned [{}] tickets for date: [{}]", ticketsForDate.size(), drawDate);
-        List<TicketDto> ticketsDto = toDtoList(ticketsForDate);
-        return UserTicketsDto.builder()
-                .tickets(ticketsDto)
+        List<TicketPayload> tickets = toDtoList(ticketsForDate);
+        return UserTickets.builder()
+                .tickets(tickets)
                 .build();
     }
 }
