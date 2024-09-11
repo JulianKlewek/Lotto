@@ -7,7 +7,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Builder
-public record WinningNumbersResponseDto(
+public record WinningNumbersResponse(
         @Schema(description = "List which contains winning numbers", example = "[1,2,3,4,5,6]")
         List<Integer> numbers,
         @Schema(description = "Date of draw", example = "2024-06-07T20:00:00Z")

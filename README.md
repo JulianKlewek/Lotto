@@ -78,11 +78,11 @@ docker-compose --profile prod up -d
 
 ## Endpoints
 
-|               ENDPOINT                | METHOD |             REQUEST             |                                          RESPONSE                                           |                  FUNCTION                  |
-|:-------------------------------------:|:------:|:-------------------------------:|:-------------------------------------------------------------------------------------------:|:------------------------------------------:|
-|        /lottery/input-numbers         |  POST  |    JSON BODY (user numbers)     |                                 JSON (NumberReceiverResult)                                 |    creates new ticket for given numbers    |
-|     /result/get-result/{ticketId}     |  GET   |     PATH VARIABLE(ticketId)     |                               JSON (AnnouncerResultResponse)                                | returns lottery result for given ticketId  |
-|    /result/get-results/{drawDate}     |  GET   |     PATH VARIABLE(drawDate)     |                           JSON (AnnouncerWinningResultsResponse)                            | returns all lottery results for given date |
-|             /auth/signup              |  POST  | JSON BODY (UserRegisterRequest) |                                 JSON (UserRegisterResponse)                                 |               registers user               |
-|             /auth/signin              |  POST  |  JSON BODY (UserLoginRequest)   |                                  JSON (UserLoginResponse)                                   |            allows user to login            |
-|         /auth/confirm-account         |  GET   |      REQUEST PARAM (token)      |                              JSON (EmailConfirmationResponse)                               |            confirms user email             |
+|               ENDPOINT                | METHOD |             REQUEST             |                                 RESPONSE                                  |                  FUNCTION                  |
+|:-------------------------------------:|:------:|:-------------------------------:|:-------------------------------------------------------------------------:|:------------------------------------------:|
+|        /lottery/input-numbers         |  POST  |    JSON BODY (user numbers)     |                        JSON (NumberReceiverResult)                        |    creates new ticket for given numbers    |
+|     /result/get-result/{ticketId}     |  GET   |     PATH VARIABLE(ticketId)     |                           JSON (ResultResponse)                           | returns lottery result for given ticketId  |
+|    /result/get-results/{drawDate}     |  GET   |     PATH VARIABLE(drawDate)     |                       JSON (WinningResultsResponse)                       | returns all lottery results for given date |
+|             /auth/signup              |  POST  | JSON BODY (UserRegisterRequest) |                        JSON (UserRegisterResponse)                        |               registers user               |
+|             /auth/signin              |  POST  |  JSON BODY (UserLoginRequest)   |                         JSON (UserLoginResponse)                          |            allows user to login            |
+|         /auth/confirm-account         |  GET   |      REQUEST PARAM (token)      |                     JSON (EmailConfirmationResponse)                      |            confirms user email             |

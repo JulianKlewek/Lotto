@@ -7,7 +7,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Builder
-public record AnnouncerTicket(
+public record TicketDetails(
         @Schema(description = "unique id for ticket", example = "e58ed763-928c-4155-bee9-fdbaaadc15f3")
         String hash,
         @Schema(description = "List of numbers", example = "[1,2,3,4,5,6]")

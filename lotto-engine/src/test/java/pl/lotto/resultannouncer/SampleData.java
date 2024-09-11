@@ -1,6 +1,6 @@
 package pl.lotto.resultannouncer;
 
-import pl.lotto.resultannouncer.dto.AnnouncerTicket;
+import pl.lotto.resultannouncer.dto.TicketDetails;
 import pl.lotto.resultchecker.dto.WinningTicketPayload;
 
 import java.time.Instant;
@@ -14,7 +14,7 @@ interface SampleData {
     WinningTicketPayload winningTicket = new WinningTicketPayload("hash1", List.of(1, 2, 3, 4, 5, 6),
             Instant.parse("2024-06-14T20:00:00.00Z"), 1L, 5);
     WinningTicketPayload losingTicket = new WinningTicketPayload("hash1", null, null, null, 0);
-    AnnouncerTicket announcedWinningTicket = new AnnouncerTicket("hash1", List.of(1, 2, 3, 4, 5, 6),
+    TicketDetails announcedWinningTicket = new TicketDetails("hash1", List.of(1, 2, 3, 4, 5, 6),
             Instant.parse("2024-06-14T20:00:00.00Z"), 1L, 5);
-    AnnouncerTicket announcedLosingTicket = new AnnouncerTicket("hash1", null, null, null, 0);
+    TicketDetails announcedLosingTicket = new TicketDetails("hash1", null, null, null, 0);
 }

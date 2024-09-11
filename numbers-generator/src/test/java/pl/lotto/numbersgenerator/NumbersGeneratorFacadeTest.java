@@ -2,7 +2,7 @@ package pl.lotto.numbersgenerator;
 
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
-import pl.lotto.numbersgenerator.dto.WinningNumbersResponseDto;
+import pl.lotto.numbersgenerator.dto.WinningNumbersResponse;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -21,7 +21,7 @@ class NumbersGeneratorFacadeTest extends NumbersGeneratorTestConfig {
         NumbersGeneratorFacadeImpl numbersGeneratorFacade = new NumbersGeneratorConfiguration()
                 .createNumbersGeneratorFacadeForTests(numbersRepository, winningNumbersGenerable, clock);
         //when
-        WinningNumbersResponseDto winningNumbersDto = numbersGeneratorFacade.generateWinningNumbers();
+        WinningNumbersResponse winningNumbersDto = numbersGeneratorFacade.generateWinningNumbers();
         //then
         List<Integer> winningNumbersSet = winningNumbersDto.numbers();
         Long lotteryNumber = winningNumbersDto.lotteryNumber();
@@ -47,7 +47,7 @@ class NumbersGeneratorFacadeTest extends NumbersGeneratorTestConfig {
         Instant drawDate = Instant.parse("2024-06-14T20:00:00.00Z");
         numbersGeneratorFacade.generateWinningNumbers();
         //when
-        WinningNumbersResponseDto winningNumbers = numbersGeneratorFacade.getWinningNumbersForDate(drawDate);
+        WinningNumbersResponse winningNumbers = numbersGeneratorFacade.getWinningNumbersForDate(drawDate);
         //then
         Instant actualDrawDate = winningNumbers.drawDate();
         Long actualLotteryNumber = winningNumbers.lotteryNumber();
