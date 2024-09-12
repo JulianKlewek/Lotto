@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import pl.lotto.BaseIntegrationTest;
-import pl.lotto.infrastructure.emailsenderservice.dto.ConfTokenEmailEvent;
+import pl.lotto.infrastructure.emailsenderservice.dto.AccountCreatedEvent;
 import pl.lotto.userauthenticator.dto.UserRegisterRequest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -44,7 +44,7 @@ class UserRegisterSuccessfullyIT extends BaseIntegrationTest {
 
         //step 2: user confirms email
         //given
-        ConfTokenEmailEvent sentMessage = (ConfTokenEmailEvent) rabbitTemplate.receiveAndConvert(rabbitQueueName);
+        AccountCreatedEvent sentMessage = (AccountCreatedEvent) rabbitTemplate.receiveAndConvert(rabbitQueueName);
         assert sentMessage != null;
         String generatedToken = sentMessage.token();
         //when
