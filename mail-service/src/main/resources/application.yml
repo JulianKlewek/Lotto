@@ -1,0 +1,28 @@
+server:
+  port: 8070
+
+spring:
+  application:
+    name: mail-service
+  cloud:
+    config:
+      enabled: false
+  mail:
+    host: todo
+    username: todo
+    password: todo
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enabled: true
+            required: true
+
+queues:
+  names:
+    account-created-event: email.service
+
+email:
+  sender:
+    address: REPLACE_THIS
