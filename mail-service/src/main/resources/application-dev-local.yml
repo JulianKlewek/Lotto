@@ -13,6 +13,7 @@ spring:
     host: ${EMAIL_HOST}
     username: ${EMAIL_HOST_ADDRESS}
     password: ${EMAIL_HOST_PASSWORD}
+    port: 587
     properties:
       mail:
         smtp:
@@ -27,6 +28,7 @@ queues:
 
 email:
   sender:
+    enabled: false
     address: ${EMAIL_HOST_ADDRESS}
 
 logging:

@@ -2,7 +2,7 @@ spring:
   application:
     name: mail-service
   profiles:
-    active: dev
+    active: dev-local
 
 ---
 spring:

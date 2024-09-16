@@ -13,23 +13,23 @@ import java.io.File;
 
 @Log4j2
 @Component
-@ConditionalOnProperty(name = "email.sender.enabled", havingValue = "true")
-class RealEmailSender implements EmailSender {
+@ConditionalOnProperty(name = "email.sender.enabled", havingValue = "false", matchIfMissing = true)
+class SelfEmailSender implements EmailSender {
 
     private final JavaMailSender mailSender;
     private final EmailSenderConfigurable senderConfigurable;
 
-    public RealEmailSender(JavaMailSender mailSender, EmailSenderConfigurable senderConfigurable) {
+    public SelfEmailSender(JavaMailSender mailSender, EmailSenderConfigurable senderConfigurable) {
         this.mailSender = mailSender;
         this.senderConfigurable = senderConfigurable;
     }
 
     @Override
     public void send(String recipient, String subject, String body) {
-        log.info("Sending email to: [{}], subject: [{}], body: [{}] without attachment",
-                recipient,
-                subject,
-                body);
+        String senderAddress = senderConfigurable.getAddress();
+        log.info("---FakeEmailSender--- Changing recipient from: [{}] to: [{}]", recipient, senderAddress);
+        recipient = senderAddress;
+        log.info("---FakeEmailSender--- Recipient: [{}], subject: [{}], body: [{}]", recipient, subject, body);
         MimeMessage message = mailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -46,11 +46,10 @@ class RealEmailSender implements EmailSender {
 
     @Override
     public void send(String recipient, String subject, String body, String pathToAttachment) {
-        log.info("Sending email to: [{}], subject: [{}], body: [{}], pathToAttachment: [{}]",
-                recipient,
-                subject,
-                body,
-                pathToAttachment);
+        String senderAddress = senderConfigurable.getAddress();
+        log.info("---FakeEmailSender--- Changing recipient from: [{}] to: [{}]", recipient, senderAddress);
+        recipient = senderAddress;
+        log.info("---FakeEmailSender--- Recipient: [{}], subject: [{}], body: [{}]", recipient, subject, body);
         MimeMessage message = mailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);

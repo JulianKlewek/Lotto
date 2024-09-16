@@ -22,8 +22,10 @@ class EmailGeneratorFacadeImpl implements EmailGeneratorFacade {
         String recipient = details.getRecipient();
         EmailDetails emailDetails = emailDetailsAssigner.assign(emailType, details);
         if (emailDetails.pathToAttachment().equals(AttachmentPathProvider.NO_ATTACHMENT)) {
+            log.debug("Email to: [{}] without attachment", recipient);
             emailSender.send(recipient, emailDetails.subject(), emailDetails.body());
         } else {
+            log.debug("Email to: [{}] with attachment", recipient);
             emailSender.send(recipient, emailDetails.subject(), emailDetails.body(), emailDetails.pathToAttachment());
         }
     }
