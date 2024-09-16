@@ -1,7 +1,7 @@
 package pl.lotto.resultannouncer;
 
 import org.junit.jupiter.api.Test;
-import pl.lotto.resultannouncer.dto.AnnouncerResultResponse;
+import pl.lotto.resultannouncer.dto.ResultResponse;
 import pl.lotto.resultchecker.ResultCheckerFacade;
 import pl.lotto.resultchecker.ResultCheckerFacadeImpl;
 import pl.lotto.resultchecker.ResultStatus;
@@ -27,7 +27,7 @@ class ResultAnnouncerFacadeTest extends ResultAnnouncerFacadeTestConfig {
         when(resultCheckerFacade.isSpecificTicketWon(any())).thenReturn(new TicketResultResponse(
                 winningTicket, ResultStatus.PRIZE_NOT_RECEIVED));
         //when
-        AnnouncerResultResponse resultsForId = resultAnnouncerFacade.findResultsForId(hash);
+        ResultResponse resultsForId = resultAnnouncerFacade.findResultsForId(hash);
         //then
         assertAll(
                 () -> assertThat(resultsForId.message()).isEqualTo(winNotReceivedMsg),
@@ -46,7 +46,7 @@ class ResultAnnouncerFacadeTest extends ResultAnnouncerFacadeTestConfig {
         when(resultCheckerFacade.isSpecificTicketWon(any())).thenReturn(
                 new TicketResultResponse(winningTicket, ResultStatus.PRIZE_RECEIVED));
         //when
-        AnnouncerResultResponse resultsForId = resultAnnouncerFacade.findResultsForId(hash);
+        ResultResponse resultsForId = resultAnnouncerFacade.findResultsForId(hash);
         //then
         assertAll(
                 () -> assertThat(resultsForId.message()).isEqualTo(winReceivedMsg),
@@ -65,7 +65,7 @@ class ResultAnnouncerFacadeTest extends ResultAnnouncerFacadeTestConfig {
         when(resultCheckerFacade.isSpecificTicketWon(any())).thenReturn(
                 new TicketResultResponse(losingTicket, ResultStatus.NOT_FOUND));
         //when
-        AnnouncerResultResponse resultsForId = resultAnnouncerFacade.findResultsForId(hash);
+        ResultResponse resultsForId = resultAnnouncerFacade.findResultsForId(hash);
         //then
         assertAll(
                 () -> assertThat(resultsForId.message()).isEqualTo(loseMsg),

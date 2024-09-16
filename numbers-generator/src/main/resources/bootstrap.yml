@@ -2,7 +2,7 @@ spring:
   application:
     name: numbers-generator
   profiles:
-    active: dev-local
+    active: dev
 
 ---
 spring:
@@ -23,7 +23,7 @@ eureka:
 spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: dev, docker
   cloud:
     config:
       discovery:

@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.lotto.resultannouncer.ResultAnnouncerFacade;
-import pl.lotto.resultannouncer.dto.AnnouncerResultResponse;
-import pl.lotto.resultannouncer.dto.AnnouncerWinningResultsResponse;
+import pl.lotto.resultannouncer.dto.ResultResponse;
+import pl.lotto.resultannouncer.dto.WinningResultsResponse;
 
 import java.time.Instant;
 
@@ -18,15 +18,15 @@ public class ResultAnnouncerRestController implements ResultAnnouncerApi {
     private final ResultAnnouncerFacade resultAnnouncerFacade;
 
     @GetMapping("/get-result/{ticketId}")
-    public ResponseEntity<AnnouncerResultResponse> getTicketResult(@PathVariable("ticketId") String ticketId) {
-        AnnouncerResultResponse results = resultAnnouncerFacade.findResultsForId(ticketId);
+    public ResponseEntity<ResultResponse> getTicketResult(@PathVariable("ticketId") String ticketId) {
+        ResultResponse results = resultAnnouncerFacade.findResultsForId(ticketId);
         return ResponseEntity
                 .ok(results);
     }
 
     @GetMapping("/get-results/{drawDate}")
-    public ResponseEntity<AnnouncerWinningResultsResponse> lotteryResultsForDate(@PathVariable("drawDate") Instant drawDate) {
-        AnnouncerWinningResultsResponse response = resultAnnouncerFacade.getLotteryResultsForDate(drawDate);
+    public ResponseEntity<WinningResultsResponse> lotteryResultsForDate(@PathVariable("drawDate") Instant drawDate) {
+        WinningResultsResponse response = resultAnnouncerFacade.getLotteryResultsForDate(drawDate);
         return ResponseEntity
                 .ok(response);
     }

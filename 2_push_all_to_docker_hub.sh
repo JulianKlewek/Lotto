@@ -6,3 +6,4 @@ docker push julekkl/lottery/lotto-enginge
 docker push julekkl/lottery/numbers-generator
 docker push julekkl/lottery/authentication-service
 docker push julekkl/lottery/config-server
+docker push julekkl/lottery/mail-service

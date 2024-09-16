@@ -1,16 +1,16 @@
 package pl.lotto.numbersgenerator;
 
-import pl.lotto.numbersgenerator.dto.WinningNumbersResponseDto;
+import pl.lotto.numbersgenerator.dto.WinningNumbersResponse;
 
 import java.time.Instant;
 
 public interface NumbersGeneratorFacade {
 
-    WinningNumbersResponseDto generateWinningNumbers();
+    WinningNumbersResponse generateWinningNumbers();
 
-    WinningNumbersResponseDto getWinningNumbersForDate(Instant request);
+    WinningNumbersResponse getWinningNumbersForDate(Instant request);
 
-    WinningNumbersResponseDto getWinningNumbersForLotteryNumber(Long lotteryNumber);
+    WinningNumbersResponse getWinningNumbersForLotteryNumber(Long lotteryNumber);
 
     Instant getLatestDrawDateWithGeneratedNumbers();
 }

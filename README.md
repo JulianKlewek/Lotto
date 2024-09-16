@@ -52,6 +52,7 @@ that configuration files can be updated easily, without the need to change the a
 |  Authentication service   |                  Handles registration, login and email confirmation. Generates JSON Web Token                   |
 |      Engine service       | Retrieves user numbers, creates tickets and handles results announcing. Modular monolith hexagonal architecture |
 | Numbers generator service |              Generates winning numbers at scheduled time. Allows services to fetch winning numbers              |
+|       Mail service        |                  Generates and sends emails. Communicating with other services using rabbitMQ                   |
 
 
 ## Installation
@@ -78,11 +79,11 @@ docker-compose --profile prod up -d
 
 ## Endpoints
 
-|               ENDPOINT                | METHOD |             REQUEST             |                                          RESPONSE                                           |                  FUNCTION                  |
-|:-------------------------------------:|:------:|:-------------------------------:|:-------------------------------------------------------------------------------------------:|:------------------------------------------:|
-|        /lottery/input-numbers         |  POST  |    JSON BODY (user numbers)     |                                 JSON (NumberReceiverResult)                                 |    creates new ticket for given numbers    |
-|     /result/get-result/{ticketId}     |  GET   |     PATH VARIABLE(ticketId)     |                               JSON (AnnouncerResultResponse)                                | returns lottery result for given ticketId  |
-|    /result/get-results/{drawDate}     |  GET   |     PATH VARIABLE(drawDate)     |                           JSON (AnnouncerWinningResultsResponse)                            | returns all lottery results for given date |
-|             /auth/signup              |  POST  | JSON BODY (UserRegisterRequest) |                                 JSON (UserRegisterResponse)                                 |               registers user               |
-|             /auth/signin              |  POST  |  JSON BODY (UserLoginRequest)   |                                  JSON (UserLoginResponse)                                   |            allows user to login            |
-|         /auth/confirm-account         |  GET   |      REQUEST PARAM (token)      |                              JSON (EmailConfirmationResponse)                               |            confirms user email             |
+|               ENDPOINT                | METHOD |             REQUEST             |                                 RESPONSE                                  |                  FUNCTION                  |
+|:-------------------------------------:|:------:|:-------------------------------:|:-------------------------------------------------------------------------:|:------------------------------------------:|
+|        /lottery/input-numbers         |  POST  |    JSON BODY (user numbers)     |                        JSON (NumberReceiverResult)                        |    creates new ticket for given numbers    |
+|     /result/get-result/{ticketId}     |  GET   |     PATH VARIABLE(ticketId)     |                           JSON (ResultResponse)                           | returns lottery result for given ticketId  |
+|    /result/get-results/{drawDate}     |  GET   |     PATH VARIABLE(drawDate)     |                       JSON (WinningResultsResponse)                       | returns all lottery results for given date |
+|             /auth/signup              |  POST  | JSON BODY (UserRegisterRequest) |                        JSON (UserRegisterResponse)                        |               registers user               |
+|             /auth/signin              |  POST  |  JSON BODY (UserLoginRequest)   |                         JSON (UserLoginResponse)                          |            allows user to login            |
+|         /auth/confirm-account         |  GET   |      REQUEST PARAM (token)      |                     JSON (EmailConfirmationResponse)                      |            confirms user email             |

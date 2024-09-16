@@ -1,8 +1,8 @@
 package pl.lotto.userauthenticator;
 
-import pl.lotto.infrastructure.emailsenderservice.dto.ConfTokenEmailEvent;
+import pl.lotto.infrastructure.emailsenderservice.dto.AccountCreatedEvent;
 
 public interface EmailSenderPort {
 
-    void sendConfirmationEmail(ConfTokenEmailEvent emailRequest);
+    void sendAccountCreatedEvent(AccountCreatedEvent emailRequest);
 }

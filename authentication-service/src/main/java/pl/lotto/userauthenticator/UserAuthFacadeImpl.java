@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-import pl.lotto.infrastructure.emailsenderservice.dto.ConfTokenEmailEvent;
+import pl.lotto.infrastructure.emailsenderservice.dto.AccountCreatedEvent;
 import pl.lotto.jwtgenerator.JwtGeneratorFacade;
 import pl.lotto.jwtgenerator.dto.JwtResponse;
 import pl.lotto.jwtgenerator.dto.UserTokenRequest;
@@ -63,17 +63,17 @@ class UserAuthFacadeImpl implements UserAuthFacade {
         ConfirmationToken confirmationToken = confirmationTokenGenerator.generate(savedUser);
         ConfirmationToken savedConfToken = confirmationTokenRepository.save(confirmationToken);
         log.info("Saved confirmation token: [{}] for username: [{}]", savedConfToken.getToken(), savedUser.getUsername());
-        ConfTokenEmailEvent emailRequest = sendConfirmationEmail(savedUser, savedConfToken);
+        AccountCreatedEvent emailRequest = sendConfirmationEmail(savedUser, savedConfToken);
         log.info("Sent email message: [{}]", emailRequest);
         cleanPassword(passArray);
         return entityToResponse(savedUser);
     }
 
-    private ConfTokenEmailEvent sendConfirmationEmail(User savedUser, ConfirmationToken savedConfToken) {
-        ConfTokenEmailEvent emailRequest = new ConfTokenEmailEvent(savedUser.getEmail(),
+    private AccountCreatedEvent sendConfirmationEmail(User savedUser, ConfirmationToken savedConfToken) {
+        AccountCreatedEvent emailRequest = new AccountCreatedEvent(savedUser.getEmail(),
                 savedConfToken.getToken(),
                 savedConfToken.getExpiryAt());
-        emailSenderPort.sendConfirmationEmail(emailRequest);
+        emailSenderPort.sendAccountCreatedEvent(emailRequest);
         return emailRequest;
     }
 

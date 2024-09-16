@@ -2,7 +2,7 @@ package pl.lotto.numbersgenerator;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import pl.lotto.numbersgenerator.dto.WinningNumbersResponseDto;
+import pl.lotto.numbersgenerator.dto.WinningNumbersResponse;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -22,7 +22,7 @@ class NumbersGeneratorFacadeImpl implements NumbersGeneratorFacade {
     private final Clock clock;
 
     @Override
-    public WinningNumbersResponseDto generateWinningNumbers() {
+    public WinningNumbersResponse generateWinningNumbers() {
         Instant createdAt = Instant.now(clock).truncatedTo(ChronoUnit.MINUTES);
         if (numbersRepository.existsByDrawDate(createdAt)) {
             log.info("Numbers are already generated for [{}].", createdAt);
@@ -44,13 +44,13 @@ class NumbersGeneratorFacadeImpl implements NumbersGeneratorFacade {
     }
 
     @Override
-    public WinningNumbersResponseDto getWinningNumbersForDate(Instant drawDate) {
+    public WinningNumbersResponse getWinningNumbersForDate(Instant drawDate) {
         WinningNumbersDetails winningNumbers = numbersRepository.findByDrawDate(drawDate);
         return toDto(winningNumbers);
     }
 
     @Override
-    public WinningNumbersResponseDto getWinningNumbersForLotteryNumber(Long lotteryId) {
+    public WinningNumbersResponse getWinningNumbersForLotteryNumber(Long lotteryId) {
         WinningNumbersDetails winningNumbers = numbersRepository.findByLotteryNumber(lotteryId);
         return toDto(winningNumbers);
     }

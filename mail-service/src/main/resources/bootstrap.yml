@@ -1,0 +1,75 @@
+spring:
+  application:
+    name: mail-service
+  profiles:
+    active: dev-local
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev-local
+  cloud:
+    config:
+      discovery:
+        enabled: false
+      enabled: false
+  main:
+    allow-bean-definition-overriding: true
+  mail:
+    host: ${EMAIL_HOST}
+    username: ${EMAIL_HOST_ADDRESS}
+    password: ${EMAIL_HOST_PASSWORD}
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enabled: true
+            required: true
+
+eureka:
+  client:
+    enabled: false
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev, docker
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      fail-fast: true
+      retry:
+        initial-interval: 2000
+        multiplier: 1.5
+        max-attempts: 60000
+        max-interval: 6000
+  main:
+    allow-bean-definition-overriding: true
+  mail:
+    host: ${EMAIL_HOST}
+    username: ${EMAIL_HOST_ADDRESS}
+    password: ${EMAIL_HOST_PASSWORD}
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enabled: true
+            required: true
+
+eureka:
+  client:
+    enabled: true
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
