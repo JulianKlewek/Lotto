@@ -52,6 +52,7 @@ that configuration files can be updated easily, without the need to change the a
 |  Authentication service   |                  Handles registration, login and email confirmation. Generates JSON Web Token                   |
 |      Engine service       | Retrieves user numbers, creates tickets and handles results announcing. Modular monolith hexagonal architecture |
 | Numbers generator service |              Generates winning numbers at scheduled time. Allows services to fetch winning numbers              |
+|       Mail service        |                  Generates and sends emails. Communicating with other services using rabbitMQ                   |
 
 
 ## Installation

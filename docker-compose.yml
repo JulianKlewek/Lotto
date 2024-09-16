@@ -161,6 +161,23 @@ services:
     depends_on:
       - postgres
       - configuration-service
+      - rabbitmq
+    networks:
+      - lottery-net
+    environment:
+      eureka.client.serviceUrl.defaultZone: http://discovery-server:8761/eureka/
+      spring.profiles.active: docker
+    profiles:
+      - prod
+
+  mail-service:
+    build: mail-service
+    image: julekkl/lottery/mail-service
+    container_name: service-mail
+    restart: unless-stopped
+    depends_on:
+      - rabbitmq
+      - configuration-service
     networks:
       - lottery-net
     environment:

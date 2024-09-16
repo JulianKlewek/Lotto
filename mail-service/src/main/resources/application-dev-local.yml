@@ -4,13 +4,15 @@ server:
 spring:
   application:
     name: mail-service
+  config:
+    import: optional:file:.env[.properties]
   cloud:
     config:
       enabled: false
   mail:
-    host: todo
-    username: todo
-    password: todo
+    host: ${EMAIL_HOST}
+    username: ${EMAIL_HOST_ADDRESS}
+    password: ${EMAIL_HOST_PASSWORD}
     properties:
       mail:
         smtp:
@@ -25,4 +27,10 @@ queues:
 
 email:
   sender:
-    address: REPLACE_THIS
+    address: ${EMAIL_HOST_ADDRESS}
+
+logging:
+  level:
+    pl:
+      lotto: debug
+    root: info

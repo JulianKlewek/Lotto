@@ -2,13 +2,15 @@ server:
   port: 8070
 
 spring:
+  config:
+    import: optional:file:.env[.properties]
   data:
     mongodb:
       host: localhost
       port: 27017
       database: lotto
-      username: admin
-      password: admin
+      username: ${MONGO_USERNAME}
+      password: ${MONGO_PASSWORD}
       auto-index-creation: true
 
 management:
