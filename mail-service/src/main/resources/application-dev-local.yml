@@ -9,18 +9,18 @@ spring:
   cloud:
     config:
       enabled: false
-  mail:
-    host: ${EMAIL_HOST}
-    username: ${EMAIL_HOST_ADDRESS}
-    password: ${EMAIL_HOST_PASSWORD}
-    port: 587
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enabled: true
-            required: true
+#  mail:
+#    host: ${EMAIL_HOST}
+#    username: ${EMAIL_HOST_ADDRESS}
+#    password: ${EMAIL_HOST_PASSWORD}
+#    port: 587
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enabled: true
+#            required: true
 
 queues:
   names:

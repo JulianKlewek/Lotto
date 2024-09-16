@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <p th:text="|Hey, ${recipient}!|"></p>
+    <p th:text="|To finish account creation please confirm your email by pressing link below.
+     In order to avoid problems do it before ${expiryDate}.|"></p>
+    <a th:href="|http://localhost:8080/auth/confirm-account?token=${token}|">Confirmation</a>
+</body>
+</html>

@@ -16,6 +16,7 @@
         <spring-boot-dependencies.version>3.3.2</spring-boot-dependencies.version>
         <spring-cloud-dependencies.version>2023.0.2</spring-cloud-dependencies.version>
         <lombok.version>1.18.30</lombok.version>
+        <thymeleaf-spring6.version>3.1.2.RELEASE</thymeleaf-spring6.version>
     </properties>
 
     <dependencies>
@@ -55,6 +56,11 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf-spring6</artifactId>
+            <version>${thymeleaf-spring6.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

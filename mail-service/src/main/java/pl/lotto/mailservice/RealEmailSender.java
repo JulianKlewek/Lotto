@@ -26,7 +26,7 @@ class RealEmailSender implements EmailSender {
 
     @Override
     public void send(String recipient, String subject, String body) {
-        log.info("Sending email to: [{}], subject: [{}], body: [{}] without attachment",
+        log.debug("Sending email without attachment to: [{}], subject: [{}], body: [{}]",
                 recipient,
                 subject,
                 body);
@@ -46,7 +46,7 @@ class RealEmailSender implements EmailSender {
 
     @Override
     public void send(String recipient, String subject, String body, String pathToAttachment) {
-        log.info("Sending email to: [{}], subject: [{}], body: [{}], pathToAttachment: [{}]",
+        log.debug("Sending email to: [{}], subject: [{}], body: [{}], pathToAttachment: [{}]",
                 recipient,
                 subject,
                 body,

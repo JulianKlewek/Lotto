@@ -11,15 +11,18 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 
+/**
+ * Class changes email sender behavior by changing recipient address to sender address.
+ */
 @Log4j2
 @Component
 @ConditionalOnProperty(name = "email.sender.enabled", havingValue = "false", matchIfMissing = true)
-class SelfEmailSender implements EmailSender {
+class FakeEmailSender implements EmailSender {
 
     private final JavaMailSender mailSender;
     private final EmailSenderConfigurable senderConfigurable;
 
-    public SelfEmailSender(JavaMailSender mailSender, EmailSenderConfigurable senderConfigurable) {
+    public FakeEmailSender(JavaMailSender mailSender, EmailSenderConfigurable senderConfigurable) {
         this.mailSender = mailSender;
         this.senderConfigurable = senderConfigurable;
     }
@@ -37,7 +40,7 @@ class SelfEmailSender implements EmailSender {
             helper.setFrom(senderEmailAddress);
             helper.setTo(recipient);
             helper.setSubject(subject);
-            helper.setText(body);
+            helper.setText(body, true);
             mailSender.send(message);
         } catch (MessagingException exc) {
             log.error("Mail sending failure: " + exc.getMessage());
