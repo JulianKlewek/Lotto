@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: mail-service
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    config:
+      enabled: false
+  mail:
+    host: localhost
+    username: ''
+    password: ''
+    port: 3025
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enabled: false
+
+eureka:
+  client:
+    enabled: false

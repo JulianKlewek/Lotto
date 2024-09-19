@@ -17,6 +17,9 @@
         <spring-cloud-dependencies.version>2023.0.2</spring-cloud-dependencies.version>
         <lombok.version>1.18.30</lombok.version>
         <thymeleaf-spring6.version>3.1.2.RELEASE</thymeleaf-spring6.version>
+        <testcontainers.version>1.19.8</testcontainers.version>
+        <testcontainers.rabbitmq.version>1.20.0</testcontainers.rabbitmq.version>
+        <greenmail.version>2.0.1</greenmail.version>
     </properties>
 
     <dependencies>
@@ -70,6 +73,30 @@
         <dependency>
             <groupId>org.springframework.amqp</groupId>
             <artifactId>spring-rabbit-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>rabbitmq</artifactId>
+            <version>${testcontainers.rabbitmq.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.icegreen</groupId>
+            <artifactId>greenmail</artifactId>
+            <version>${greenmail.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

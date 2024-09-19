@@ -34,7 +34,7 @@ class BodyGenerator {
         variables.put("expiryDate", expiryDate);
         Context thymeleafContext = new Context();
         thymeleafContext.setVariables(Collections.unmodifiableMap(variables));
-        return templateEngine.process("account-created.html", thymeleafContext);
+        return templateEngine.process("account-created", thymeleafContext);
     }
 
     public String generateNewsletterEmail(EmailRecipient properties) {

@@ -24,7 +24,6 @@ public class EmailGeneratorConfiguration {
         return createEmailGeneratorFacade(emailSender);
     }
 
-
     @Bean
     public ITemplateResolver thymeleafTemplateResolver() {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();

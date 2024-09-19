@@ -3,6 +3,7 @@ package pl.lotto.infrastructure.accountcreated;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
+import pl.lotto.infrastructure.accountcreated.dto.AccountCreatedEvent;
 import pl.lotto.mailservice.EmailGeneratorFacade;
 import pl.lotto.mailservice.EmailType;
 import pl.lotto.mailservice.dto.AccountCreatedDetails;
