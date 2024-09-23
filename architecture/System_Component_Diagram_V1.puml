@@ -1,0 +1,118 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+
+!include DEVICONS/github.puml
+!include DEVICONS/mongodb.puml
+!include DEVICONS/postgresql.puml
+
+AddElementTag("Scheduling Component", $shape=RoundedBoxShape(), $bgColor="CornflowerBlue", $fontColor="white")
+
+right header
+J.Klewek/20.09.2024
+endheader
+
+title System Components Diagram for Lottery Application
+
+Person(personAlias, "User", $sprite="person")
+
+System_Ext(githubAlias, "Github", "Stores properties", $sprite="github")
+System_Ext(gmailAlias, "E-mail System", "External Gmail system")
+
+Boundary(boundaryGateway, "CONTAINER: SERVICE-GATEWAY",){
+    Component(containerGateway, "API Gateway", "Component: Java, Spring", "Reroutes the requests. Validates JSON Web Token", $tags = "Gateway Component")
+}
+
+Boundary(boundaryDiscovery, "CONTAINER: SERVICE-DISCOVERY",){
+    Component(containerDiscovery, "Discovery-Server", "Component: Java, Spring", "Allows services to register and discover ", $tags = "Discovery Component")
+}
+
+
+Boundary(boundaryConfig, "CONTAINER: SERVICE-CONFIG",){
+    Component(containerConfig, "Config-Server", "Component: Java, Spring", "Provides configuration")
+}
+
+Container_Boundary(boundaryServices, "All microservices",){
+
+    Boundary(boundaryEngine, "CONTAINER: LOTTERY-ENGINE"){
+        Component(ResultAnnouncerRestController, "ResultAnnouncerRestController", "Component: Java, Spring")
+        Component(NumberReceiverRestController, "NumberReceiverRestController", "Component: Java, Spring")
+        Component(ResultAnnouncer, "Result Announcer", "Component: Java, Spring", "Check and generates lottery results")
+        Component(ResultChecker, "ResultChecker", "Component: Java, Spring", "Check and generates lottery results")
+        Component(NumberReceiver, "Number Receiver", "Component: Java, Spring", "Check and generates lottery results")
+        Boundary(boundaryMongoNumberReceiver, "CONTAINER: MONGODB",){
+            ContainerDb(MongoDbNumberReceiver, "TICKET REPOSITORY", "MongoDb", "Stores all tickets data", $sprite="mongodb")
+        }
+        Boundary(boundaryMongoResultChecker, "CONTAINER: MONGODB",){
+            ContainerDb(MongoDbResultChecker, "WINNING TICKET REPOSITORY", "MongoDb", "Stores all winning tickets data", $sprite="mongodb")
+        }
+        Component(DrawDateGenerator, "Draw Date Generator", "Component: Java, Spring", "Check and generates lottery results")
+        Component(LotteryScheduler, "LotteryScheduler", "Component: Java, Spring", "Runs lottery at specified time", $tags = "Scheduling Component")
+
+    }
+
+    Boundary(boundaryNumbersGenerator, "CONTAINER: SERVICE-NUMBERS-GENERATOR"){
+        Component(WinningNumbersRestController, "WinningNumbersRestController", "Component: Java, Spring")
+        Component(WinningNumbersGenerator, "WinningNumbersGenerator", "Component: Java, Spring", "Generates winning numbers for draw date")
+        Boundary(boundaryMongoNumberGenerator, "CONTAINER: MONGODB",){
+            ContainerDb(MongoDbNumbGenerator, "WINNING NUMBERS REPOSITORY", "MongoDb", "Stores all generated winning numbers", $sprite="mongodb")
+        }
+    }
+
+    Boundary(boundaryAuth, "CONTAINER: SERVICE-AUTHENTICATION",){
+        Component(AuthenticationRestController, "AuthenticationRestController", "Component: Java, Spring")
+        Component(UserAuthFacade, "UserAuthFacade", "Component: Java, Spring", "Provides functionality related to signing in, signing up etc.")
+        Component(JwtGenerator, "JwtGenerator", "Component: Java, Spring", "Generates JSON Web Token")
+        Boundary(boundaryPostgres, "CONTAINER: POSTGRES",){
+            ContainerDb(PostgresDbAuthService, "USER REPOSITORY", "PostgreSQL", "Holds user credentials, confirmation tokens, roles", $sprite="postgresql")
+        }
+
+    }
+
+    Boundary(boundaryRabbitMQ, "CONTAINER: RABBITMQ",){
+        ContainerQueue(ComponentRabbitMQ, "Message Broker", "RabbitMQ", "Transport for business events")
+    }
+
+    Boundary(boundaryMailService, "CONTAINER: SERVICE-MAIL",){
+        Component(MailService, "Mail Service", "Component: Java, Spring", "Send mail")
+    }
+}
+
+Rel(NumberReceiverRestController, NumberReceiver, "input 6 numbers", "command")
+Rel(NumberReceiver, DrawDateGenerator, "next draw date", "query")
+Rel(NumberReceiver, MongoDbNumberReceiver, "uses")
+Rel(ResultAnnouncerRestController, ResultAnnouncer, "check results", "query")
+Rel(ResultAnnouncer, ResultChecker, "get results", "query")
+Rel(LotteryScheduler, ResultChecker, "generate results", command)
+Rel_L(ResultChecker, MongoDbResultChecker, "uses")
+Rel_U(ResultChecker, NumberReceiver, "get results", "query")
+
+Rel_L(WinningNumbersRestController, WinningNumbersGenerator, "get winning numbers", "query")
+Rel_L(WinningNumbersGenerator, MongoDbNumbGenerator, "uses")
+
+Rel(ResultChecker, WinningNumbersRestController, "query: get winning numbers", "JSON/HTTP")
+
+Rel(AuthenticationRestController, UserAuthFacade, "query: login, confirmEmail \n command: register")
+Rel_U(UserAuthFacade, JwtGenerator, "generate JSON Web Token", "command")
+Rel_L(UserAuthFacade, PostgresDbAuthService, "uses")
+
+Rel(UserAuthFacade, ComponentRabbitMQ, "publish", "directExchange")
+Rel_R(MailService, ComponentRabbitMQ, "listen")
+
+Rel(containerGateway, NumberReceiverRestController, "command: input 6 numbers", "JSON/HTTP")
+Rel(containerGateway, ResultAnnouncerRestController, "query: get results", "JSON/HTTP")
+Rel(containerGateway, AuthenticationRestController, "query: login, confirmEmail \n command: register", "JSON/HTTP")
+Rel_L(containerGateway, containerDiscovery, "register")
+Rel_U(boundaryServices, containerDiscovery, "register")
+Rel_L(containerConfig, containerDiscovery, "register")
+
+Rel_U(boundaryServices, containerConfig, "fetches properties")
+Rel_U(containerConfig, githubAlias, "serves configuration from")
+
+Rel_R(MailService, gmailAlias, "uses")
+
+Rel(personAlias, containerGateway, "Makes API calls", "JSON/HTTP")
+
+SHOW_LEGEND()
+@enduml
