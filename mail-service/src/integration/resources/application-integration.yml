@@ -1,0 +1,15 @@
+queues:
+  names:
+    account-created-event: test.queue
+
+logging:
+  level:
+    pl:
+      lotto: debug
+    root: info
+
+
+email:
+  sender:
+    enabled: false
+    address: example@mail.com

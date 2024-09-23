@@ -1,4 +1,4 @@
-package pl.lotto.infrastructure.accountcreated;
+package pl.lotto.infrastructure.accountcreated.dto;
 
 import java.io.Serializable;
 import java.time.Instant;

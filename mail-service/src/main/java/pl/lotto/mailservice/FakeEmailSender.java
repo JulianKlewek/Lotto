@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -27,17 +28,17 @@ class FakeEmailSender implements EmailSender {
         this.senderConfigurable = senderConfigurable;
     }
 
+    @Async
     @Override
     public void send(String recipient, String subject, String body) {
-        String senderAddress = senderConfigurable.getAddress();
-        log.info("---FakeEmailSender--- Changing recipient from: [{}] to: [{}]", recipient, senderAddress);
-        recipient = senderAddress;
+        String sender = senderConfigurable.getAddress();
+        log.info("---FakeEmailSender--- Changing recipient from: [{}] to: [{}]", recipient, sender);
+        recipient = sender;
         log.info("---FakeEmailSender--- Recipient: [{}], subject: [{}], body: [{}]", recipient, subject, body);
         MimeMessage message = mailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message);
-            String senderEmailAddress = senderConfigurable.getAddress();
-            helper.setFrom(senderEmailAddress);
+            helper.setFrom(sender);
             helper.setTo(recipient);
             helper.setSubject(subject);
             helper.setText(body, true);
@@ -47,17 +48,17 @@ class FakeEmailSender implements EmailSender {
         }
     }
 
+    @Async
     @Override
     public void send(String recipient, String subject, String body, String pathToAttachment) {
-        String senderAddress = senderConfigurable.getAddress();
-        log.info("---FakeEmailSender--- Changing recipient from: [{}] to: [{}]", recipient, senderAddress);
-        recipient = senderAddress;
+        String sender = senderConfigurable.getAddress();
+        log.info("---FakeEmailSender--- Changing recipient from: [{}] to: [{}]", recipient, sender);
+        recipient = sender;
         log.info("---FakeEmailSender--- Recipient: [{}], subject: [{}], body: [{}]", recipient, subject, body);
         MimeMessage message = mailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            String senderMail = senderConfigurable.getAddress();
-            helper.setFrom(senderMail);
+            helper.setFrom(sender);
             helper.setTo(recipient);
             helper.setSubject(subject);
             helper.setText(body);

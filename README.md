@@ -38,21 +38,27 @@ Continuous integration: <br>
 
 ## Architecture
 
+C4 model Level 3 - Component diagram
+
+<a href="https://raw.githubusercontent.com/JulianKlewek/Lotto/master/architecture/System_Component_Diagram_V1.png"><img src="architecture/System_Component_Diagram_V1.png" width="850"/><br></a>
+
 This project uses microservice architecture with elements of hexagonal and modular monolithic application architecture.
+
+Inter-service communication done by REST and RabbitMQ.
 
 I have also implemented distributed configuration pattern using Spring Cloud Config Discovery First approach - this means
 that configuration files can be updated easily, without the need to change the application.
 
 
-|          Service          |                                                   Description                                                   |
-|:-------------------------:|:---------------------------------------------------------------------------------------------------------------:|
-|     Discovery service     |    Allows services to dynamically find and communicate with each other without hard-coding hostname and port    |
-|      Config service       |                      Stores and serves distributed configurations across multiple services                      |
-|      Gateway service      |                         Provides routing mechanism and JSON Web Token validation filter                         |
-|  Authentication service   |                  Handles registration, login and email confirmation. Generates JSON Web Token                   |
-|      Engine service       | Retrieves user numbers, creates tickets and handles results announcing. Modular monolith hexagonal architecture |
-| Numbers generator service |              Generates winning numbers at scheduled time. Allows services to fetch winning numbers              |
-|       Mail service        |                  Generates and sends emails. Communicating with other services using rabbitMQ                   |
+|          Service          |                                                                                   Description                                                                                   |
+|:-------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|     Discovery service     |                                    Allows services to dynamically find and communicate with each other without hard-coding hostname and port                                    |
+|      Config service       |                                        Stores and serves distributed configurations across multiple services. Discovery First approach.                                         |
+|      Gateway service      |                                                         Provides routing mechanism and JSON Web Token validation filter                                                         |
+|  Authentication service   |   Service responsible for JSON Web Token based authentication. Handles registration, login and email confirmation. Produces AccountCreatedEvent and sends it to Mail-Service    |
+|      Engine service       |                                 Retrieves user numbers, creates tickets and handles results announcing. Modular monolith hexagonal architecture                                 |
+| Numbers generator service |                                              Generates winning numbers at scheduled time. Allows services to fetch winning numbers                                              |
+|       Mail service        | Service responsible for generating and asynchronous email sending. Uses Thymeleaf Template Engine generate email templates. to Communicating with other services using rabbitMQ |
 
 
 ## Installation

@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -24,6 +25,7 @@ class RealEmailSender implements EmailSender {
         this.senderConfigurable = senderConfigurable;
     }
 
+    @Async
     @Override
     public void send(String recipient, String subject, String body) {
         log.debug("Sending email without attachment to: [{}], subject: [{}], body: [{}]",
@@ -31,10 +33,10 @@ class RealEmailSender implements EmailSender {
                 subject,
                 body);
         MimeMessage message = mailSender.createMimeMessage();
+        String sender = senderConfigurable.getAddress();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message);
-            String senderEmailAddress = senderConfigurable.getAddress();
-            helper.setFrom(senderEmailAddress);
+            helper.setFrom(sender);
             helper.setTo(recipient);
             helper.setSubject(subject);
             helper.setText(body);
@@ -44,6 +46,7 @@ class RealEmailSender implements EmailSender {
         }
     }
 
+    @Async
     @Override
     public void send(String recipient, String subject, String body, String pathToAttachment) {
         log.debug("Sending email to: [{}], subject: [{}], body: [{}], pathToAttachment: [{}]",
@@ -52,10 +55,10 @@ class RealEmailSender implements EmailSender {
                 body,
                 pathToAttachment);
         MimeMessage message = mailSender.createMimeMessage();
+        String sender = senderConfigurable.getAddress();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            String senderMail = senderConfigurable.getAddress();
-            helper.setFrom(senderMail);
+            helper.setFrom(sender);
             helper.setTo(recipient);
             helper.setSubject(subject);
             helper.setText(body);

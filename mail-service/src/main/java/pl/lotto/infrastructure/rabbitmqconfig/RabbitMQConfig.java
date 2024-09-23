@@ -1,10 +1,10 @@
 package pl.lotto.infrastructure.rabbitmqconfig;
 
-import pl.lotto.infrastructure.accountcreated.AccountCreatedEvent;
 import org.springframework.amqp.support.converter.DefaultClassMapper;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pl.lotto.infrastructure.accountcreated.dto.AccountCreatedEvent;
 
 import java.util.HashMap;
 import java.util.Map;
