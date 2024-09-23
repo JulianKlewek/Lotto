@@ -38,6 +38,10 @@ Continuous integration: <br>
 
 ## Architecture
 
+C4 model Level 3 - Component diagram
+
+<a href="https://raw.githubusercontent.com/JulianKlewek/Lotto/master/architecture/System_Component_Diagram_V1.png"><img src="architecture/System_Component_Diagram_V1.png" width="850"/><br></a>
+
 This project uses microservice architecture with elements of hexagonal and modular monolithic application architecture.
 
 Inter-service communication done by REST and RabbitMQ.
