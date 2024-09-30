@@ -12,5 +12,5 @@ public interface NumbersGeneratorFacade {
 
     WinningNumbersResponse getWinningNumbersForLotteryNumber(Long lotteryNumber);
 
-    Instant getLatestDrawDateWithGeneratedNumbers();
+    WinningNumbersResponse getLatestDrawDateResults();
 }

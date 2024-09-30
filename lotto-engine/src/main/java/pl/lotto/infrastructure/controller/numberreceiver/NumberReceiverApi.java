@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
-import pl.lotto.numberreceiver.dto.NumberReceiverRequest;
+import pl.lotto.numberreceiver.dto.LotteryTicketRequest;
 import pl.lotto.numberreceiver.dto.NumberReceiverResult;
 
 @Tag(name = "Number receiver RestController", description = "Microservice responsible for accepting numbers from players")
@@ -23,6 +23,6 @@ interface NumberReceiverApi {
                     content = {@Content(schema = @Schema(implementation = NumberReceiverResult.class),
                             mediaType = "application/json")})
     })
-    ResponseEntity<NumberReceiverResult> inputNumbers(@RequestBody NumberReceiverRequest request);
+    ResponseEntity<NumberReceiverResult> inputNumbers(@RequestBody LotteryTicketRequest request);
 
 }

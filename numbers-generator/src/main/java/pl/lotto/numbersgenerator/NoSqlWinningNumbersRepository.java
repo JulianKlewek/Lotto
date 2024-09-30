@@ -39,7 +39,7 @@ class NoSqlWinningNumbersRepository implements WinningNumbersRepository {
 
     @Override
     public WinningNumbersDetails findFirstByOrderByDrawDate() {
-        return numbersRepository.findFirstByOrderByDrawDate()
+        return numbersRepository.findFirstByOrderByDrawDateDesc()
                 .orElseThrow(() -> new WinningNumbersNotFoundException("Not found any winning numbers"));
     }
 
@@ -63,7 +63,7 @@ interface MongoWinningNumbersRepository extends MongoRepository<WinningNumbersDe
 
     Optional<WinningNumbersDetails> findByLotteryNumber(Long lotteryNumber);
 
-    Optional<WinningNumbersDetails> findFirstByOrderByDrawDate();
+    Optional<WinningNumbersDetails> findFirstByOrderByDrawDateDesc();
 
     boolean existsByDrawDate(Instant drawDate);
 }

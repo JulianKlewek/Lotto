@@ -23,4 +23,9 @@ public class WinningNumbersGeneratorPortHttpService implements WinningNumbersPor
         return null;
     }
 
+    @Override
+    public WinningNumbersResponse getLatestWinningNumbers() {
+        return winningNumbersWebClientCallGenerator.callForLatestWinningNumbers();
+    }
+
 }

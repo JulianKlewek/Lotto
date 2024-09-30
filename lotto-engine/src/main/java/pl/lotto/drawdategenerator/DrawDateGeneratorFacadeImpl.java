@@ -18,4 +18,11 @@ class DrawDateGeneratorFacadeImpl implements DrawDateGeneratorFacade {
         log.debug("Generated date [{}] for creation time: [{}]", drawDateForTicket, ticketCreatedAt);
         return new DrawDate(drawDateForTicket);
     }
+
+    @Override
+    public DrawDate getLatestDrawDate(Instant now) {
+        Instant drawDate = dateGenerator.latestDrawDate(now);
+        log.debug("Generated latest draw date [{}] for : [{}]", drawDate, now);
+        return new DrawDate(drawDate);
+    }
 }

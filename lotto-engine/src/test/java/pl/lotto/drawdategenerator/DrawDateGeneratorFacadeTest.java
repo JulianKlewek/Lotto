@@ -38,4 +38,18 @@ class DrawDateGeneratorFacadeTest extends DrawDateGeneratorFacadeConfig {
         assertThat(drawDate)
                 .isEqualTo(expectedDrawDate.toInstant());
     }
+
+    @ParameterizedTest
+    @MethodSource("VALID_LATEST_WEEK_DRAW_DATES")
+    void should_return_previous_week_friday_eight_pm_utc_time(ZonedDateTime now, ZonedDateTime expectedDrawDate) {
+        //given
+        DrawDateGeneratorFacade drawDateGeneratorFacade = new DrawDateGeneratorConfiguration()
+                .drawDateGeneratorFacadeForTest(propertyConfigurable);
+        //when
+        DrawDate drawDateDto = drawDateGeneratorFacade.getLatestDrawDate(now.toInstant());
+        //then
+        Instant drawDate = drawDateDto.drawDate();
+        assertThat(drawDate)
+                .isEqualTo(expectedDrawDate.toInstant());
+    }
 }

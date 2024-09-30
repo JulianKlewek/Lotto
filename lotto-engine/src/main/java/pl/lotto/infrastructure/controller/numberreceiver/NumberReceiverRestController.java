@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
-import pl.lotto.numberreceiver.dto.NumberReceiverRequest;
+import pl.lotto.numberreceiver.dto.LotteryTicketRequest;
 import pl.lotto.numberreceiver.dto.NumberReceiverResult;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class NumberReceiverRestController implements NumberReceiverApi {
     private final NumberReceiverFacade numberReceiverFacade;
 
     @PostMapping("/input-numbers")
-    public ResponseEntity<NumberReceiverResult> inputNumbers(@RequestBody NumberReceiverRequest request) {
+    public ResponseEntity<NumberReceiverResult> inputNumbers(@RequestBody LotteryTicketRequest request) {
         List<Integer> numbersList = request.inputNumbers();
         NumberReceiverResult result = numberReceiverFacade.inputNumbers(numbersList);
         HttpStatus httpStatus = Objects.equals(result.status(), SUCCESS_MESSAGE)

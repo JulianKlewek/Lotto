@@ -2,6 +2,7 @@ package pl.lotto.resultannouncer;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import pl.lotto.infrastructure.winningnumbersservice.dto.WinningNumbersResponse;
 import pl.lotto.resultannouncer.dto.ResultResponse;
 import pl.lotto.resultannouncer.dto.WinningResultsResponse;
 import pl.lotto.resultchecker.ResultCheckerFacade;
@@ -19,6 +20,7 @@ class ResultAnnouncerFacadeImpl implements ResultAnnouncerFacade {
 
     private final ResultCheckerFacade resultCheckerFacade;
     private final ResultMessageGenerator messageGenerator;
+    private final LatestResultsService latestResultsService;
 
     @Override
     public ResultResponse findResultsForId(String uuid) {
@@ -33,5 +35,11 @@ class ResultAnnouncerFacadeImpl implements ResultAnnouncerFacade {
         log.debug("Generating response for date: [{}]", drawDate);
         WinningNumbersResults winningNumbersResults = resultCheckerFacade.findWinningNumbersForLottery(drawDate);
         return resultsToResponse(winningNumbersResults);
+    }
+
+    @Override
+    public WinningNumbersResponse getLatestLotteryResults() {
+        log.trace("Generating latest lottery results response");
+        return latestResultsService.getLatestDrawWinningNumbers();
     }
 }

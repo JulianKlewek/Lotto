@@ -24,4 +24,17 @@ class WinningNumbersRestController implements WinningNumbersApi {
         return ResponseEntity
                 .ok(response);
     }
+
+    @GetMapping("/winning-numbers/latest")
+    public ResponseEntity<WinningNumbersResponse> getLatestWinningNumbers() {
+        WinningNumbersResponse response = numbersGeneratorFacade.getLatestDrawDateResults();
+        return ResponseEntity
+                .ok(response);
+    }
+
+//    @GetMapping("/winning-numbers/post")
+    public ResponseEntity<WinningNumbersResponse> getLatestWinningNumbers1() {
+        WinningNumbersResponse winningNumbersResponse = numbersGeneratorFacade.generateWinningNumbers();
+        return ResponseEntity.ok(winningNumbersResponse);
+    }
 }
