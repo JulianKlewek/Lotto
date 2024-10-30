@@ -10,7 +10,6 @@ jobs:
   lint:
     executor: docker-executor
     steps:
-      - run: rm -R /home/circleci/project
       - checkout
       - run:
           name: Run Checkstyle Linting
