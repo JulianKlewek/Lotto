@@ -16,6 +16,7 @@ public class RouteValidator {
             "/swagger",
             "/results/latest",
             "/winning-numbers/latest",
+            "/lottery/input-numbers",
             "/actuator/**"
     );
 
