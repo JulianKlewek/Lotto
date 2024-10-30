@@ -1,23 +1,103 @@
 version: 2.1
 
-workflows:
-  run_tests:
-    jobs:
-      - test
+executors:
+  docker-executor:
+    docker:
+      - image: circleci/openjdk:21.0.2
 
 jobs:
-  test:
-    docker:
-      - image: cimg/openjdk:21.0.2
+
+  lint:
+    executor: docker-executor
     steps:
       - checkout
       - run:
-            name: Print Java version
-            command: |
-              java --version
-      - run: 
-            name: Install dependencies
-            command: mvn clean install -DskipTests
-      - run: 
-            name: Run tests
-            command: mvn test
+          name: Run Checkstyle Linting
+          command: |
+            for service in gateway-service config-server authentication-service discovery-server-service lotto-engine
+                     numbers-generator mail-sender; do
+              echo "TODO cdLinting $service"
+              cd $service
+              mvn checkstyle:check
+              cd -
+            done
+
+  build:
+    executor: docker-executor
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.7
+      - run:
+          name: Build Docker Images and Compile Code
+          command: |
+            for service in gateway-service config-server authentication-service discovery-server-service lotto-engine
+                     numbers-generator mail-sender; do
+              echo "Building Docker image for $service"
+              docker build -t $service ./$service
+            done
+      - run:
+          name: Run Containers and Unit Tests
+          command: |
+            for service in gateway-service config-server authentication-service discovery-server-service lotto-engine
+                     numbers-generator mail-sender; do
+              echo "Building Docker image for $service"
+              docker run -d --name $service-test $service
+              echo "Running container and unit tests for $service"
+              docker exec $service-test mvn clean install
+              docker stop $service-test
+              docker rm $service-test
+            done
+      - persist_to_workspace:
+          root: /home/circleci/project
+          paths:
+            - docker
+
+  #              docker run $service mvn verify
+  test:
+    executor: docker-executor
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.7
+      - attach_workspace:
+          at: /home/circleci/project
+      - run:
+          name: Run Integration Tests
+          command: |
+            for service in gateway-service config-server authentication-service discovery-server-service lotto-engine
+                     numbers-generator mail-sender; do
+              echo "TODO Implement integration test runner. Running integration tests for $service"
+            done
+
+#            aws ecr get-login-password --region your-region | docker login --username AWS --password-stdin your-ecr-repository-url
+#              docker tag $service:latest your-ecr-repository-url/$service:latest
+#              docker push your-ecr-repository-url/$service:latest
+  release:
+    executor: docker-executor
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.7
+      - attach_workspace:
+          at: /home/circleci/project
+      - run:
+          name: Push Docker Images to ECR
+          command: |
+            for service in gateway-service config-server authentication-service discovery-server-service lotto-engine
+                     numbers-generator mail-sender; do
+              echo "TODO Pushing $service to ECR"
+            done
+
+workflows:
+  version: 2
+  build-test-deploy:
+    jobs:
+      - lint
+      - build
+      - test:
+          requires:
+            - build
+      - release:
+          requires:
+            - test
