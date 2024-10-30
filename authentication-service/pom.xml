@@ -204,6 +204,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <mainClass>pl.lotto.AuthServiceRunner</mainClass>
                     <layout>JAR</layout>
                     <layers>
                         <enabled>true</enabled>
