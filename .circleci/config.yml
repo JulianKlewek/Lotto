@@ -30,7 +30,7 @@ jobs:
       - run:
           name: Build Docker Images and Compile Code
           command: |
-            for service in gateway-service config-server authentication-service discovery-server-service lotto-engine numbers-generator mail-service; do
+            for service in authentication-service gateway-service config-server discovery-server-service lotto-engine numbers-generator mail-service; do
               echo "Building Docker image for $service"
               docker build -t $service ./$service
             done
