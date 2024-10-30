@@ -37,7 +37,7 @@ jobs:
       - run:
           name: Run Containers and Unit Tests
           command: |
-            for service in gateway-service config-server authentication-service discovery-server-service lotto-engine numbers-generator mail-service; do
+            for service in authentication-service gateway-service config-server discovery-server-service lotto-engine numbers-generator mail-service; do
               echo "Building Docker image for $service"
               docker run -d --name $service-test $service
               echo "Running container and unit tests for $service"
