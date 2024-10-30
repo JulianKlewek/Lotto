@@ -69,7 +69,7 @@ class ResultAnnouncerFacadeTest extends ResultAnnouncerFacadeTestConfig {
         Instant now = LocalDateTime.of(2024, Month.JUNE, 14, 21, 0).toInstant(ZoneOffset.UTC);
         when(drawDateGeneratorFacade.getLatestDrawDate(now)).thenReturn(
                 new DrawDate(drawDate));
-        when(winningNumbersPort.getWinningNumbersForDate(drawDate)).thenReturn(
+        when(winningNumbersPort.getLatestWinningNumbers()).thenReturn(
                 new WinningNumbersResponse(List.of(1, 2, 3, 4, 5, 6), drawDate, 1L));
         //when
         WinningNumbersResponse lotteryResults = resultAnnouncerFacade.getLatestLotteryResults();
