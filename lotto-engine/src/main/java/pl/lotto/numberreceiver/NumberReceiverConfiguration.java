@@ -10,7 +10,6 @@ import java.time.Clock;
 @Configuration
 public class NumberReceiverConfiguration {
 
-
     @Bean("numberReceiverClock")
     Clock clock() {
         return Clock.systemUTC();

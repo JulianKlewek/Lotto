@@ -16,7 +16,6 @@ import pl.lotto.userauthenticator.dto.*;
 
 import java.nio.CharBuffer;
 
-@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/auth")
 @Log4j2

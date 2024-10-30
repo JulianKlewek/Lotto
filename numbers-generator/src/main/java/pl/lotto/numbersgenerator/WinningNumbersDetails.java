@@ -2,6 +2,7 @@ package pl.lotto.numbersgenerator;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,6 +14,7 @@ import java.util.List;
 @Document("WinningNumber")
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 class WinningNumbersDetails {
     List<Integer> numbers;

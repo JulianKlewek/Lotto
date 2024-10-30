@@ -3,7 +3,7 @@ package pl.lotto.numberreceiver;
 import org.junit.jupiter.api.Test;
 import pl.lotto.drawdategenerator.DrawDateGeneratorFacade;
 import pl.lotto.drawdategenerator.dto.DrawDate;
-import pl.lotto.numberreceiver.dto.NumberReceiverResult;
+import pl.lotto.numberreceiver.dto.LotteryTicketResponse;
 import pl.lotto.numberreceiver.dto.TicketPayload;
 import pl.lotto.numberreceiver.dto.UserTickets;
 
@@ -29,7 +29,7 @@ class NumberReceiverFacadeTest extends NumberReceiverTestConfig {
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()
                 .createNumberReceiverFacadeForTests(ticketRepository, drawDateGeneratorFacade, clock());
         //when
-        NumberReceiverResult result = numberReceiverFacade.inputNumbers(correctNumbersFromUser);
+        LotteryTicketResponse result = numberReceiverFacade.inputNumbers(correctNumbersFromUser);
         //then
         assertThat(result.status()).isEqualTo("success");
         assertThat(result.errorsList()).isEmpty();
@@ -46,7 +46,7 @@ class NumberReceiverFacadeTest extends NumberReceiverTestConfig {
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()
                 .createNumberReceiverFacadeForTests(ticketRepository, drawDateGeneratorFacade, clock());
         //when
-        NumberReceiverResult result = numberReceiverFacade.inputNumbers(lessThanCorrectAmountOfNumbers);
+        LotteryTicketResponse result = numberReceiverFacade.inputNumbers(lessThanCorrectAmountOfNumbers);
         //then
         assertThat(result.status()).isEqualTo("failure");
         assertThat(result.errorsList()).contains(ValidationError.LESS_THAN_SIX_NUMBERS.errorMessage);
@@ -63,7 +63,7 @@ class NumberReceiverFacadeTest extends NumberReceiverTestConfig {
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()
                 .createNumberReceiverFacadeForTests(ticketRepository, drawDateGeneratorFacade, clock());
         //when
-        NumberReceiverResult result = numberReceiverFacade.inputNumbers(moreThanCorrectAmountOfNumbers);
+        LotteryTicketResponse result = numberReceiverFacade.inputNumbers(moreThanCorrectAmountOfNumbers);
         //then
         assertThat(result.status()).isEqualTo("failure");
         assertThat(result.errorsList()).contains(ValidationError.MORE_THAN_SIX_NUMBERS.errorMessage);
@@ -80,7 +80,7 @@ class NumberReceiverFacadeTest extends NumberReceiverTestConfig {
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration()
                 .createNumberReceiverFacadeForTests(ticketRepository, drawDateGeneratorFacade, clock());
         //when
-        NumberReceiverResult result = numberReceiverFacade.inputNumbers(numbersOutOfRange);
+        LotteryTicketResponse result = numberReceiverFacade.inputNumbers(numbersOutOfRange);
         //then
         assertThat(result.status()).isEqualTo("failure");
         assertThat(result.errorsList()).contains(ValidationError.OUT_OF_RANGE.errorMessage);

@@ -7,4 +7,6 @@ import java.time.Instant;
 public interface DrawDateGeneratorFacade {
 
     DrawDate getNextDrawDate(Instant ticketCreatedAt);
+
+    DrawDate getLatestDrawDate(Instant now);
 }

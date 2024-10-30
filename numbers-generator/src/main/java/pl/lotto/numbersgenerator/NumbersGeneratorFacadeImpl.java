@@ -56,8 +56,8 @@ class NumbersGeneratorFacadeImpl implements NumbersGeneratorFacade {
     }
 
     @Override
-    public Instant getLatestDrawDateWithGeneratedNumbers() {
+    public WinningNumbersResponse getLatestDrawDateResults() {
         WinningNumbersDetails latestNumbers = numbersRepository.findFirstByOrderByDrawDate();
-        return latestNumbers.drawDate;
+        return toDto(latestNumbers);
     }
 }

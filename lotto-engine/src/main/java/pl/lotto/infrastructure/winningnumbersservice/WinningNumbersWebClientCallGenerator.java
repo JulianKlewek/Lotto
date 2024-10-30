@@ -36,4 +36,19 @@ public class WinningNumbersWebClientCallGenerator {
                         Mono.error(new WinningNumbersGeneratorException("Winning numbers for given data not found. ")))
                 .block();
     }
+
+    public WinningNumbersResponse callForLatestWinningNumbers() {
+        log.debug("Processing request numbers generator service to fetch latest winning numbers for date [{}]");
+        String uri = "/winning-numbers/latest";
+        log.debug("Calling Numbers-generator-service for url: [{}{}]", numbersGeneratorServiceUrl, uri);
+        return webClient
+                .baseUrl(numbersGeneratorServiceUrl).build()
+                .get()
+                .uri(uri)
+                .retrieve()
+                .bodyToMono(WinningNumbersResponse.class)
+                .onErrorResume(e ->
+                        Mono.error(new WinningNumbersGeneratorException("Could not fetch latest winning numbers")))
+                .block();
+    }
 }

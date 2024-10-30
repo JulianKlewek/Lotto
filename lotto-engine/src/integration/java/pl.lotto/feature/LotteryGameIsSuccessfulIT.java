@@ -8,7 +8,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import pl.lotto.BaseIntegrationTest;
 import pl.lotto.infrastructure.winningnumbersservice.dto.WinningNumbersResponse;
-import pl.lotto.numberreceiver.dto.NumberReceiverResult;
+import pl.lotto.numberreceiver.dto.LotteryTicketResponse;
 import pl.lotto.resultchecker.dto.WinningTickets;
 
 import java.time.Instant;
@@ -50,8 +50,8 @@ class LotteryGameIsSuccessfulIT extends BaseIntegrationTest {
                         jsonPath("$.ticket.drawDate", equalTo(expectedDrawDate)),
                         jsonPath("$.ticket.message", equalTo((null))))
                 .andReturn();
-        NumberReceiverResult receiverResult = objectMapper.readValue(
-                mvcInputNumbersResult.getResponse().getContentAsString(), NumberReceiverResult.class);
+        LotteryTicketResponse receiverResult = objectMapper.readValue(
+                mvcInputNumbersResult.getResponse().getContentAsString(), LotteryTicketResponse.class);
         //step 2: system generates winning numbers and returns winning numbers for given date
         //given
         Instant drawDate = receiverResult.ticket().drawDate();

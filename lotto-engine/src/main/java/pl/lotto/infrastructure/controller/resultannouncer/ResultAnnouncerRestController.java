@@ -9,7 +9,7 @@ import pl.lotto.resultannouncer.dto.WinningResultsResponse;
 
 import java.time.Instant;
 
-@CrossOrigin(origins = "http://localhost:8080")
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("result")

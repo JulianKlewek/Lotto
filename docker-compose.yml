@@ -186,6 +186,16 @@ services:
     profiles:
       - prod
 
+  lottery-front:
+    build: ../Lottery-front/lottery-front
+    image: julekkl/lottery/lottery-front
+    container_name: angular-front
+    restart: unless-stopped
+    ports:
+      - "4200:80"
+    networks:
+      - lottery-net
+
 networks:
   lottery-net:
     driver: bridge

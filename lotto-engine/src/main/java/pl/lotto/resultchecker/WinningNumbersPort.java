@@ -10,4 +10,6 @@ public interface WinningNumbersPort {
 
     WinningNumbersResponse getWinningNumbersForLotteryNumber(Long lotteryId);
 
+    WinningNumbersResponse getLatestWinningNumbers();
+
 }

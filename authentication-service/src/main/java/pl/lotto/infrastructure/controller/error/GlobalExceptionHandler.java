@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.util.WebUtils;
+import pl.lotto.userauthenticator.ConfirmationTokenNotFoundException;
 import pl.lotto.userauthenticator.UserAlreadyExistsException;
 
 import java.util.HashMap;
@@ -18,8 +19,9 @@ import java.util.Map;
 class GlobalExceptionHandler {
 
     static final String VALIDATION_FAILED_MSG = "VALIDATION FAILED";
+    static final String ACTIVATION_FAILED_MSG = "ACCOUNT ACTIVATION FAILED";
 
-    @ExceptionHandler({MethodArgumentNotValidException.class, UserAlreadyExistsException.class})
+    @ExceptionHandler({MethodArgumentNotValidException.class, UserAlreadyExistsException.class, ConfirmationTokenNotFoundException.class})
     public final ResponseEntity<ApiErrorResponse> handleException(Exception exception, WebRequest request) {
         HttpHeaders headers = new HttpHeaders();
         if (exception instanceof MethodArgumentNotValidException argumentNotValidException) {
@@ -28,10 +30,21 @@ class GlobalExceptionHandler {
         } else if (exception instanceof UserAlreadyExistsException userAlreadyExistsException) {
             HttpStatus status = HttpStatus.BAD_REQUEST;
             return handleUserAlreadyExistsException(userAlreadyExistsException, headers, status, request);
+        } else if (exception instanceof ConfirmationTokenNotFoundException tokenNotFoundException) {
+            HttpStatus status = HttpStatus.BAD_REQUEST;
+            return handleConfirmationTokenNotFoundException(tokenNotFoundException, headers, status, request);
         } else {
             HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
             return handleExceptionInternal(exception, null, headers, status, request);
         }
+    }
+
+    private ResponseEntity<ApiErrorResponse> handleConfirmationTokenNotFoundException(
+            ConfirmationTokenNotFoundException exception, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("confirmationToken", exception.getMessage());
+        ApiErrorResponse apiError = new ApiErrorResponse(VALIDATION_FAILED_MSG, errors);
+        return handleExceptionInternal(exception, apiError, headers, status, request);
     }
 
     private ResponseEntity<ApiErrorResponse> handleUserAlreadyExistsException(
@@ -42,7 +55,7 @@ class GlobalExceptionHandler {
         } else {
             errors.put("username", exception.getMessage());
         }
-        ApiErrorResponse apiError = new ApiErrorResponse(VALIDATION_FAILED_MSG, errors);
+        ApiErrorResponse apiError = new ApiErrorResponse(ACTIVATION_FAILED_MSG, errors);
         return handleExceptionInternal(exception, apiError, headers, status, request);
     }
 

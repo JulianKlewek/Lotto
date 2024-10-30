@@ -2,7 +2,9 @@ package pl.lotto.drawdategenerator;
 
 import lombok.AllArgsConstructor;
 
-import java.time.*;
+import java.time.DayOfWeek;
+import java.time.Instant;
+import java.time.ZoneOffset;
 
 import static java.time.temporal.TemporalAdjusters.*;
 
@@ -38,11 +40,38 @@ class DateGenerator {
                 .getHour() < propertyConfigurable.getDrawHour();
     }
 
-    private boolean isDrawDay(Instant ticketCreatedTime, DayOfWeek drawDay) {
-        return ticketCreatedTime
+    private boolean isDrawDay(Instant now, DayOfWeek drawDay) {
+        return now
                 .atZone(ZoneOffset.UTC)
                 .getDayOfWeek()
                 .equals(drawDay);
     }
+
+    public Instant latestDrawDate(Instant now) {
+        DayOfWeek drawDay = DayOfWeek.of(propertyConfigurable.getDrawDayOfWeek());
+        if (isDrawDay(now, drawDay) && isAfterDraw(now)) {
+            return now.atZone(ZoneOffset.UTC)
+                    .with(previousOrSame(drawDay))
+                    .withHour(propertyConfigurable.getDrawHour())
+                    .withMinute(propertyConfigurable.getDrawMinute())
+                    .withSecond(propertyConfigurable.getDrawSecond())
+                    .withNano(LOTTERY_NANO)
+                    .toInstant();
+        }
+        return now.atZone(ZoneOffset.UTC)
+                .with(previous(drawDay))
+                .withHour(propertyConfigurable.getDrawHour())
+                .withMinute(propertyConfigurable.getDrawMinute())
+                .withSecond(propertyConfigurable.getDrawSecond())
+                .withNano(LOTTERY_NANO)
+                .toInstant();
+    }
+
+    private boolean isAfterDraw(Instant now) {
+        return now
+                .atZone(ZoneOffset.UTC)
+                .getHour() > propertyConfigurable.getDrawHour();
+    }
+
 
 }

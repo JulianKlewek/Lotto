@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
-public record NumberReceiverResult(
+public record LotteryTicketResponse(
         @Schema(example = "success")
         String status,
         @Schema(example = "[\"User provided more than six numbers\",\"User provided numbers out of range\"]",
