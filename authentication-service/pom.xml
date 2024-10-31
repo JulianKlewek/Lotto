@@ -7,7 +7,7 @@
 
     <artifactId>authentication-service</artifactId>
     <groupId>org.example</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -203,6 +203,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.3.2</version>
                 <configuration>
                     <mainClass>pl.lotto.AuthServiceRunner</mainClass>
                     <layout>JAR</layout>

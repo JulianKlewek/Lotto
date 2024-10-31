@@ -15,7 +15,7 @@ jobs:
           name: Run Checkstyle Linting
           command: |
             for service in gateway-service config-server authentication-service discovery-server-service lotto-engine numbers-generator mail-service; do
-              echo "TODO cdLinting $service"
+              echo "TODO Linting $service"
               cd $service
               mvn checkstyle:check
               cd -
@@ -35,15 +35,11 @@ jobs:
               docker build -t $service ./$service
             done
       - run:
-          name: Run Containers and Unit Tests
+          name: Run Unit Tests
           command: |
             for service in authentication-service; do
-              echo "Building Docker image for $service"
-              docker run -d --name $service-test $service
-              echo "Running container and unit tests for $service-test"
-              docker exec $service-test mvn clean install
-              docker stop $service-test
-              docker rm $service-test
+              echo "Running unit test for image $service"
+              docker build -t $service-test --progress=plain --no-cache --target=test .
             done
       - persist_to_workspace:
           root: /home/circleci/project
@@ -96,3 +92,20 @@ workflows:
       - release:
           requires:
             - test
+
+
+#  test:
+#    docker:
+#      - image: cimg/openjdk:21.0.2
+#    steps:
+#      - checkout
+#      - run:
+#          name: Print Java version
+#          command: |
+#            java --version
+#      - run:
+#          name: Install dependencies
+#          command: mvn clean install -DskipTests
+#      - run:
+#          name: Run tests
+#          command: mvn test
