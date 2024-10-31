@@ -4,8 +4,8 @@ WORKDIR /build
 COPY src ./src
 
 FROM base AS test
-RUN echo "Running TEST commands" && \
-    --mount=type=bind,source=pom.xml,target=pom.xml \
+RUN echo "Running TEST commands"
+RUN --mount=type=bind,source=pom.xml,target=pom.xml \
     --mount=type=cache,target=/root/.m2  \
     mvn -B test
 
