@@ -42,7 +42,7 @@ jobs:
               docker build -t $service-test --progress=plain --no-cache --target=test ./$service
             done
       - persist_to_workspace:
-          root: /home/circleci/project
+          root: .
           paths:
             - docker
 
