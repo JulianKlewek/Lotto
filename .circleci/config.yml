@@ -15,7 +15,7 @@ jobs:
           name: Run Checkstyle Linting
           command: |
             for service in authentication-service; do
-              echo "TODO Linting $service"
+              echo "Running linting checks for $service"
               cd $service
               mvn checkstyle:check
               cd -
