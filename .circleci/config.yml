@@ -46,7 +46,6 @@ jobs:
           paths:
             - .
 
-  #              docker run $service mvn verify
   test:
     executor: docker-executor
     steps:
@@ -61,7 +60,7 @@ jobs:
             for service in gateway-service config-server authentication-service discovery-server-service lotto-engine numbers-generator mail-service; do
               echo "TODO Implement integration test runner. Running integration tests for $service"
             done
-
+  #              docker run $service mvn verify
 #            aws ecr get-login-password --region your-region | docker login --username AWS --password-stdin your-ecr-repository-url
 #              docker tag $service:latest your-ecr-repository-url/$service:latest
 #              docker push your-ecr-repository-url/$service:latest
