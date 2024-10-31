@@ -39,7 +39,7 @@ jobs:
           command: |
             for service in authentication-service; do
               echo "Running unit test for image $service"
-              docker build -t $service --progress=plain --no-cache --target=test .
+              docker build -t $service-test --progress=plain --no-cache --target=test ./$service
             done
       - persist_to_workspace:
           root: /home/circleci/project
