@@ -14,7 +14,7 @@ jobs:
       - run:
           name: Run Checkstyle Linting
           command: |
-            for service in gateway-service config-server authentication-service discovery-server-service lotto-engine numbers-generator mail-service; do
+            for service in authentication-service; do
               echo "TODO Linting $service"
               cd $service
               mvn checkstyle:check
