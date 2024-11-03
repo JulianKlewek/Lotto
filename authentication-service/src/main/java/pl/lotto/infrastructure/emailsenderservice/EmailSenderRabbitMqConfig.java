@@ -1,8 +1,9 @@
 package pl.lotto.infrastructure.emailsenderservice;
 
-import org.springframework.amqp.core.*;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.support.converter.DefaultClassMapper;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
@@ -41,30 +42,12 @@ class EmailSenderRabbitMqConfig {
 
     @Bean
     public MessageConverter jsonToMapMessageConverter() {
-        String trustedDtoPackage = "pl.lotto.infrastructure.accountcreated.dto";
+        String[] trustedDtoPackages = {"pl.lotto.infrastructure.emailsenderservice.dto"};
         DefaultClassMapper defaultClassMapper = new DefaultClassMapper();
-        defaultClassMapper.setTrustedPackages(trustedDtoPackage);
+        defaultClassMapper.setTrustedPackages(trustedDtoPackages);
         Jackson2JsonMessageConverter jackson2JsonMessageConverter = new Jackson2JsonMessageConverter();
         jackson2JsonMessageConverter.setClassMapper(defaultClassMapper);
         return jackson2JsonMessageConverter;
     }
 
-    @Bean
-    MessageConverter converter() {
-        return new Jackson2JsonMessageConverter();
-    }
-
-    @Bean
-    AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory) {
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setMessageConverter(converter());
-        return rabbitTemplate;
-    }
-
-//    @Bean
-//    public SimpleMessageConverter converter() {
-//        SimpleMessageConverter converter = new SimpleMessageConverter();
-//        converter.setAllowedListPatterns(List.of("pl.lotto.infrastructure.emailsenderservice.dto"));
-//        return converter;
-//    }
 }

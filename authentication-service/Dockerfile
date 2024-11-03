@@ -4,10 +4,16 @@ WORKDIR /build
 COPY src ./src
 
 FROM base AS test
-RUN echo "Running TEST commands"
+RUN echo "Running UNIT TEST commands"
 RUN --mount=type=bind,source=pom.xml,target=pom.xml \
     --mount=type=cache,target=/root/.m2  \
     mvn -B test
+
+FROM base AS integration-test
+RUN echo "Running INTEGRATION TEST commands"
+RUN --mount=type=bind,source=pom.xml,target=pom.xml \
+    --mount=type=cache,target=/root/.m2  \
+    mvn -Dskip.ut=true verify
 
 FROM base AS deps
 WORKDIR /build

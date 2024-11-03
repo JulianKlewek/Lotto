@@ -59,6 +59,7 @@ jobs:
           command: |
             for service in authentication-service; do
               echo "TODO Implement integration test runner. Running integration tests for $service"
+            docker build -t $service-test --progress=plain --no-cache --target=integration-test ./$service
             done
   #              docker run $service mvn verify
 #            aws ecr get-login-password --region your-region | docker login --username AWS --password-stdin your-ecr-repository-url

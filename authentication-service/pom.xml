@@ -212,16 +212,31 @@
                 <directory>src/test/resources</directory>
             </testResource>
         </testResources>
-<!--        <testSourceDirectory>src/integration/java</testSourceDirectory>-->
-<!--        <testSourceDirectory>src/test/java</testSourceDirectory>-->
-<!--        <testSourceDirectory>src/test/java</testSourceDirectory>-->
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>add-integration-test-source-as-test-sources</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/integration/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>3.3.2</version>
                 <configuration>
-<!--                    <workingDirectory>${basedir}</workingDirectory>-->
                     <mainClass>pl.lotto.AuthServiceRunner</mainClass>
                     <layout>JAR</layout>
                     <layers>
@@ -249,11 +264,10 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <testSourceDirectory>src/integration/java</testSourceDirectory>
-                    <classesDirectory>${project.build.outputDirectory}</classesDirectory>
-                    <excludes>
-                        <exclude>**/src/test/java/pl/lotto/**/*Test.java</exclude>
-                    </excludes>
+                    <useModulePath>false</useModulePath>
+                    <additionalClasspathElements>
+                        <additionalClasspathElement>${basedir}/target/classes</additionalClasspathElement>
+                    </additionalClasspathElements>
                 </configuration>
             </plugin>
             <plugin>
@@ -261,12 +275,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.1.2</version>
                 <configuration>
-                    <includes>
-                        <include>**/src/test/java/pl/lotto/**/*Test.java</include>
-                    </includes>
-                    <excludes>
-                        <exclude>**/*IT.java</exclude>
-                    </excludes>
+                    <skipTests>${skip.ut}</skipTests>
                 </configuration>
             </plugin>
             <plugin>
