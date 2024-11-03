@@ -25,4 +25,5 @@ public abstract class BaseIntegrationTest implements RabbitTestContainer, Postgr
     protected RabbitTemplate rabbitTemplate;
     @Value("${email.sender.queue}")
     protected String rabbitQueueName;
+
 }

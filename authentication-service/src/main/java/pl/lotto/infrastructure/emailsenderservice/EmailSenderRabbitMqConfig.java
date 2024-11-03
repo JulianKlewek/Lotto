@@ -8,7 +8,6 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 @Configuration
 class EmailSenderRabbitMqConfig {
@@ -41,25 +40,31 @@ class EmailSenderRabbitMqConfig {
     }
 
     @Bean
-    public MessageConverter converter() {
-        return new Jackson2JsonMessageConverter();
-    }
-
-    @Bean
-    public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory) {
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setMessageConverter(converter());
-        return rabbitTemplate;
-    }
-
-    @Bean
-    @Profile("integration")
     public MessageConverter jsonToMapMessageConverter() {
-        String trustedDtoPackage = "pl.lotto.infrastructure.emailsenderservice.dto";
+        String trustedDtoPackage = "pl.lotto.infrastructure.accountcreated.dto";
         DefaultClassMapper defaultClassMapper = new DefaultClassMapper();
         defaultClassMapper.setTrustedPackages(trustedDtoPackage);
         Jackson2JsonMessageConverter jackson2JsonMessageConverter = new Jackson2JsonMessageConverter();
         jackson2JsonMessageConverter.setClassMapper(defaultClassMapper);
         return jackson2JsonMessageConverter;
     }
+
+    @Bean
+    MessageConverter converter() {
+        return new Jackson2JsonMessageConverter();
+    }
+
+    @Bean
+    AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory) {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setMessageConverter(converter());
+        return rabbitTemplate;
+    }
+
+//    @Bean
+//    public SimpleMessageConverter converter() {
+//        SimpleMessageConverter converter = new SimpleMessageConverter();
+//        converter.setAllowedListPatterns(List.of("pl.lotto.infrastructure.emailsenderservice.dto"));
+//        return converter;
+//    }
 }

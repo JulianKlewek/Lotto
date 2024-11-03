@@ -2,6 +2,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+#  ampq:
+#    deserialization:
+#      trust:
+#        all: true
 
 email:
   sender:
