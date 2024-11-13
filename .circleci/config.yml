@@ -4,6 +4,7 @@ executors:
   docker-executor:
     docker:
       - image: cimg/openjdk:23.0.1
+        user: root
 
 jobs:
 
@@ -40,6 +41,8 @@ jobs:
             for service in authentication-service; do
               echo "Running unit test for image $service"
               docker build -t $service-test --progress=plain --no-cache --target=test ./$service
+              echo "Removing test image for $service" docker rmi $service-test
+              docker rmi $service-test
             done
       - persist_to_workspace:
           root: /home/circleci/project
@@ -59,14 +62,24 @@ jobs:
           command: |
             for service in authentication-service; do
               echo "TODO Implement integration test runner. Running integration tests for $service"
-            docker build -t $service-test --progress=plain --no-cache --target=integration-test ./$service
+              docker run --entrypoint "" -v /var/run/docker.sock.raw:/var/run/docker.sock julekkl/lottery/authentication-service:latest mvn verify -Dskip.ut=true
             done
+#                                        TO DZIAŁA LOKALNIE \/
+#  docker run --entrypoint "" -v /var/run/docker.sock.raw:/var/run/docker.sock julekkl/lottery/authentication-service:latest mvn verify -Dskip.ut=true
+
+#              docker run -it --rm --entrypoint "" -v $PWD:$PWD -w $PWD -v /var/run/docker.sock:/var/run/docker.sock $service-test ./mvnw verify -Dskip.ut=true
+#  docker run --entrypoint "" -v /var/run/docker.sock:/var/run/docker.sock julekkl/lottery/authentication-service:latest mvn verify -Dskip.ut=true
+#  docker run -it --rm --entrypoint "" -v $PWD:$PWD -w $PWD -v /var/run/docker.sock:/var/run/docker.sock julekkl/lottery/authentication-service ./mvnw verify -Dskip.ut=true
+                     #            mvn clean verify -Dskip.ut=true
+#            docker run --rm --entrypoint "" -v /var/run/docker.sock:/var/run/docker.sock -e TESTCONTAINERS_RYUK_DISABLED=true julekkl/lottery/authentication-service:latest mvn verify
+#            RUN apk add --no-cache maven
+#                     docker run -it --rm --entrypoint "" -v $PWD:$PWD -w $PWD -v /var/run/docker.sock:/var/run/docker.sock julekkl/lottery/authentication-service ./mvnw test
   #              docker run $service mvn verify
 #            aws ecr get-login-password --region your-region | docker login --username AWS --password-stdin your-ecr-repository-url
 #              docker tag $service:latest your-ecr-repository-url/$service:latest
 #              docker push your-ecr-repository-url/$service:latest
 #  for service in gateway-service config-server authentication-service discovery-server-service lotto-engine numbers-generator mail-service; do
-
+  #            docker build -f ../authentication-service/Dockerfile  -t app --progress=plain --no-cache --target=test ../
   release:
     executor: docker-executor
     steps:
@@ -95,7 +108,13 @@ workflows:
           requires:
             - test
 
-
+#      - hold:
+#          type: approval
+#          requires:
+#            - build
+#      - deploy:
+#          requires:
+#            - hold
 #  test:
 #    docker:
 #      - image: cimg/openjdk:21.0.2
