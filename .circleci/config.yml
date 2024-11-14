@@ -28,6 +28,7 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: default
+          docker_layer_caching: true
       - run:
           name: Build Docker Images and Compile Code
           command: |
@@ -35,6 +36,10 @@ jobs:
               echo "Building Docker image for $service"
               docker build -t $service ./$service
             done
+      - run:
+          name: Save Docker image as tar
+          command: |
+            docker save authentication-service --output /home/circleci/project/authentication-service.tar
       - run:
           name: Run Unit Tests
           command: |
@@ -57,6 +62,10 @@ jobs:
           version: default
       - attach_workspace:
           at: /home/circleci/project
+      - run:
+          name: Load Docker Image
+          command: |
+            docker load --input /home/circleci/project/authentication-service.tar
       - run:
           name: Run Integration Tests
           command: |
