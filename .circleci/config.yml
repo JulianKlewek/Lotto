@@ -71,7 +71,7 @@ jobs:
           command: |
             for service in authentication-service; do
               echo "TODO Implement integration test runner. Running integration tests for $service"
-              docker run --entrypoint "" -v /var/run/docker.sock.raw:/var/run/docker.sock julekkl/lottery/authentication-service:latest mvn verify -Dskip.ut=true
+              docker run --entrypoint "" -v /var/run/docker.sock.raw:/var/run/docker.sock authentication-service mvn verify -Dskip.ut=true
             done
 #                                        TO DZIAŁA LOKALNIE \/
 #  docker run --entrypoint "" -v /var/run/docker.sock.raw:/var/run/docker.sock julekkl/lottery/authentication-service:latest mvn verify -Dskip.ut=true
